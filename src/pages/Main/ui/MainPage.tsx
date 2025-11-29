@@ -1,153 +1,176 @@
-import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Users, CalendarDays, TrendingUp } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
-import {
-  getRouteStudents,
-  getRouteScheduledLessons,
-} from "@/shared/const/router";
-
+import { CustomRangeDatePicker } from "@/shared/ui/CustomRangeDatePicker";
 export default function MainPage() {
-  const stats = [
-    {
-      id: 1,
-      title: "Всего учеников",
-      value: "156",
-      icon: <Users className="text-success-600" size={32} />,
-      change: "+12%",
-      link: getRouteStudents(),
-    },
-    {
-      id: 2,
-      title: "Занятий сегодня",
-      value: "24",
-      icon: <CalendarDays className="text-warning-600" size={32} />,
-      change: "+5%",
-      link: getRouteScheduledLessons(),
-    },
-
-    {
-      id: 4,
-      title: "Средняя посещаемость",
-      value: "78%",
-      icon: <TrendingUp className="text-danger-600" size={32} />,
-      change: "+3%",
-      link: getRouteStudents(),
-    },
-  ];
-
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Добро пожаловать!</h1>
-        <p className="text-default-500">Обзор системы управления школой</p>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-medium">Аналитика</h1>
+        <div className="flex gap-2">
+          <CustomRangeDatePicker />
+        </div>
+        {/* <div className="flex gap-2">
+          <Select
+            placeholder={currentMonth}
+            className="w-32"
+            size="sm"
+            classNames={{
+              trigger: "bg-white border border-gray-300",
+            }}
+          >
+            {months.map((month) => (
+              <SelectItem key={month} value={month}>
+                {month}
+              </SelectItem>
+            ))}
+          </Select>
+          <Select
+            placeholder={currentYear.toString()}
+            className="w-24"
+            size="sm"
+            classNames={{
+              trigger: "bg-white border border-gray-300",
+            }}
+          >
+            {[currentYear - 1, currentYear, currentYear + 1].map((year) => (
+              <SelectItem key={year} value={year.toString()}>
+                {year}
+              </SelectItem>
+            ))}
+          </Select>
+        </div> */}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => (
-          <Card key={stat.id} className="p-4">
-            <CardBody className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <div>{stat.icon}</div>
-                <span
-                  className={`text-sm font-medium ${
-                    stat.change.startsWith("+")
-                      ? "text-success-600"
-                      : "text-default-500"
-                  }`}
-                >
-                  {stat.change}
-                </span>
-              </div>
-              <div>
-                <p className="text-default-500 text-sm mb-1">{stat.title}</p>
-                <p className="text-3xl font-bold">{stat.value}</p>
-              </div>
-              <Button
-                as={Link}
-                to={stat.link}
-                size="sm"
-                variant="flat"
-                color="success"
-              >
-                Подробнее
-              </Button>
-            </CardBody>
-          </Card>
-        ))}
-      </div>
-
+      {/* Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6">
-          <CardHeader>
-            <h3 className="text-xl font-semibold">Последние обновления</h3>
-          </CardHeader>
-          <CardBody>
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-success-600 rounded-full mt-2" />
-                <div>
-                  <p className="font-medium">Новый ученик добавлен</p>
-                  <p className="text-sm text-default-500">
-                    София Морозова - Филиал №1
-                  </p>
-                  <p className="text-xs text-default-400 mt-1">2 часа назад</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-warning-600 rounded-full mt-2" />
-                <div>
-                  <p className="font-medium">Занятие запланировано</p>
-                  <p className="text-sm text-default-500">Группа А - 14:00</p>
-                  <p className="text-xs text-default-400 mt-1">5 часов назад</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-primary-600 rounded-full mt-2" />
-                <div>
-                  <p className="font-medium">Филиал обновлен</p>
-                  <p className="text-sm text-default-500">
-                    Обновлены контактные данные
-                  </p>
-                  <p className="text-xs text-default-400 mt-1">1 день назад</p>
-                </div>
+        {/* Средний % успеваемости */}
+        <Card>
+          <CardBody className="p-8">
+            <div className="flex items-start justify-between mb-8">
+              <h3 className="text-lg font-medium">Средний % успеваемости</h3>
+            </div>
+            <div className="flex items-end justify-between">
+              <div className="text-7xl font-bold">76%</div>
+              <Button size="sm" className="bg-[#2d2d2d] text-white">
+                Узнать больше
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Предстоящих занятий */}
+        <Card>
+          <CardBody className="p-8">
+            <div className="flex items-start justify-between mb-8">
+              <h3 className="text-lg font-medium">Предстоящих занятий</h3>
+            </div>
+            <div className="flex items-end justify-between">
+              <div className="text-7xl font-bold">18</div>
+              <Button size="sm" className="bg-[#2d2d2d] text-white">
+                Узнать больше
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+
+        {/* Сумма поступлений */}
+        <Card>
+          <CardBody className="p-8">
+            <div className="flex items-start justify-between mb-8">
+              <h3 className="text-lg font-medium">Сумма поступлений</h3>
+            </div>
+            <div className="flex flex-col gap-2 mt-auto">
+              <div className="text-xl text-gray-600">1 083 266 сом</div>
+              <div className="text-4xl font-bold">$12.389</div>
+              <div className="text-sm text-gray-500">
+                Выручка на начавшея момент
               </div>
             </div>
           </CardBody>
         </Card>
 
-        <Card className="p-6">
-          <CardHeader>
-            <h3 className="text-xl font-semibold">Быстрые действия</h3>
-          </CardHeader>
-          <CardBody>
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                as={Link}
-                to={getRouteStudents()}
-                color="success"
-                variant="flat"
-                startContent={<Users size={20} />}
-              >
-                Ученики
-              </Button>
-              <Button
-                as={Link}
-                to={getRouteScheduledLessons()}
-                color="warning"
-                variant="flat"
-                startContent={<CalendarDays size={20} />}
-              >
-                Занятия
-              </Button>
+        {/* Аналитика по типам занятий */}
+        <Card>
+          <CardBody className="p-8">
+            <h3 className="text-lg font-medium mb-6">
+              Аналитика по типам занятий
+            </h3>
 
-              <Button
-                color="default"
-                variant="flat"
-                startContent={<TrendingUp size={20} />}
-              >
-                Отчеты
-              </Button>
+            {/* Donut Chart */}
+            <div className="flex items-center justify-center mb-6 relative">
+              <svg width="220" height="220" viewBox="0 0 220 220">
+                {/* Light green segment - 49% */}
+                <circle
+                  cx="110"
+                  cy="110"
+                  r="80"
+                  fill="none"
+                  stroke="#86efac"
+                  strokeWidth="40"
+                  strokeDasharray="245.04 500"
+                  strokeDashoffset="0"
+                  transform="rotate(-90 110 110)"
+                />
+                {/* Dark gray segment - 21% */}
+                <circle
+                  cx="110"
+                  cy="110"
+                  r="80"
+                  fill="none"
+                  stroke="#6b7280"
+                  strokeWidth="40"
+                  strokeDasharray="105.56 500"
+                  strokeDashoffset="-245.04"
+                  transform="rotate(-90 110 110)"
+                />
+                {/* Black segment - 30% */}
+                <circle
+                  cx="110"
+                  cy="110"
+                  r="80"
+                  fill="none"
+                  stroke="#1f2937"
+                  strokeWidth="40"
+                  strokeDasharray="150.8 500"
+                  strokeDashoffset="-350.6"
+                  transform="rotate(-90 110 110)"
+                />
+                {/* White center */}
+                <circle cx="110" cy="110" r="60" fill="white" />
+              </svg>
+              {/* Labels */}
+              <div className="absolute top-2 right-8 flex items-center gap-2">
+                <span className="text-sm font-medium">21%</span>
+              </div>
+              <div className="absolute top-8 left-2 flex items-center gap-2">
+                <span className="text-sm font-medium">49%</span>
+              </div>
+              <div className="absolute bottom-8 right-4 flex items-center gap-2">
+                <span className="text-sm font-medium">30%</span>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-col gap-2 text-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#86efac]"></div>
+                  <span>Артикуляционные упражнения</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#1f2937]"></div>
+                  <span>Ролевые игры</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#6b7280]"></div>
+                  <span>Звуковые постановки</span>
+                </div>
+              </div>
             </div>
           </CardBody>
         </Card>

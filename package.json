@@ -31,6 +31,7 @@
     "@heroui/modal": "^2.2.23",
     "@heroui/navbar": "2.2.23",
     "@heroui/number-input": "^2.0.16",
+    "@heroui/popover": "^2.3.27",
     "@heroui/progress": "^2.2.21",
     "@heroui/select": "^2.4.28",
     "@heroui/snippet": "2.2.26",

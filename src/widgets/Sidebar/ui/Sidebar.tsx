@@ -1,9 +1,10 @@
 import { links } from "@/widgets/Sidebar/model/constants";
 import { Button } from "@heroui/button";
-import { Settings } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { User } from "@heroui/user";
-import { getRouteSettings } from "@/shared/const/router";
+import { getRouteAuth, getRouteSettings } from "@/shared/const/router";
+import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
@@ -50,14 +51,28 @@ const Sidebar = () => {
           Настройки
         </Button>
 
-        <User
-          avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-          }}
-          classNames={{}}
-          name="Тилекбек Раимкулов"
-          className=" text-white bg-default-400 w-full flex justify-start px-3 py-2 rounded-2xl"
-        />
+        <Popover placement="right">
+          <PopoverTrigger>
+            <User
+              avatarProps={{
+                src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+              }}
+              classNames={{}}
+              name="Тилекбек Раимкулов"
+              className=" text-white bg-default-400 w-full flex justify-start px-3 py-2 rounded-2xl"
+            />
+          </PopoverTrigger>
+          <PopoverContent className="bg-default-400">
+            <Button
+              as={Link}
+              to={getRouteAuth()}
+              startContent={<LogOut strokeWidth={1} />}
+              radius="full"
+            >
+              выйти
+            </Button>
+          </PopoverContent>
+        </Popover>
       </div>
     </div>
   );

@@ -6,8 +6,9 @@ import {
   ModalFooter,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
+import { Input, Textarea } from "@heroui/input";
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 interface AddCommentModalProps {
   isOpen: boolean;
@@ -51,7 +52,7 @@ export default function AddCommentModal({
           <h3 className="text-lg font-semibold">Добавьте примечание</h3>
         </ModalHeader>
         <ModalBody>
-          <Input
+          <Textarea
             placeholder="Место для текста"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -63,7 +64,16 @@ export default function AddCommentModal({
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="success" onPress={handleSave} fullWidth size="lg">
+          <Button
+            type="submit"
+            radius="full"
+            className="bg-[#2d2d2d] hover:bg-gray-900 text-white w-full font-medium h-12 justify-start"
+            endContent={
+              <div className="absolute right-2 w-9 h-9 bg-green-400 rounded-full flex items-center justify-center">
+                <ArrowRight className="w-4 h-4 text-gray-800" />
+              </div>
+            }
+          >
             Сохранить
           </Button>
         </ModalFooter>

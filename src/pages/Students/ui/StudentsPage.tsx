@@ -148,8 +148,8 @@ export default function StudentsPage() {
             <CustomRangeDatePicker />
           </div>
         </div>
-
-        <Card>
+        {/* Students Table */}
+        <Card className="p-4" radius="lg">
           <CardHeader>
             <h3 className="text-3xl font-medium">Ученики</h3>
           </CardHeader>
@@ -157,23 +157,23 @@ export default function StudentsPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                  <tr className="border-y">
+                    <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                       Имя
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                    <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                       Возраст
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                    <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                       Телефон
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                    <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                       Успеваемость
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                    <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                       Дата старта
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-600">
+                    <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                       Статус
                     </th>
                   </tr>
@@ -242,101 +242,6 @@ export default function StudentsPage() {
             </div>
           </CardBody>
         </Card>
-
-        {/* Students Table */}
-        {/* <Card className="p-0">
-          <CardBody className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-default-100">
-                  <tr>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-default-600">
-                      ФИО
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-default-600">
-                      Возраст
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-default-600">
-                      Телефон
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-default-600">
-                      Филиал
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-default-600">
-                      Посещаемость
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-default-600">
-                      Статус
-                    </th>
-                    <th className="text-right py-3 px-4 text-sm font-medium text-default-600">
-                      Действия
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockStudents.map((student) => (
-                    <tr
-                      key={student.id}
-                      className="border-b border-default-200 hover:bg-default-50"
-                    >
-                      <td className="py-3 px-4">
-                        <User
-                          name={student.name}
-                          avatarProps={{
-                            src: `https://i.pravatar.cc/150?u=${student.id}`,
-                            size: "sm",
-                          }}
-                        />
-                      </td>
-                      <td className="py-3 px-4 text-sm">{student.age}</td>
-                      <td className="py-3 px-4 text-sm">{student.phone}</td>
-                      <td className="py-3 px-4">
-                        <span className="text-xs px-2 py-1 bg-success-100 text-success-700 rounded">
-                          {student.branch}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <Progress
-                            value={student.attendance}
-                            color={
-                              student.attendance >= 80
-                                ? "success"
-                                : student.attendance >= 60
-                                  ? "warning"
-                                  : "danger"
-                            }
-                            size="sm"
-                            className="max-w-[100px]"
-                          />
-                          <span className="text-sm font-medium">
-                            {student.attendance}%
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4">
-                        <span className="text-xs px-2 py-1 bg-success-100 text-success-700 rounded">
-                          Активен
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <Button
-                          as={Link}
-                          to={`/students/${student.id}`}
-                          size="sm"
-                          color="success"
-                          variant="flat"
-                        >
-                          Открыть
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardBody>
-        </Card> */}
       </div>
     </DefaultLayout>
   );
