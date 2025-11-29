@@ -1,0 +1,73 @@
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@heroui/modal";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { useState } from "react";
+
+interface AddCommentModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  lessonId: number | null;
+}
+
+export default function AddCommentModal({
+  isOpen,
+  onClose,
+  lessonId,
+}: AddCommentModalProps) {
+  const [comment, setComment] = useState("");
+
+  const handleSave = () => {
+    console.log("Saving comment for lesson:", lessonId, comment);
+    setComment("");
+    onClose();
+  };
+
+  const handleClose = () => {
+    setComment("");
+    onClose();
+  };
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      placement="center"
+      size="md"
+      classNames={{
+        base: "bg-white",
+        header: "border-b border-default-200",
+        body: "py-6",
+        footer: "border-t border-default-200",
+      }}
+    >
+      <ModalContent>
+        <ModalHeader className="flex flex-col gap-1">
+          <h3 className="text-lg font-semibold">Добавьте примечание</h3>
+        </ModalHeader>
+        <ModalBody>
+          <Input
+            placeholder="Место для текста"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            variant="bordered"
+            size="lg"
+            classNames={{
+              input: "min-h-[100px]",
+            }}
+          />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="success" onPress={handleSave} fullWidth size="lg">
+            Сохранить
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
