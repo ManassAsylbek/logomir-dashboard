@@ -6,7 +6,7 @@ import {
   ModalFooter,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import { Input, Textarea } from "@heroui/input";
+import { Textarea } from "@heroui/input";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
@@ -29,15 +29,10 @@ export default function AddCommentModal({
     onClose();
   };
 
-  const handleClose = () => {
-    setComment("");
-    onClose();
-  };
-
   return (
     <Modal
       isOpen={isOpen}
-      onClose={handleClose}
+      onClose={onClose}
       placement="center"
       size="md"
       classNames={{
@@ -68,6 +63,7 @@ export default function AddCommentModal({
             type="submit"
             radius="full"
             className="bg-[#2d2d2d] hover:bg-gray-900 text-white w-full font-medium h-12 justify-start"
+            onPress={handleSave}
             endContent={
               <div className="absolute right-2 w-9 h-9 bg-green-400 rounded-full flex items-center justify-center">
                 <ArrowRight className="w-4 h-4 text-gray-800" />

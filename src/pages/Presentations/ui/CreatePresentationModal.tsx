@@ -21,7 +21,7 @@ export function CreatePresentationModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="2xl">
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             <ModalHeader className="flex flex-col gap-1 text-2xl">
               Добавьте презентацию
