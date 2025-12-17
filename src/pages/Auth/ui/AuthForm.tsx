@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 export interface IAuthForm {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -47,7 +47,7 @@ const AuthForm = () => {
           >
             <Controller
               control={control}
-              name="email"
+              name="username"
               rules={{
                 required: "Обязательное поле",
               }}
@@ -60,8 +60,8 @@ const AuthForm = () => {
                   size="lg"
                   variant="bordered"
                   placeholder="Введите E-mail"
-                  isInvalid={!!errors.email?.message}
-                  errorMessage={errors.email?.message}
+                  isInvalid={!!errors.username?.message}
+                  errorMessage={errors.username?.message}
                   isRequired
                 />
               )}

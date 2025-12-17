@@ -1,39 +1,24 @@
+import React from "react";
 import { Navigate } from "react-router-dom";
-// import { getUserAuthData, getUserRoles, UserRole } from "@/entities/User";
 import { getRouteAuth } from "@/shared/const/router";
+import useUser from "@/shared/services/user/useUser";
+import { PageLoader } from "@/widgets/PageLoader";
 
-interface RequireAuthProps {
-  children: JSX.Element;
-  roles?: string[];
-}
+const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
+  children,
+}) => {
+  // useUser will only run if access token exists (see useUser.enabled)
+  const { data, isLoading, isError } = useUser();
 
-export function RequireAuth({ children }: RequireAuthProps) {
-  // const auth = useSelector(getUserAuthData);
-  // const location = useLocation();
-  // const userRoles = useSelector(getUserRoles);
+  // If the query is loading, show loader while we validate session
+  if (isLoading) return <PageLoader />;
 
-  // const hasRequiredRoles = useMemo(() => {
-  //     if (!roles) {
-  //         return true;
-  //     }
-
-  //     return roles.some((requiredRole) => {
-  //         const hasRole = userRoles?.includes(requiredRole);
-  //         return hasRole;
-  //     });
-  // }, [roles, userRoles]);
-
-  // if (!auth) {
-  //     return (
-  //         <Navigate to={getRouteMain()} state={{ from: location }} replace />
-  //     );
-  // }
-
-  const hasRequiredRoles = false;
-
-  if (!hasRequiredRoles) {
-    return <Navigate to={getRouteAuth()} state={{ from: location }} replace />;
+  // If user fetch failed (401 or no token), redirect to auth
+  if (isError || !data) {
+    return <Navigate to={getRouteAuth()} replace />;
   }
 
   return children;
-}
+};
+
+export default RequireAuth;

@@ -26,3 +26,12 @@ export const KEYS_EMAIL_VERIFICATION_CONFIRM = {
 export const KEYS_GET_COMPANY = {
   getCompany: getKey("KEYS_GET_COMPANY", "QUERY"),
 };
+
+export const KEYS_USER = {
+  user: getKey("USER", "QUERY"),
+};
+
+export const KEYS_GAMES = {
+  games: getKey("GAMES", "QUERY"),
+  game: (id: number) => getKey(`GAME_${id}`, "QUERY"),
+};

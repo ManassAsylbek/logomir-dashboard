@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 import { KEYS_AUTH } from "../keys";
 
-import { auth } from "@/shared/api/auth/auth";
+import { auth, LoginRequest } from "@/shared/api/auth/auth";
 import { formatDjangoError } from "@/shared/helpers/formatDjangoError";
-import { setAccessToken } from "@/shared/api/axios";
+import { setAccessToken, setRefreshToken } from "@/shared/api/axios";
 import { getRouteMain } from "@/shared/const/router";
 
 export const useAuth = () => {
@@ -15,11 +15,11 @@ export const useAuth = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: LoginRequest) => {
       try {
         const response = await auth(data);
 
-        return response.data;
+        return response; // return full axios response for flexibility
       } catch (error: unknown) {
         console.error("auth error:", error);
 
@@ -32,8 +32,13 @@ export const useAuth = () => {
     },
 
     onSuccess: (response) => {
-      setAccessToken(response.data.accessToken);
-      navigate(`${getRouteMain()}`);
+      // Backend returns: { refresh: string, access: string }
+      const { access, refresh } = response.data;
+
+      setAccessToken(access);
+      setRefreshToken(refresh);
+
+      navigate(getRouteMain());
       toast.success("Вы успешно вошли в систему");
       queryClient.invalidateQueries({
         queryKey: [KEYS_AUTH.auth],

@@ -3,13 +3,46 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 import { User } from "@heroui/user";
+import { Button } from "@heroui/button";
+import { useUser } from "@/shared/services/user/useUser";
+import { useUpdateProfile } from "@/shared/services/user/useUpdateProfile";
+import { useState } from "react";
+import { Spinner } from "@heroui/spinner";
 
 const SettingsPage = () => {
+  const { data: user, isLoading } = useUser();
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
+
+  const [formData, setFormData] = useState({
+    full_name: user?.full_name || "",
+    phone_number: user?.phone_number || "",
+    email: user?.username || "",
+    whatsapp: user?.phone_number || "",
+    telegram: "",
+  });
+
+  const handleSubmit = () => {
+    updateProfile({
+      full_name: formData.full_name,
+      phone_number: formData.phone_number,
+    });
+  };
+
   const languages = [
     { key: "ru", label: "Русский" },
     { key: "en", label: "English" },
     { key: "uk", label: "Українська" },
   ];
+
+  if (isLoading) {
+    return (
+      <DefaultLayout>
+        <div className="flex justify-center items-center h-96">
+          <Spinner size="lg" />
+        </div>
+      </DefaultLayout>
+    );
+  }
 
   return (
     <DefaultLayout>
@@ -22,10 +55,12 @@ const SettingsPage = () => {
           <CardBody>
             <div className="flex items-center justify-between">
               <User
-                name="Logomir Admin"
-                description="logomir@mfo.com"
+                name={user?.full_name || user?.username || "User"}
+                description={user?.username || ""}
                 avatarProps={{
-                  src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                  src:
+                    user?.avatar ||
+                    "https://i.pravatar.cc/150?u=a042581f4e29026024d",
                   size: "lg",
                 }}
                 classNames={{
@@ -94,11 +129,15 @@ const SettingsPage = () => {
                 <Input
                   type="email"
                   placeholder="logo@"
-                  defaultValue="logo@"
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   classNames={{
                     input: "text-base",
                     inputWrapper: "bg-white border-1 border-gray-300",
                   }}
+                  isDisabled
                 />
               </div>
               <div>
@@ -108,7 +147,10 @@ const SettingsPage = () => {
                 <Input
                   type="tel"
                   placeholder="+ 996 (771) - 15 - 15 - 17"
-                  defaultValue="+ 996 (771) - 15 - 15 - 17"
+                  value={formData.phone_number}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone_number: e.target.value })
+                  }
                   classNames={{
                     input: "text-base",
                     inputWrapper: "bg-white border-1 border-gray-300",
@@ -122,7 +164,10 @@ const SettingsPage = () => {
                 <Input
                   type="tel"
                   placeholder="+ 996 (771) - 15 - 15 - 17"
-                  defaultValue="+ 996 (771) - 15 - 15 - 17"
+                  value={formData.whatsapp}
+                  onChange={(e) =>
+                    setFormData({ ...formData, whatsapp: e.target.value })
+                  }
                   classNames={{
                     input: "text-base",
                     inputWrapper: "bg-white border-1 border-gray-300",
@@ -136,13 +181,26 @@ const SettingsPage = () => {
                 <Input
                   type="text"
                   placeholder="@logo"
-                  defaultValue="@logo"
+                  value={formData.telegram}
+                  onChange={(e) =>
+                    setFormData({ ...formData, telegram: e.target.value })
+                  }
                   classNames={{
                     input: "text-base",
                     inputWrapper: "bg-white border-1 border-gray-300",
                   }}
                 />
               </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <Button
+                color="primary"
+                size="lg"
+                onPress={handleSubmit}
+                isLoading={isPending}
+              >
+                Сохранить изменения
+              </Button>
             </div>
           </CardBody>
         </Card>
