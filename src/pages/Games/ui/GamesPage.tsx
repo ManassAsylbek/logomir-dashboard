@@ -105,7 +105,9 @@ export default function GamesPage() {
                           <td className="py-4 text-gray-600">
                             {game.questions?.length || 0}
                           </td>
-                          <td className="py-4 text-gray-600">{game.game_type}</td>
+                          <td className="py-4 text-gray-600">
+                            {game.game_type}
+                          </td>
                           <td className="py-4 text-right">
                             <Dropdown>
                               <DropdownTrigger>
@@ -140,7 +142,10 @@ export default function GamesPage() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={5} className="py-8 text-center text-gray-500">
+                        <td
+                          colSpan={5}
+                          className="py-8 text-center text-gray-500"
+                        >
                           Игры не найдены
                         </td>
                       </tr>

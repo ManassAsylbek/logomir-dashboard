@@ -76,11 +76,7 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
     );
   };
 
-  const updateAnswer = (
-    questionId: string,
-    answerId: string,
-    text: string
-  ) => {
+  const updateAnswer = (questionId: string, answerId: string, text: string) => {
     setQuestions(
       questions.map((q) =>
         q.id === questionId
@@ -209,9 +205,7 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
                   className="mb-8 p-6 bg-[#f0fdf4] rounded-lg relative"
                 >
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium">
-                      Вопрос №{index + 1}
-                    </h3>
+                    <h3 className="text-lg font-medium">Вопрос №{index + 1}</h3>
                     {questions.length > 1 && (
                       <Button
                         isIconOnly
@@ -284,7 +278,10 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
                     </p>
                     <div className="grid grid-cols-2 gap-3">
                       {question.answers.map((answer, ansIndex) => (
-                        <div key={answer.id} className="flex items-center gap-2">
+                        <div
+                          key={answer.id}
+                          className="flex items-center gap-2"
+                        >
                           <Checkbox
                             size="sm"
                             isSelected={answer.isCorrect}
