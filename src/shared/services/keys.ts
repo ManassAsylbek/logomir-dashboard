@@ -35,3 +35,8 @@ export const KEYS_GAMES = {
   games: getKey("GAMES", "QUERY"),
   game: (id: number) => getKey(`GAME_${id}`, "QUERY"),
 };
+
+export const KEYS_SPECIALISTS = {
+  specialists: getKey("SPECIALISTS", "QUERY"),
+  specialist: (id: number) => getKey(`SPECIALIST_${id}`, "QUERY"),
+};

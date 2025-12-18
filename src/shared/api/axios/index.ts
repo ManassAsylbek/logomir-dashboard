@@ -12,15 +12,15 @@ console.log(API_BASE_URL);
 const getAccessToken = () => localStorage.getItem("access_token");
 
 export const setAccessToken = (token: string | null) => {
-  if (token) localStorage.setItem("access", token);
-  else localStorage.removeItem("access");
+  if (token) localStorage.setItem("access_token", token);
+  else localStorage.removeItem("access_token");
 };
 
 const getRefreshToken = () => localStorage.getItem("refresh_token");
 
 export const setRefreshToken = (token: string | null) => {
-  if (token) localStorage.setItem("refresh", token);
-  else localStorage.removeItem("refresh");
+  if (token) localStorage.setItem("refresh_token", token);
+  else localStorage.removeItem("refresh_token");
 };
 
 // Plain axios instance (no interceptors) for refresh token calls
