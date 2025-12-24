@@ -5,6 +5,7 @@ import { Textarea } from "@heroui/input";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useCreateSpecialist } from "@/shared/services/specialists/useCreateSpecialist";
+import { useTranslation } from "react-i18next";
 
 interface CreateTherapistModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export default function CreateTherapistModal({
   isOpen,
   onClose,
 }: CreateTherapistModalProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: "",
     last_name: "",
@@ -27,7 +29,7 @@ export default function CreateTherapistModal({
 
   const handleSubmit = () => {
     if (!formData.name || !formData.phone_number) {
-      alert("Заполните обязательные поля: Имя и Телефон");
+      alert(t("therapists.createModal.title"));
       return;
     }
 
@@ -49,18 +51,22 @@ export default function CreateTherapistModal({
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
-          <h2 className="text-2xl font-medium">Создание нового логопеда</h2>
+          <h2 className="text-2xl font-medium">
+            {t("therapists.createModal.title")}
+          </h2>
         </ModalHeader>
         <ModalBody className="px-6 pb-6">
           <div className="flex flex-col gap-4">
             {/* Row 1 */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="text-xl font-medium mb-4 block">Имя</label>
+                <label className="text-xl font-medium mb-4 block">
+                  {t("therapists.createModal.firstName")}
+                </label>
                 <Input
                   size="lg"
                   radius="full"
-                  placeholder="Введите имя"
+                  placeholder={t("therapists.createModal.firstName")}
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -73,12 +79,12 @@ export default function CreateTherapistModal({
               </div>
               <div>
                 <label className="text-xl font-medium mb-4 block">
-                  Фамилия
+                  {t("therapists.createModal.lastName")}
                 </label>
                 <Input
                   size="lg"
                   radius="full"
-                  placeholder="Введите фамилию"
+                  placeholder={t("therapists.createModal.lastName")}
                   value={formData.last_name}
                   onChange={(e) =>
                     setFormData({ ...formData, last_name: e.target.value })
@@ -94,7 +100,7 @@ export default function CreateTherapistModal({
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label className="text-xl font-medium mb-4 block">
-                  Телефон
+                  {t("therapists.phone")}
                 </label>
                 <Input
                   radius="full"
@@ -112,7 +118,7 @@ export default function CreateTherapistModal({
               </div>
               <div>
                 <label className="text-xl font-medium mb-4 block">
-                  Рейтинг
+                  {t("therapists.rating")}
                 </label>
                 <Input
                   size="lg"
@@ -136,10 +142,12 @@ export default function CreateTherapistModal({
 
             {/* Description */}
             <div>
-              <label className="text-xl font-medium mb-4 block">Описание</label>
+              <label className="text-xl font-medium mb-4 block">
+                {t("therapists.description")}
+              </label>
               <Textarea
                 radius="lg"
-                placeholder="Введите описание специалиста"
+                placeholder={t("therapists.description")}
                 value={formData.description}
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
@@ -165,7 +173,7 @@ export default function CreateTherapistModal({
                 onPress={handleSubmit}
                 isLoading={isPending}
               >
-                Создать сотрудника
+                {t("therapists.createModal.submit")}
               </Button>
             </div>
           </div>

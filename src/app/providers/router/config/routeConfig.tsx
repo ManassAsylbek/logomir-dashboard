@@ -3,6 +3,7 @@ import { MainPage } from "@/pages/Main";
 import {
   AppRoutes,
   getRouteAuth,
+  getRouteRegistration,
   getRouteMain,
   getRouteSettings,
   getRouteStudents,
@@ -24,6 +25,7 @@ import { TherapistsPage } from "@/pages/Therapists";
 import { NewsPage } from "@/pages/News";
 import { PresentationsPage } from "@/pages/Presentations";
 import { GamesPage } from "@/pages/Games";
+import { RegistrationPage } from "@/pages/Registration";
 import { DefaultLayout } from "@/shared/layouts";
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
@@ -38,6 +40,10 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.AUTH]: {
     path: getRouteAuth(),
     element: <AuthPage />,
+  },
+  [AppRoutes.REGISTRATION]: {
+    path: getRouteRegistration(),
+    element: <RegistrationPage />,
   },
   [AppRoutes.SETTINGS]: {
     path: getRouteSettings(),

@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "main": "Башкы бет",
+    "company": "Компания",
+    "branches": "Филиалдар",
+    "therapists": "Логопеддер",
+    "students": "Окуучулар",
+    "games": "Оюндар",
+    "settings": "Жөндөөлөр",
+    "logout": "Чыгуу"
+  },
+  "auth": {
+    "login": "Кирүү",
+    "email": "Email",
+    "password": "Сырсөз",
+    "forgotPassword": "Сырсөздү унуттуңузбу?",
+    "dontHaveAccount": "Аккаунтуңуз жокпу?",
+    "register": "Катталуу"
+  },
+  "therapists": {
+    "title": "Логопеддер",
+    "createNew": "Жаңы логопед түзүү",
+    "search": "Логопеддерди издөө...",
+    "fullName": "Аты-жөнү",
+    "phone": "Телефон",
+    "description": "Сүрөттөмө",
+    "rating": "Рейтинг",
+    "actions": "Аракеттер",
+    "edit": "Өзгөртүү",
+    "delete": "Өчүрүү",
+    "deleteConfirm": "Бул адисти өчүрүүнү каалайсызбы?",
+    "notFound": "Адистер табылган жок",
+    "createModal": {
+      "title": "Жаңы логопед түзүү",
+      "firstName": "Аты",
+      "lastName": "Фамилиясы",
+      "submit": "Кызматкер түзүү"
+    }
+  },
+  "games": {
+    "title": "Оюндар",
+    "createNew": "Жаңы оюн түзүү",
+    "search": "Оюндарды издөө...",
+    "gameName": "Аталышы",
+    "theme": "Тема",
+    "questionsCount": "Суроолордун саны",
+    "gameType": "Оюн түрү",
+    "actions": "Аракеттер",
+    "edit": "Өзгөртүү",
+    "delete": "Өчүрүү",
+    "deleteConfirm": "Бул оюнду өчүрүүнү каалайсызбы?",
+    "notFound": "Оюндар табылган жок",
+    "createModal": {
+      "title": "Жаңы оюн түзүү",
+      "gameName": "Оюндун аталышы",
+      "theme": "Оюндун темасы",
+      "question": "Суроо",
+      "uploadImage": "Сүрөт жүктөө",
+      "answer": "Жооп",
+      "correctAnswer": "Туура жооп",
+      "addQuestion": "Суроо кошуу",
+      "removeQuestion": "Суроону өчүрүү",
+      "submit": "Оюн түзүү"
+    }
+  },
+  "settings": {
+    "title": "Жөндөөлөр",
+    "personalInfo": "Жеке маалымат",
+    "fullName": "Аты-жөнү",
+    "phone": "Телефон",
+    "email": "Email",
+    "whatsapp": "Whatsapp",
+    "telegram": "Telegram",
+    "save": "Өзгөртүүлөрдү сактоо"
+  },
+  "company": {
+    "title": "Компания",
+    "info": "Компания жөнүндө маалымат",
+    "branches": "Филиалдар",
+    "companyName": "Компаниянын аталышы",
+    "description": "Сүрөттөмө",
+    "phone": "Телефон",
+    "email": "Email",
+    "address": "Дарек",
+    "edit": "Өзгөртүү",
+    "createBranch": "Филиал түзүү",
+    "branchName": "Филиалдын аталышы",
+    "actions": "Аракеттер",
+    "delete": "Өчүрүү"
+  },
+  "common": {
+    "loading": "Жүктөлүүдө...",
+    "save": "Сактоо",
+    "cancel": "Жокко чыгаруу",
+    "confirm": "Ырастоо",
+    "search": "Издөө...",
+    "create": "Түзүү",
+    "update": "Жаңыртуу",
+    "delete": "Өчүрүү",
+    "edit": "Өзгөртүү",
+    "close": "Жабуу",
+    "yes": "Ооба",
+    "no": "Жок"
+  }
+}

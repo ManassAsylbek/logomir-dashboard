@@ -1,6 +1,7 @@
 export enum AppRoutes {
   MAIN = "main",
   AUTH = "auth",
+  REGISTRATION = "registration",
   SETTINGS = "settings",
   STUDENTS = "students",
   STUDENT_PROFILE = "student-profile",
@@ -15,6 +16,7 @@ export enum AppRoutes {
 
 export const getRouteMain = () => "/";
 export const getRouteAuth = () => "/auth";
+export const getRouteRegistration = () => "/registration";
 export const getRouteSettings = () => "/settings";
 export const getRouteStudents = () => "/students";
 export const getRouteStudentProfile = (id: string = ":id") => `/students/${id}`;
@@ -30,6 +32,7 @@ export const getRouteGames = () => "/games";
 export const AppRouteByPathPattern: Record<string, AppRoutes> = {
   [getRouteMain()]: AppRoutes.MAIN,
   [getRouteAuth()]: AppRoutes.AUTH,
+  [getRouteRegistration()]: AppRoutes.REGISTRATION,
   [getRouteSettings()]: AppRoutes.SETTINGS,
   [getRouteStudents()]: AppRoutes.STUDENTS,
   [getRouteStudentProfile()]: AppRoutes.STUDENT_PROFILE,

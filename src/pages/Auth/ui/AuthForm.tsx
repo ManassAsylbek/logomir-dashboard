@@ -118,6 +118,18 @@ const AuthForm = () => {
               Войти
             </Button>
           </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Нет аккаунта?{" "}
+              <a
+                href="/registration"
+                className="text-green-600 hover:underline font-medium"
+              >
+                Зарегистрироваться
+              </a>
+            </p>
+          </div>
         </CardBody>
 
         <div className="flex items-center justify-start gap-3 mt-6">

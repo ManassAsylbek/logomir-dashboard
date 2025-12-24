@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "main": "Главная",
+    "company": "Компания",
+    "branches": "Филиалы",
+    "therapists": "Логопеды",
+    "students": "Ученики",
+    "games": "Игры",
+    "settings": "Настройки",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "login": "Войти",
+    "email": "Email",
+    "password": "Пароль",
+    "forgotPassword": "Забыли пароль?",
+    "dontHaveAccount": "Нет аккаунта?",
+    "register": "Зарегистрироваться"
+  },
+  "therapists": {
+    "title": "Логопеды",
+    "createNew": "Создать нового логопеда",
+    "search": "Поиск логопедов...",
+    "fullName": "ФИО",
+    "phone": "Телефон",
+    "description": "Описание",
+    "rating": "Рейтинг",
+    "actions": "Действия",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "deleteConfirm": "Вы уверены, что хотите удалить этого специалиста?",
+    "notFound": "Специалисты не найдены",
+    "createModal": {
+      "title": "Создание нового логопеда",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "submit": "Создать сотрудника"
+    }
+  },
+  "games": {
+    "title": "Игры",
+    "createNew": "Создать новую игру",
+    "search": "Поиск игр...",
+    "gameName": "Название",
+    "theme": "Тема",
+    "questionsCount": "Количество вопросов",
+    "gameType": "Тип игры",
+    "actions": "Действия",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "deleteConfirm": "Вы уверены, что хотите удалить эту игру?",
+    "notFound": "Игры не найдены",
+    "createModal": {
+      "title": "Создание новой игры",
+      "gameName": "Название игры",
+      "theme": "Тема игры",
+      "question": "Вопрос",
+      "uploadImage": "Загрузить изображение",
+      "answer": "Ответ",
+      "correctAnswer": "Правильный ответ",
+      "addQuestion": "Добавить вопрос",
+      "removeQuestion": "Удалить вопрос",
+      "submit": "Создать игру"
+    }
+  },
+  "settings": {
+    "title": "Настройки",
+    "personalInfo": "Личная информация",
+    "fullName": "ФИО",
+    "phone": "Телефон",
+    "email": "Email",
+    "whatsapp": "Whatsapp",
+    "telegram": "Telegram",
+    "save": "Сохранить изменения"
+  },
+  "company": {
+    "title": "Компания",
+    "info": "Информация о компании",
+    "branches": "Филиалы",
+    "companyName": "Название компании",
+    "description": "Описание",
+    "phone": "Телефон",
+    "email": "Email",
+    "address": "Адрес",
+    "edit": "Редактировать",
+    "createBranch": "Создать филиал",
+    "branchName": "Название филиала",
+    "actions": "Действия",
+    "delete": "Удалить"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "search": "Поиск...",
+    "create": "Создать",
+    "update": "Обновить",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "close": "Закрыть",
+    "yes": "Да",
+    "no": "Нет"
+  }
+}

@@ -14,8 +14,10 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
+import { useTranslation } from "react-i18next";
 
 export default function TherapistsPage() {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [page] = useState(1);
@@ -24,7 +26,7 @@ export default function TherapistsPage() {
   const { mutate: deleteSpecialist } = useDeleteSpecialist();
 
   const handleDelete = (id: number) => {
-    if (confirm("Вы уверены, что хотите удалить этого специалиста?")) {
+    if (confirm(t("therapists.deleteConfirm"))) {
       deleteSpecialist(id);
     }
   };
@@ -42,7 +44,7 @@ export default function TherapistsPage() {
           {/* Filters */}
           <div className="flex items-center justify-between gap-4">
             <Input
-              placeholder="Поиск"
+              placeholder={t("therapists.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               startContent={<Search className="text-default-400" size={20} />}
@@ -63,14 +65,14 @@ export default function TherapistsPage() {
               }
               onPress={() => setIsModalOpen(true)}
             >
-              Создать сотрудника
+              {t("therapists.createNew")}
             </Button>
           </div>
 
           {/* Therapists Table */}
           <Card className="p-4" radius="lg">
             <CardHeader>
-              <h3 className="text-3xl font-medium">Логопеды</h3>
+              <h3 className="text-3xl font-medium">{t("therapists.title")}</h3>
             </CardHeader>
             <CardBody>
               {isLoading ? (
@@ -83,16 +85,16 @@ export default function TherapistsPage() {
                     <thead>
                       <tr className="border-y">
                         <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                          ФИО
+                          {t("therapists.fullName")}
                         </th>
                         <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                          Телефон
+                          {t("therapists.phone")}
                         </th>
                         <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                          Описание
+                          {t("therapists.description")}
                         </th>
                         <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                          Рейтинг
+                          {t("therapists.rating")}
                         </th>
                         <th className="text-left py-2 px-4 text-sm font-medium text-gray-600"></th>
                       </tr>
@@ -149,12 +151,14 @@ export default function TherapistsPage() {
                                     </svg>
                                   </button>
                                 </DropdownTrigger>
-                                <DropdownMenu aria-label="Действия">
+                                <DropdownMenu
+                                  aria-label={t("therapists.actions")}
+                                >
                                   <DropdownItem
                                     key="edit"
                                     startContent={<Edit size={16} />}
                                   >
-                                    Редактировать
+                                    {t("therapists.edit")}
                                   </DropdownItem>
                                   <DropdownItem
                                     key="delete"
@@ -163,7 +167,7 @@ export default function TherapistsPage() {
                                     startContent={<Trash2 size={16} />}
                                     onPress={() => handleDelete(specialist.id)}
                                   >
-                                    Удалить
+                                    {t("therapists.delete")}
                                   </DropdownItem>
                                 </DropdownMenu>
                               </Dropdown>
@@ -176,7 +180,7 @@ export default function TherapistsPage() {
                             colSpan={5}
                             className="py-8 text-center text-gray-500"
                           >
-                            Специалисты не найдены
+                            {t("therapists.notFound")}
                           </td>
                         </tr>
                       )}

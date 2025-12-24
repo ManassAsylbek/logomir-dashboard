@@ -7,6 +7,7 @@ import { HeroProvider } from "./app/providers/HeroUiProvider/HeroProvider.tsx";
 import "@/app/styles/globals.css";
 import { TanStackProvider } from "./app/providers/TanstackProvider/index.ts";
 import { ToastProvider } from "./app/providers/ToastProvider/index.ts";
+import "./shared/config/i18n";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

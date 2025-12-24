@@ -3,15 +3,24 @@ import { Navbar as HeroUINavbar, NavbarContent } from "@heroui/navbar";
 import { Bell, Home, MoonIcon, SunIcon } from "lucide-react";
 import { Switch } from "@heroui/switch";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
+import { useTranslation } from "react-i18next";
 
 import { Breadcrumbs, BreadcrumbItem } from "@heroui/breadcrumbs";
 
 export const languages = [
   { label: "Русский", key: "ru" },
-  { label: "Кыргызский", key: "kg" },
+  { label: "Кыргызча", key: "kg" },
 ];
 
 export const Navbar = () => {
+  const { i18n } = useTranslation();
+
+  const handleLanguageChange = (key: string | number | null) => {
+    if (key) {
+      i18n.changeLanguage(key.toString());
+    }
+  };
+
   return (
     <>
       <HeroUINavbar
@@ -35,7 +44,8 @@ export const Navbar = () => {
             className="w-36"
             size="sm"
             variant="bordered"
-            defaultSelectedKey="ru"
+            defaultSelectedKey={i18n.language}
+            onSelectionChange={handleLanguageChange}
           >
             {languages.map((language) => (
               <AutocompleteItem key={language.key}>
