@@ -5,7 +5,7 @@ import { getGame } from "@/shared/api/games/getGame";
 
 export const useGame = (id: number) => {
   return useQuery({
-    queryKey: [KEYS_GAMES.game(id)],
+    queryKey: [KEYS_GAMES.game(String(id))],
     queryFn: async () => {
       const response = await getGame(id);
 
