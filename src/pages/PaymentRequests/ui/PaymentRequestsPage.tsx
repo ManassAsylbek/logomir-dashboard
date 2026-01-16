@@ -3,82 +3,70 @@ import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Search } from "lucide-react";
-
-interface PaymentRequest {
-  id: number;
-  name: string;
-  date: string;
-  sum: number;
-  status: "paid" | "unpaid";
-}
-
-const mockPaymentRequests: PaymentRequest[] = [
-  {
-    id: 1,
-    name: "Хасан Иманалиев",
-    date: "24.03.2024",
-    sum: 1999,
-    status: "paid",
-  },
-  {
-    id: 2,
-    name: "Анжи Султанова",
-    date: "15.04.2024",
-    sum: 1998,
-    status: "unpaid",
-  },
-  {
-    id: 3,
-    name: "Дмитрий Ковалев",
-    date: "30.05.2024",
-    sum: 2000,
-    status: "paid",
-  },
-  {
-    id: 4,
-    name: "Елена Смирнова",
-    date: "07.06.2024",
-    sum: 1997,
-    status: "paid",
-  },
-  {
-    id: 5,
-    name: "Игорь Лебедев",
-    date: "22.07.2024",
-    sum: 2001,
-    status: "paid",
-  },
-  {
-    id: 6,
-    name: "Светлана Романова",
-    date: "12.08.2024",
-    sum: 1996,
-    status: "paid",
-  },
-  {
-    id: 7,
-    name: "Максим Петров",
-    date: "28.09.2024",
-    sum: 1995,
-    status: "paid",
-  },
-  {
-    id: 8,
-    name: "Ирина Александрова",
-    date: "16.11.2024",
-    sum: 1992,
-    status: "paid",
-  },
-  {
-    id: 9,
-    name: "Андрей Смирнов",
-    date: "03.12.2024",
-    sum: 1990,
-    status: "paid",
-  },
-];
+import { useState } from "react";
+import { usePayments } from "@/shared/services/payments/usePayments";
+import { useUpdatePayment } from "@/shared/services/payments/useUpdatePayment";
+import { Spinner } from "@heroui/spinner";
+import { ConfirmModal } from "@/shared/ui/ConfirmModal";
 
 export default function PaymentRequestsPage() {
+  const [page] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<{
+    id: number;
+    status: "success" | "failed";
+  } | null>(null);
+
+  const { data: paymentsData, isLoading } = usePayments(page);
+  const { mutate: updatePayment, isPending } = useUpdatePayment();
+
+  const handleStatusChange = (
+    id: number,
+    status: "success" | "failed" | "pending" | "pay_pending"
+  ) => {
+    setPendingAction({ id, status: status as "success" | "failed" });
+    setIsConfirmOpen(true);
+  };
+
+  const handleConfirmStatusChange = () => {
+    if (pendingAction) {
+      updatePayment(
+        {
+          id: pendingAction.id,
+          data: { status: pendingAction.status },
+        },
+        {
+          onSuccess: () => {
+            setIsConfirmOpen(false);
+            setPendingAction(null);
+          },
+        }
+      );
+    }
+  };
+
+  const filteredPayments = paymentsData?.results || [];
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ru-RU");
+  };
+
+  const getStatusDisplay = (status?: string) => {
+    switch (status) {
+      case "success":
+        return "Оплачено";
+      case "pending":
+      case "pay_pending":
+        return "Ожидает";
+      case "failed":
+        return "Не оплачено";
+      default:
+        return "Неизвестно";
+    }
+  };
+
   return (
     <DefaultLayout>
       <div className="flex flex-col gap-6">
@@ -92,6 +80,8 @@ export default function PaymentRequestsPage() {
             variant="bordered"
             size="lg"
             radius="full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
@@ -100,68 +90,141 @@ export default function PaymentRequestsPage() {
             <h3 className="text-3xl font-medium">Заявки на оплату</h3>
           </CardHeader>
           <CardBody>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-y ">
-                    <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                      Имя
-                    </th>
-                    <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                      Дата оплаты
-                    </th>
-                    <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                      Сумма (сом)
-                    </th>
-                    <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                      Выбрать статус оплаты
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockPaymentRequests.map((request) => (
-                    <tr
-                      key={request.id}
-                      className="border-b border-default-200 hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="py-4 px-6 text-sm">{request.name}</td>
-                      <td className="py-4 px-6 text-sm">{request.date}</td>
-                      <td className="py-4 px-6 text-sm">{request.sum}</td>
-                      <td className="py-4 px-6">
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            className={`min-w-[90px] ${
-                              request.status === "paid"
-                                ? "bg-[#dcfce7] text-[#16a34a] border-[#16a34a]"
-                                : "bg-white text-gray-700 border-gray-300"
-                            }`}
-                            variant="bordered"
-                          >
-                            Оплачено
-                          </Button>
-                          <Button
-                            size="sm"
-                            className={`min-w-[90px] ${
-                              request.status === "unpaid"
-                                ? "bg-[#fce7f3] text-[#db2777] border-[#db2777]"
-                                : "bg-white text-gray-700 border-gray-300"
-                            }`}
-                            variant="bordered"
-                          >
-                            Не оплачено
-                          </Button>
-                        </div>
-                      </td>
+            {isLoading ? (
+              <div className="flex justify-center items-center py-20">
+                <Spinner size="lg" />
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-y ">
+                      <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
+                        ID Пользователя
+                      </th>
+                      <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
+                        Дата создания
+                      </th>
+                      <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
+                        Сумма (сом)
+                      </th>
+                      <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
+                        Тип урока
+                      </th>
+                      <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
+                        Текущий статус
+                      </th>
+                      <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
+                        Выбрать статус оплаты
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {filteredPayments.length > 0 ? (
+                      filteredPayments.map((payment) => (
+                        <tr
+                          key={payment.id}
+                          className="border-b border-default-200 hover:bg-gray-50 transition-colors"
+                        >
+                          <td className="py-4 px-6 text-sm">
+                            {payment.user || "—"}
+                          </td>
+                          <td className="py-4 px-6 text-sm">
+                            {payment.created_at
+                              ? formatDate(payment.created_at)
+                              : "—"}
+                          </td>
+                          <td className="py-4 px-6 text-sm">
+                            {payment.amount || "—"}
+                          </td>
+                          <td className="py-4 px-6 text-sm">
+                            {payment.lesson_type === "online"
+                              ? "Онлайн"
+                              : payment.lesson_type === "offline"
+                                ? "Оффлайн"
+                                : "—"}
+                          </td>
+                          <td className="py-4 px-6 text-sm">
+                            <span
+                              className={`px-2 py-1 rounded text-xs font-medium ${
+                                payment.status === "success"
+                                  ? "bg-green-100 text-green-700"
+                                  : payment.status === "failed"
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-yellow-100 text-yellow-700"
+                              }`}
+                            >
+                              {getStatusDisplay(payment.status)}
+                            </span>
+                          </td>
+                          <td className="py-4 px-6">
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                className="min-w-[90px] bg-[#dcfce7] text-[#16a34a] border-[#16a34a]"
+                                variant="bordered"
+                                onPress={() =>
+                                  handleStatusChange(payment.id, "success")
+                                }
+                                isDisabled={
+                                  isPending ||
+                                  (payment.status !== "pay_pending" &&
+                                    payment.status !== "pending")
+                                }
+                              >
+                                Оплачено
+                              </Button>
+                              <Button
+                                size="sm"
+                                className="min-w-[90px] bg-[#fce7f3] text-[#db2777] border-[#db2777]"
+                                variant="bordered"
+                                onPress={() =>
+                                  handleStatusChange(payment.id, "failed")
+                                }
+                                isDisabled={
+                                  isPending ||
+                                  (payment.status !== "pay_pending" &&
+                                    payment.status !== "pending")
+                                }
+                              >
+                                Не оплачено
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="py-8 text-center text-gray-500"
+                        >
+                          Заявки на оплату не найдены
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </CardBody>
         </Card>
-        {/* Table */}
       </div>
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => {
+          setIsConfirmOpen(false);
+          setPendingAction(null);
+        }}
+        onConfirm={handleConfirmStatusChange}
+        title="Изменение статуса оплаты"
+        message={`Вы уверены, что хотите изменить статус платежа на "${pendingAction?.status === "success" ? "Оплачено" : "Не оплачено"}"?`}
+        confirmText="Подтвердить"
+        cancelText="Отмена"
+        isLoading={isPending}
+        type={"success"}
+      />
     </DefaultLayout>
   );
 }

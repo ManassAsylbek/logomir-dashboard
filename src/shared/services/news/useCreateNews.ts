@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { KEYS_NEWS } from "../keys";
+
 import { createNews } from "@/shared/api/news/createNews";
 import { CreateNewsRequest } from "@/shared/api/news/types";
 

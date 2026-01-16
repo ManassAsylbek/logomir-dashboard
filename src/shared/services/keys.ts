@@ -45,3 +45,8 @@ export const KEYS_NEWS = {
   news: getKey("NEWS", "QUERY"),
   newsItem: (id: string) => getKey(`NEWS_${id}`, "QUERY"),
 };
+
+export const KEYS_PAYMENTS = {
+  payments: getKey("PAYMENTS", "QUERY"),
+  payment: (id: string) => getKey(`PAYMENT_${id}`, "QUERY"),
+};

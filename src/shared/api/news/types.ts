@@ -1,21 +1,24 @@
 export interface News {
   id: number;
-  title: string;
-  description: string;
+  name: string;
+  decription: string;
+  link?: string;
   image?: string;
   created_at: string;
   updated_at: string;
 }
 
 export interface CreateNewsRequest {
-  title: string;
-  description: string;
+  name: string;
+  decription: string;
+  link?: string;
   image?: File | null;
 }
 
 export interface UpdateNewsRequest {
-  title?: string;
-  description?: string;
+  name?: string;
+  decription?: string;
+  link?: string;
   image?: File | null;
 }
 

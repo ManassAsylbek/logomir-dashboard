@@ -9,8 +9,11 @@ export const createNews = (
 ): Promise<AxiosResponse<News>> => {
   const formData = new FormData();
 
-  formData.append("title", data.title);
-  formData.append("description", data.description);
+  formData.append("name", data.name);
+  formData.append("decription", data.decription);
+  if (data.link) {
+    formData.append("link", data.link);
+  }
   if (data.image) {
     formData.append("image", data.image);
   }

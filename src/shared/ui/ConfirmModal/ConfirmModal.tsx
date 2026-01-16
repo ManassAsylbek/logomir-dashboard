@@ -17,7 +17,7 @@ interface ConfirmModalProps {
   confirmText?: string;
   cancelText?: string;
   isLoading?: boolean;
-  type?: "danger" | "warning" | "info";
+  type?: "danger" | "warning" | "info" | "success";
 }
 
 export function ConfirmModal({
@@ -33,7 +33,6 @@ export function ConfirmModal({
 }: ConfirmModalProps) {
   const handleConfirm = () => {
     onConfirm();
-    onClose();
   };
 
   const getIconColor = () => {
@@ -44,6 +43,8 @@ export function ConfirmModal({
         return "text-warning";
       case "info":
         return "text-primary";
+      case "success":
+        return "text-success";
       default:
         return "text-danger";
     }
@@ -57,6 +58,8 @@ export function ConfirmModal({
         return "bg-warning";
       case "info":
         return "bg-primary";
+      case "success":
+        return "bg-success";
       default:
         return "bg-danger";
     }

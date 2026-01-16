@@ -48,7 +48,7 @@ export default function NewsPage() {
   };
 
   const filteredNews = newsData?.results?.filter((news) =>
-    news.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    news.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -108,7 +108,7 @@ export default function NewsPage() {
                                 news.image ||
                                 "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop"
                               }
-                              alt={news.title}
+                              alt={news.name}
                               className="w-full h-48 object-cover rounded-t-lg"
                             />
                             <div className="absolute top-2 right-2">
@@ -146,10 +146,10 @@ export default function NewsPage() {
                           </div>
                           <div className="p-4 bg-white">
                             <h4 className="text-base font-medium mb-2 line-clamp-2 min-h-[3rem]">
-                              {news.title}
+                              {news.name}
                             </h4>
                             <p className="text-sm text-gray-600 line-clamp-2 min-h-[2.5rem]">
-                              {news.description}
+                              {news.decription}
                             </p>
                           </div>
                         </CardBody>

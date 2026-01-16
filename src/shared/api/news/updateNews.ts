@@ -10,8 +10,9 @@ export const updateNews = (
 ): Promise<AxiosResponse<News>> => {
   const formData = new FormData();
 
-  if (data.title) formData.append("title", data.title);
-  if (data.description) formData.append("description", data.description);
+  if (data.name) formData.append("name", data.name);
+  if (data.decription) formData.append("decription", data.decription);
+  if (data.link) formData.append("link", data.link);
   if (data.image) formData.append("image", data.image);
 
   return requester.patch<News>(`/mobile/news/${id}/`, formData, {

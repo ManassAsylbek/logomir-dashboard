@@ -13,8 +13,9 @@ interface CreateNewsModalProps {
 }
 
 interface FormData {
-  title: string;
-  description: string;
+  name: string;
+  decription: string;
+  link: string;
   image: File | null;
 }
 
@@ -29,8 +30,9 @@ export default function CreateNewsModal({
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      title: "",
-      description: "",
+      name: "",
+      decription: "",
+      link: "",
       image: null,
     },
   });
@@ -41,8 +43,9 @@ export default function CreateNewsModal({
   const onSubmit = (data: FormData) => {
     createNews(
       {
-        title: data.title,
-        description: data.description,
+        name: data.name,
+        decription: data.decription,
+        link: data.link,
         image: data.image,
       },
       {
@@ -142,7 +145,7 @@ export default function CreateNewsModal({
 
             {/* Title */}
             <Controller
-              name="title"
+              name="name"
               control={control}
               rules={{ required: "Заголовок обязателен" }}
               render={({ field }) => (
@@ -156,8 +159,8 @@ export default function CreateNewsModal({
                     classNames={{
                       inputWrapper: "bg-white border-1 border-gray-300",
                     }}
-                    isInvalid={!!errors.title}
-                    errorMessage={errors.title?.message}
+                    isInvalid={!!errors.name}
+                    errorMessage={errors.name?.message}
                   />
                 </div>
               )}
@@ -165,7 +168,7 @@ export default function CreateNewsModal({
 
             {/* Description */}
             <Controller
-              name="description"
+              name="decription"
               control={control}
               rules={{ required: "Описание обязательно" }}
               render={({ field }) => (
@@ -180,8 +183,30 @@ export default function CreateNewsModal({
                     classNames={{
                       inputWrapper: "bg-white border-1 border-gray-300",
                     }}
-                    isInvalid={!!errors.description}
-                    errorMessage={errors.description?.message}
+                    isInvalid={!!errors.decription}
+                    errorMessage={errors.decription?.message}
+                  />
+                </div>
+              )}
+            />
+
+            {/* Link */}
+            <Controller
+              name="link"
+              control={control}
+              render={({ field }) => (
+                <div>
+                  <label className="text-sm font-medium mb-2 block">
+                    Ссылка
+                  </label>
+                  <Input
+                    {...field}
+                    placeholder="https://example.com"
+                    classNames={{
+                      inputWrapper: "bg-white border-1 border-gray-300",
+                    }}
+                    isInvalid={!!errors.link}
+                    errorMessage={errors.link?.message}
                   />
                 </div>
               )}
