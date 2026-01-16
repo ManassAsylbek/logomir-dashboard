@@ -40,3 +40,8 @@ export const KEYS_SPECIALISTS = {
   specialists: getKey("SPECIALISTS", "QUERY"),
   specialist: (id: number) => getKey(`SPECIALIST_${id}`, "QUERY"),
 };
+
+export const KEYS_NEWS = {
+  news: getKey("NEWS", "QUERY"),
+  newsItem: (id: string) => getKey(`NEWS_${id}`, "QUERY"),
+};

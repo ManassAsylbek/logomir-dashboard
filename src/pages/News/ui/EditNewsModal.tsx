@@ -4,12 +4,14 @@ import { Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { ArrowRight, Upload, X } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import { useCreateNews } from "@/shared/services/news/useCreateNews";
-import { useState } from "react";
+import { useUpdateNews } from "@/shared/services/news/useUpdateNews";
+import { useState, useEffect } from "react";
+import { News } from "@/shared/api/news/types";
 
-interface CreateNewsModalProps {
+interface EditNewsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  news: News | null;
 }
 
 interface FormData {
@@ -18,14 +20,16 @@ interface FormData {
   image: File | null;
 }
 
-export default function CreateNewsModal({
+export default function EditNewsModal({
   isOpen,
   onClose,
-}: CreateNewsModalProps) {
+  news,
+}: EditNewsModalProps) {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -35,15 +39,30 @@ export default function CreateNewsModal({
     },
   });
 
-  const { mutate: createNews, isPending } = useCreateNews();
+  const { mutate: updateNews, isPending } = useUpdateNews();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (news) {
+      setValue("title", news.title);
+      setValue("description", news.description);
+      if (news.image) {
+        setImagePreview(news.image);
+      }
+    }
+  }, [news, setValue]);
+
   const onSubmit = (data: FormData) => {
-    createNews(
+    if (!news) return;
+
+    updateNews(
       {
-        title: data.title,
-        description: data.description,
-        image: data.image,
+        id: news.id,
+        data: {
+          title: data.title,
+          description: data.description,
+          image: data.image,
+        },
       },
       {
         onSuccess: () => {
@@ -81,6 +100,10 @@ export default function CreateNewsModal({
     setImagePreview(null);
   };
 
+  if (!news) {
+    return null;
+  }
+
   return (
     <Modal
       isOpen={isOpen}
@@ -90,7 +113,7 @@ export default function CreateNewsModal({
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
-          <h2 className="text-2xl font-medium">Добавьте новости</h2>
+          <h2 className="text-2xl font-medium">Редактировать новость</h2>
         </ModalHeader>
         <ModalBody className="px-6 pb-6">
           <div className="flex flex-col gap-4">
@@ -201,7 +224,7 @@ export default function CreateNewsModal({
                 onPress={() => handleSubmit(onSubmit)()}
                 isLoading={isPending}
               >
-                Добавить новость
+                Сохранить изменения
               </Button>
             </div>
           </div>
