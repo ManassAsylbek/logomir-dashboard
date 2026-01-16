@@ -40,7 +40,6 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
     handleSubmit,
     reset,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<GameFormData>({
     defaultValues: {
@@ -97,12 +96,12 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
         !q.answers.some((a) => a.isCorrect)
     );
 
-    // if (hasInvalidQuestions) {
-    //   alert(
-    //     "Заполните все вопросы, все варианты ответов и выберите правильный ответ для каждого вопроса"
-    //   );
-    //   return;
-    // }
+    if (hasInvalidQuestions) {
+      alert(
+        "Заполните все вопросы, все варианты ответов и выберите правильный ответ для каждого вопроса"
+      );
+      return;
+    }
 
     // Преобразуем данные в формат API
     const questionsData = data.questions.map((q) => {

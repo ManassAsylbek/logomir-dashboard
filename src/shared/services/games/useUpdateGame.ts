@@ -12,7 +12,7 @@ export const useUpdateGame = () => {
       id,
       data,
     }: {
-      id: number;
+      id: string;
       data: UpdateGameRequest;
     }) => {
       const response = await updateGame(id, data);

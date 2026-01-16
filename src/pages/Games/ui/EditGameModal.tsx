@@ -150,7 +150,7 @@ export function EditGameModal({ isOpen, onClose, game }: EditGameModalProps) {
 
     updateGame(
       {
-        id: Number(game.id),
+        id: game.id,
         data: {
           name: data.name,
           game_type: "Quiz",
