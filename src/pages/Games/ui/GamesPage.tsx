@@ -4,6 +4,8 @@ import { Input } from "@heroui/input";
 import { ArrowRight, Search, Trash2, Edit } from "lucide-react";
 import { useState } from "react";
 import { CreateGameModal } from "./CreateGameModal";
+import { EditGameModal } from "./EditGameModal";
+import { ConfirmModal } from "@/shared/ui/ConfirmModal";
 import { useGames } from "@/shared/services/games/useGames";
 import { useDeleteGame } from "@/shared/services/games/useDeleteGame";
 import { Spinner } from "@heroui/spinner";
@@ -13,19 +15,35 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
+import { Game } from "@/shared/api/games/types";
 
 export default function GamesPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [gameToDelete, setGameToDelete] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [page] = useState(1);
 
   const { data: gamesData, isLoading } = useGames(page);
-  const { mutate: deleteGame } = useDeleteGame();
+  const { mutate: deleteGame, isPending: isDeleting } = useDeleteGame();
 
-  const handleDelete = (id: number) => {
-    if (confirm("Вы уверены, что хотите удалить эту игру?")) {
-      deleteGame(id);
+  const handleDeleteClick = (id: string) => {
+    setGameToDelete(id);
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (gameToDelete) {
+      deleteGame(gameToDelete);
+      setGameToDelete(null);
     }
+  };
+
+  const handleEdit = (game: Game) => {
+    setSelectedGame(game);
+    setIsEditModalOpen(true);
   };
 
   const filteredGames = gamesData?.results?.filter((game) =>
@@ -123,6 +141,7 @@ export default function GamesPage() {
                                 <DropdownItem
                                   key="edit"
                                   startContent={<Edit size={16} />}
+                                  onPress={() => handleEdit(game)}
                                 >
                                   Редактировать
                                 </DropdownItem>
@@ -131,7 +150,7 @@ export default function GamesPage() {
                                   className="text-danger"
                                   color="danger"
                                   startContent={<Trash2 size={16} />}
-                                  onPress={() => handleDelete(game.id)}
+                                  onPress={() => handleDeleteClick(game.id)}
                                 >
                                   Удалить
                                 </DropdownItem>
@@ -157,10 +176,33 @@ export default function GamesPage() {
           </CardBody>
         </Card>
       </div>
-
       <CreateGameModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
+      />
+
+      <EditGameModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedGame(null);
+        }}
+        game={selectedGame}
+      />
+
+      <ConfirmModal
+        isOpen={isConfirmDeleteOpen}
+        onClose={() => {
+          setIsConfirmDeleteOpen(false);
+          setGameToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title="Удаление игры"
+        message="Вы уверены, что хотите удалить эту игру? Это действие нельзя отменить."
+        confirmText="Удалить"
+        cancelText="Отмена"
+        isLoading={isDeleting}
+        type="danger"
       />
     </>
   );

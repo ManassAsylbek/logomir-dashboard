@@ -7,7 +7,7 @@ export const useDeleteGame = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (id: string) => {
       await deleteGame(id);
       return id;
     },

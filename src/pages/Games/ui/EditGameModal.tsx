@@ -9,8 +9,9 @@ import { Button } from "@heroui/button";
 import { Input, Textarea } from "@heroui/input";
 import { Upload, Plus, X } from "lucide-react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { useCreateGame } from "@/shared/services/games/useCreateGame";
+import { useUpdateGame } from "@/shared/services/games/useUpdateGame";
 import { useEffect } from "react";
+import { Game } from "@/shared/api/games/types";
 
 interface Answer {
   text: string;
@@ -29,18 +30,18 @@ interface GameFormData {
   questions: Question[];
 }
 
-interface CreateGameModalProps {
+interface EditGameModalProps {
   isOpen: boolean;
   onClose: () => void;
+  game: Game | null;
 }
 
-export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
+export function EditGameModal({ isOpen, onClose, game }: EditGameModalProps) {
   const {
     control,
     handleSubmit,
     reset,
     setValue,
-    getValues,
     formState: { errors },
   } = useForm<GameFormData>({
     defaultValues: {
@@ -66,14 +67,25 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
     name: "questions",
   });
 
-  const { mutate: createGame, isPending } = useCreateGame();
+  const { mutate: updateGame, isPending } = useUpdateGame();
 
-  // Reset form when modal closes
+  // Load game data when modal opens
   useEffect(() => {
-    if (!isOpen) {
-      reset();
+    if (isOpen && game) {
+      reset({
+        name: game.name,
+        theme: game.theme,
+        questions: game.questions.map((q) => ({
+          question: q.name,
+          image: null,
+          answers: q.answers.map((a) => ({
+            text: a.name,
+            isCorrect: a.is_correct,
+          })),
+        })),
+      });
     }
-  }, [isOpen, reset]);
+  }, [isOpen, game, reset]);
 
   const addQuestion = () => {
     append({
@@ -89,6 +101,8 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
   };
 
   const onSubmit = (data: GameFormData) => {
+    if (!game) return;
+
     // Валидация вопросов
     const hasInvalidQuestions = data.questions.some(
       (q) =>
@@ -97,12 +111,12 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
         !q.answers.some((a) => a.isCorrect)
     );
 
-    // if (hasInvalidQuestions) {
-    //   alert(
-    //     "Заполните все вопросы, все варианты ответов и выберите правильный ответ для каждого вопроса"
-    //   );
-    //   return;
-    // }
+    if (hasInvalidQuestions) {
+      alert(
+        "Заполните все вопросы, все варианты ответов и выберите правильный ответ для каждого вопроса"
+      );
+      return;
+    }
 
     // Преобразуем данные в формат API
     const questionsData = data.questions.map((q) => {
@@ -134,17 +148,19 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
       };
     });
 
-    createGame(
+    updateGame(
       {
-        name: data.name,
-        game_type: "Quiz",
-        theme: data.theme,
-        questions: questionsData,
-        allowed_users: [],
+        id: Number(game.id),
+        data: {
+          name: data.name,
+          game_type: "Quiz",
+          theme: data.theme,
+          questions: questionsData,
+          allowed_users: game.allowed_users,
+        },
       },
       {
         onSuccess: () => {
-          reset();
           onClose();
         },
       }
@@ -165,23 +181,7 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
         {(onClose) => (
           <>
             <ModalHeader className="flex items-center justify-between px-8 py-6 border-b">
-              <span className="text-2xl font-medium">Создание игры</span>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="bordered"
-                  className="text-success border-success rounded-full px-4"
-                >
-                  Далее Ⓘ
-                </Button>
-                <Button
-                  size="sm"
-                  variant="bordered"
-                  className="text-gray-600 border-gray-300 rounded-full px-4"
-                >
-                  ЗНГ Ⓘ
-                </Button>
-              </div>
+              <span className="text-2xl font-medium">Редактирование игры</span>
             </ModalHeader>
 
             <ModalBody className="px-8 py-6">
@@ -404,7 +404,7 @@ export function CreateGameModal({ isOpen, onClose }: CreateGameModalProps) {
                   isLoading={isPending}
                   onPress={() => handleSubmit(onSubmit)()}
                 >
-                  Сохранить игру
+                  Сохранить изменения
                 </Button>
               </div>
             </ModalFooter>

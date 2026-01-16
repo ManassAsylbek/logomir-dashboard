@@ -5,6 +5,7 @@ import { Button } from "@heroui/button";
 import { ArrowRight, Search, Trash2, Edit } from "lucide-react";
 import { useState } from "react";
 import CreateTherapistModal from "./CreateTherapistModal";
+import { ConfirmModal } from "@/shared/ui/ConfirmModal";
 import { useSpecialists } from "@/shared/services/specialists/useSpecialists";
 import { useDeleteSpecialist } from "@/shared/services/specialists/useDeleteSpecialist";
 import { Spinner } from "@heroui/spinner";
@@ -19,15 +20,26 @@ import { useTranslation } from "react-i18next";
 export default function TherapistsPage() {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+  const [therapistToDelete, setTherapistToDelete] = useState<number | null>(
+    null
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [page] = useState(1);
 
   const { data: specialistsData, isLoading } = useSpecialists(page);
-  const { mutate: deleteSpecialist } = useDeleteSpecialist();
+  const { mutate: deleteSpecialist, isPending: isDeleting } =
+    useDeleteSpecialist();
 
-  const handleDelete = (id: number) => {
-    if (confirm(t("therapists.deleteConfirm"))) {
-      deleteSpecialist(id);
+  const handleDeleteClick = (id: number) => {
+    setTherapistToDelete(id);
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (therapistToDelete) {
+      deleteSpecialist(therapistToDelete);
+      setTherapistToDelete(null);
     }
   };
 
@@ -165,7 +177,9 @@ export default function TherapistsPage() {
                                     className="text-danger"
                                     color="danger"
                                     startContent={<Trash2 size={16} />}
-                                    onPress={() => handleDelete(specialist.id)}
+                                    onPress={() =>
+                                      handleDeleteClick(specialist.id)
+                                    }
                                   >
                                     {t("therapists.delete")}
                                   </DropdownItem>
@@ -196,6 +210,21 @@ export default function TherapistsPage() {
       <CreateTherapistModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <ConfirmModal
+        isOpen={isConfirmDeleteOpen}
+        onClose={() => {
+          setIsConfirmDeleteOpen(false);
+          setTherapistToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        title={t("therapists.deleteTitle")}
+        message={t("therapists.deleteMessage")}
+        confirmText={t("therapists.deleteConfirm")}
+        cancelText={t("therapists.cancel")}
+        isLoading={isDeleting}
+        type="danger"
       />
     </>
   );
