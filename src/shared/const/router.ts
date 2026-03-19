@@ -1,4 +1,5 @@
 export enum AppRoutes {
+  LANDING = "landing",
   MAIN = "main",
   AUTH = "auth",
   REGISTRATION = "registration",
@@ -14,7 +15,8 @@ export enum AppRoutes {
   // FORBIDDEN = "forbidden",
 }
 
-export const getRouteMain = () => "/";
+export const getRouteLanding = () => "/";
+export const getRouteMain = () => "/dashboard";
 export const getRouteAuth = () => "/auth";
 export const getRouteRegistration = () => "/registration";
 export const getRouteSettings = () => "/settings";
@@ -30,6 +32,7 @@ export const getRouteGames = () => "/games";
 // export const getRouteForbidden = () => "/forbidden";
 
 export const AppRouteByPathPattern: Record<string, AppRoutes> = {
+  [getRouteLanding()]: AppRoutes.LANDING,
   [getRouteMain()]: AppRoutes.MAIN,
   [getRouteAuth()]: AppRoutes.AUTH,
   [getRouteRegistration()]: AppRoutes.REGISTRATION,

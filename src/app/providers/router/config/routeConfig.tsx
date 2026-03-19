@@ -1,9 +1,11 @@
 import AuthPage from "@/pages/Auth/ui/AuthPage";
 import { MainPage } from "@/pages/Main";
+import { LandingPage } from "@/pages/Landing";
 import {
   AppRoutes,
   getRouteAuth,
   getRouteRegistration,
+  getRouteLanding,
   getRouteMain,
   getRouteSettings,
   getRouteStudents,
@@ -29,6 +31,10 @@ import { RegistrationPage } from "@/pages/Registration";
 import { DefaultLayout } from "@/shared/layouts";
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
+  [AppRoutes.LANDING]: {
+    path: getRouteLanding(),
+    element: <LandingPage />,
+  },
   [AppRoutes.MAIN]: {
     path: getRouteMain(),
     element: (
