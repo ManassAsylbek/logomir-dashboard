@@ -1,56 +1,110 @@
-const steps = [
+export const steps = [
   {
     num: "01",
     color: "text-pink-400",
     bg: "bg-pink-50",
     title: "Выбираете логопеда",
-    emoji: "📱",
+    img: "/how_is_work/1.png",
   },
   {
     num: "02",
     color: "text-purple-500",
     bg: "bg-purple-50",
     title: "Выбираете удобное время",
-    emoji: "📅",
+    img: "/how_is_work/2.png",
   },
   {
     num: "03",
     color: "text-yellow-500",
     bg: "bg-yellow-50",
     title: "Проходите консультацию",
-    emoji: "👩‍🏫",
+    img: "/how_is_work/3.png",
   },
   {
     num: "04",
     color: "text-green-500",
     bg: "bg-green-50",
     title: "Получаете план развития ребёнка",
-    emoji: "🐻",
+    img: "/how_is_work/4.png",
   },
 ];
 
-export function HowItWorksSection() {
+export function HowItWorksSection({
+  onOpenModal,
+}: {
+  onOpenModal: () => void;
+}) {
   return (
-    <section id="how" className="py-16 px-6 bg-[#fafcfa]">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-10">
+    <section
+      id="how"
+      className="p-7 md:p-16 max-w-6xl mx-auto rounded-4xl md:rounded-[48px] bg-white grid  gap-10 relative z-10 -mt-8 "
+    >
+      <div>
+        <h2 className="text-4xl md:text-6xl font-bold text-center mb-10">
           Как это работает
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {steps.map((item) => (
-            <div
-              key={item.num}
-              className={`${item.bg} rounded-2xl p-5 flex flex-col gap-3`}
-            >
-              <span className={`text-4xl font-extrabold ${item.color}`}>
-                {item.num}
-              </span>
-              <div className="text-4xl">{item.emoji}</div>
-              <p className="text-sm font-medium text-gray-700 leading-snug">
+            <div>
+              <div
+                key={item.num}
+                className={`${item.bg} rounded-2xl  p-0 flex flex-col gap-3`}
+              >
+                <span
+                  className={`text-5xl mt-4 ml-4 font-semibold ${item.color}`}
+                >
+                  {item.num}
+                </span>
+                <div className="w-full aspect-square overflow-hidden rounded-xl">
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              <p className="mt-4 font-bold text-lg text-gray-800 leading-snug ">
                 {item.title}
               </p>
             </div>
           ))}
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center">
+        <div className="w-full flex-1 flex flex-col items-center md:items-start text-center md:text-start gap-4 mb-10 md:mb-0">
+          <h2 className="text-4xl text-center md:text-start md:text-5xl font-extrabold leading-tight mb-4">
+            Запишитесь
+            <br />
+            на первую
+            <br />
+            консультацию
+          </h2>
+          <p className="w-full mb-6 text-base text-center md:text-start font-bold">
+            Мы подберём специалиста
+            <br />и удобное время для вашего
+            <br />
+            ребёнка
+          </p>
+          <button
+            onClick={onOpenModal}
+            className="bg-[#3cb96a] text-white px-4 py-2 rounded-xl font-semibold text-md hover:bg-[#2fa85e] transition-colors flex items-center gap-2"
+          >
+            Записаться онлайн
+            <div>
+              <img
+                src={"/how_is_work/bear-icon.png"}
+                alt="Мишка"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </button>
+        </div>
+        <div className="flex-1 flex justify-center">
+          <img
+            src="/how_is_work/consultation.png"
+            alt="Запись на консультацию"
+            className="w-full max-w-lg object-contain"
+          />
         </div>
       </div>
     </section>

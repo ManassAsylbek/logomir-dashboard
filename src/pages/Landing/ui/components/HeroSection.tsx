@@ -13,18 +13,17 @@ const fadeUp = (delay = 0) => ({
 export function HeroSection({ onOpenModal }: HeroSectionProps) {
   return (
     <section
-      className="relative overflow-hidden text-white"
+      className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[80vh] xl:min-h-[100vh] "
       style={{
         background:
           "linear-gradient(180deg, #3cb96a 0%, #2eaa5a 60%, #28a052 100%)",
-        minHeight: "120vh",
       }}
     >
       {/* <div className="relative z-10 h-[300px] w-full bg-[#3BB96A]" /> */}
 
       {/* Иллюстрация как абсолютный фон — прибита к низу, на всю ширину */}
       <motion.img
-        src="/hero.png"
+        src="/hero/hero.png"
         alt=""
         aria-hidden="true"
         className="absolute bottom-0 left-0 w-full object-contain object-bottom pointer-events-none pt-14vh"
@@ -34,10 +33,10 @@ export function HeroSection({ onOpenModal }: HeroSectionProps) {
       />
 
       {/* Текст поверх фона */}
-      <div className="relative z-10 text-center px-6 pt-20 pb-6">
+      <div className="relative z-10 text-center px-6 pt-28 pb-6">
         <motion.h1
           {...fadeUp(0.1)}
-          className="text-5xl md:text-6xl font-extrabold leading-tight mb-4"
+          className="text-4xl md:text-7xl font-bold leading-tight mb-4"
         >
           Помогаем детям
           <br />
@@ -46,7 +45,7 @@ export function HeroSection({ onOpenModal }: HeroSectionProps) {
 
         <motion.p
           {...fadeUp(0.25)}
-          className="text-green-100 text-lg leading-relaxed mb-8 max-w-xl mx-auto"
+          className="text-green-100 text-xl md:text-2xl leading-relaxed mb-8  mx-auto"
         >
           Индивидуальные занятия с логопедом — онлайн или офлайн.
           <br />

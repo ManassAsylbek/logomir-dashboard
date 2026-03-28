@@ -11,7 +11,21 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "480px",
+      },
+      fontFamily: {
+        sans: [
+          '"SF Pro Rounded"',
+          "-apple-system",
+          "BlinkMacSystemFont",
+          '"Segoe UI"',
+          "Roboto",
+          "sans-serif",
+        ],
+      },
       colors: {
+        "mint-light": "#CFF2E8",
         primary: {
           50: "#e6f7ed",
           100: "#c0ebd4",
@@ -24,6 +38,15 @@ export default {
           800: "#127546",
           900: "#0a5130",
         },
+      },
+      keyframes: {
+        scroll: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+      },
+      animation: {
+        scroll: "scroll 15s linear infinite",
       },
     },
   },
