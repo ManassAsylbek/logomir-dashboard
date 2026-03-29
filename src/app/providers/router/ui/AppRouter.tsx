@@ -7,6 +7,7 @@ import {
   getRouteAuth,
   getRouteRegistration,
   getRouteLanding,
+  getRouteLessons,
 } from "@/shared/const/router";
 
 const AppRouter: React.FC = () => {
@@ -17,7 +18,8 @@ const AppRouter: React.FC = () => {
           const isPublic =
             path === getRouteAuth() ||
             path === getRouteRegistration() ||
-            path === getRouteLanding();
+            path === getRouteLanding() ||
+            path === getRouteLessons();
 
           const wrapped = isPublic ? (
             element

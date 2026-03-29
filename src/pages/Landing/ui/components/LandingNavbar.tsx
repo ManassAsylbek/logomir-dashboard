@@ -17,6 +17,7 @@ interface LandingNavbarProps {
 }
 
 const menuItems = [
+  { label: "Занятия", href: "/lessons" },
   { label: "Почему мы", href: "#why" },
   { label: "Logomir Mobile", href: "#app" },
   { label: "Тарифы", href: "#formats" },

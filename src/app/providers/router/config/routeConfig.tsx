@@ -16,6 +16,7 @@ import {
   getRouteNews,
   getRoutePresentations,
   getRouteGames,
+  getRouteLessons,
 } from "@/shared/const/router";
 import { AppRoutesProps } from "@/shared/types/router";
 import { StudentsPage } from "@/pages/Students";
@@ -27,6 +28,7 @@ import { TherapistsPage } from "@/pages/Therapists";
 import { NewsPage } from "@/pages/News";
 import { PresentationsPage } from "@/pages/Presentations";
 import { GamesPage } from "@/pages/Games";
+import { LessonsPage } from "@/pages/Lessons";
 import { RegistrationPage } from "@/pages/Registration";
 import { DefaultLayout } from "@/shared/layouts";
 
@@ -94,5 +96,9 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
         <GamesPage />
       </DefaultLayout>
     ),
+  },
+  [AppRoutes.LESSONS]: {
+    path: getRouteLessons(),
+    element: <LessonsPage />,
   },
 };

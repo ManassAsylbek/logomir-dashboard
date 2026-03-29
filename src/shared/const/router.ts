@@ -12,6 +12,7 @@ export enum AppRoutes {
   NEWS = "news",
   PRESENTATIONS = "presentations",
   GAMES = "games",
+  LESSONS = "lessons",
   // FORBIDDEN = "forbidden",
 }
 
@@ -28,6 +29,7 @@ export const getRouteTherapists = () => "/therapists";
 export const getRouteNews = () => "/news";
 export const getRoutePresentations = () => "/presentations";
 export const getRouteGames = () => "/games";
+export const getRouteLessons = () => "/lessons";
 
 // export const getRouteForbidden = () => "/forbidden";
 
@@ -45,5 +47,6 @@ export const AppRouteByPathPattern: Record<string, AppRoutes> = {
   [getRouteNews()]: AppRoutes.NEWS,
   [getRoutePresentations()]: AppRoutes.PRESENTATIONS,
   [getRouteGames()]: AppRoutes.GAMES,
+  [getRouteLessons()]: AppRoutes.LESSONS,
   // [getRouteForbidden()]: AppRoutes.FORBIDDEN,
 };
