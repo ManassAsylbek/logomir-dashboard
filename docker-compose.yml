@@ -1,0 +1,15 @@
+services:
+  logomir-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: logomir-admin
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - logomir-network
+
+networks:
+  logomir-network:
+    driver: bridge

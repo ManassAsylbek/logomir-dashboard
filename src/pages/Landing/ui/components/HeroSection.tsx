@@ -10,7 +10,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
 });
 
-export function HeroSection({ onOpenModal }: HeroSectionProps) {
+export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
   return (
     <section
       className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[80vh] xl:min-h-[100vh] "

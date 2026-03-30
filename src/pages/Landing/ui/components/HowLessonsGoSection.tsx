@@ -1,4 +1,3 @@
-import { steps } from "./HowItWorksSection";
 
 const lessonSteps = [
   {
