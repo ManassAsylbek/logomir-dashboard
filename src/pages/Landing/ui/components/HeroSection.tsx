@@ -23,7 +23,7 @@ export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
 
       {/* Иллюстрация как абсолютный фон — прибита к низу, на всю ширину */}
       <motion.img
-        src="/hero/hero.png"
+        src="/hero/hero.webp"
         alt=""
         aria-hidden="true"
         className="absolute bottom-0 left-0 w-full object-contain object-bottom pointer-events-none pt-14vh"

@@ -88,7 +88,7 @@ export function FormatsSection({ onOpenModal }: FormatsSectionProps) {
           </button>
           <div className="flex-1 flex justify-center">
             <img
-              src="/format/online.png"
+              src="/format/online.webp"
               alt="Запись на консультацию"
               className="w-full max-w-5xl object-contain"
             />

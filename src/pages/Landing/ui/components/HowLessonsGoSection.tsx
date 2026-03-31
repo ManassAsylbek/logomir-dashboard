@@ -1,4 +1,3 @@
-
 const lessonSteps = [
   {
     num: "01",
@@ -91,7 +90,7 @@ export function HowLessonsGoSection() {
           <div className="flex-1 md:flex-7/12 bg-gray-200 rounded-3xl min-h-44 flex items-center justify-center">
             <div className="w-full aspect-auto overflow-hidden rounded-3xl">
               <img
-                src={"/lessons/specialist.png"}
+                src={"/lessons/specialist.webp"}
                 alt="Специалист"
                 className="w-full h-full object-cover"
               />

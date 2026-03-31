@@ -101,7 +101,7 @@ export function HowItWorksSection({
         </div>
         <div className="flex-1 flex justify-center">
           <img
-            src="/how_is_work/consultation.png"
+            src="/how_is_work/consultation.webp"
             alt="Запись на консультацию"
             className="w-full max-w-lg object-contain"
           />
