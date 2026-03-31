@@ -72,23 +72,23 @@ export function HowLessonsGoSection() {
         </div>
 
         {/* Specialist block */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-2 rounded-3xl overflow-hidden">
-          <div className="flex-1 md:flex-9/12 bg-[#d4efe3] rounded-3xl p-8 flex flex-col justify-between">
-            <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-lg inline-block mb-4 w-min">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-4 rounded-3xl overflow-hidden">
+          <div className="flex-1 md:flex-9/12 bg-[#d4efe3] rounded-3xl p-5 lg:p-8 flex flex-col justify-between">
+            <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-lg inline-block  w-min">
               Руководство
             </span>
-            <h3 className="text-2xl font-bold mb-3 leading-snug mt-auto">
+            <h3 className="text-xl lg:text-3xl font-bold mb-3 leading-snug mt-auto">
               Центр под руководством
               <br />
               практикующего специалиста
             </h3>
-            <p className="text-gray-600 text-md leading-relaxed">
+            <p className="text-gray-600 text-md lg:text-xl leading-relaxed">
               Руководитель Логомира — специалист с многолетним опытом работы с
               детьми с речевыми и поведенческими трудностями.
             </p>
           </div>
           <div className="flex-1 md:flex-7/12 bg-gray-200 rounded-3xl min-h-44 flex items-center justify-center">
-            <div className="w-full aspect-auto overflow-hidden rounded-3xl">
+            <div className="w-full aspect-square overflow-hidden rounded-3xl">
               <img
                 src={"/lessons/specialist.webp"}
                 alt="Специалист"

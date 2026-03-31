@@ -13,10 +13,9 @@ const fadeUp = (delay = 0) => ({
 export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
   return (
     <section
-      className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[80vh] xl:min-h-[100vh] "
+      className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[90vh] xl:min-h-[110vh] "
       style={{
-        background:
-          "linear-gradient(180deg, #3cb96a 0%, #2eaa5a 60%, #28a052 100%)",
+        background: "#5BA16A",
       }}
     >
       {/* <div className="relative z-10 h-[300px] w-full bg-[#3BB96A]" /> */}

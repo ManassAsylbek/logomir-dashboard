@@ -26,10 +26,10 @@ export default function LandingPage() {
       <div className="bg-gradient-to-b from-[#CFF2E8] via-white via-55% to-[#FFFDF8]">
         <HowItWorksSection onOpenModal={() => setIsBookingOpen(true)} />
 
-        <WhyUsSection />
+        <div id="why"><WhyUsSection /></div>
         <HowLessonsGoSection />
-        <AppSection />
-        <FormatsSection onOpenModal={() => setIsModalOpen(true)} />
+        <div id="app"><AppSection /></div>
+        <div id="formats"><FormatsSection onOpenModal={() => setIsModalOpen(true)} /></div>
         <LandingFooter />
       </div>
     </div>

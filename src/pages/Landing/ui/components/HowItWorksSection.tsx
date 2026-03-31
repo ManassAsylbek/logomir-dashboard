@@ -79,7 +79,7 @@ export function HowItWorksSection({
             <br />
             консультацию
           </h2>
-          <p className="w-full mb-6 text-base text-center md:text-start font-bold">
+          <p className="w-full mb-6 text-lg text-center md:text-start font-bold">
             Мы подберём специалиста
             <br />и удобное время для вашего
             <br />
@@ -87,7 +87,7 @@ export function HowItWorksSection({
           </p>
           <button
             onClick={onOpenModal}
-            className="bg-[#3cb96a] text-white px-4 py-2 rounded-xl font-semibold text-md hover:bg-[#2fa85e] transition-colors flex items-center gap-2"
+            className="bg-[#3cb96a] text-white px-4 py-2 rounded-xl font-semibold text-2xl hover:bg-[#2fa85e] transition-colors flex items-center gap-2"
           >
             Записаться онлайн
             <div>

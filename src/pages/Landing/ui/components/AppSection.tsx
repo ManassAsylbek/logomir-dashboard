@@ -18,14 +18,14 @@ export function AppSection() {
   return (
     <section id="app">
       <div className="max-w-5xl mx-auto grid gap-8">
-        <div className="p-7  max-w-6xl mx-auto">
+        <div className="p-7 max-w-6xl mx-auto">
           <div className="text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-2">
+            <h2 className="text-3xl md:text-5xl font-bold mb-5">
               Первое логопедическое
               <br />
               приложение в Кыргызстане
             </h2>
-            <p className="text-sm md:text-2xl font-medium">
+            <p className="text-sm md:text-2xl font-medium mb-6">
               Следите за прогрессом ребёнка и получайте
               <br />
               задания от специалистов прямо в телефоне

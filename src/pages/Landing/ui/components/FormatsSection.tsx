@@ -82,7 +82,7 @@ export function FormatsSection({ onOpenModal }: FormatsSectionProps) {
           </h2>
           <button
             onClick={onOpenModal}
-            className="bg-[#3cb96a] text-white px-8 py-3 rounded-xl font-semibold text-base hover:bg-[#2fa85e] transition-colors inline-flex items-center gap-2"
+            className="bg-[#3cb96a] text-white px-8 py-3 rounded-xl font-semibold text-2xl hover:bg-[#2fa85e] transition-colors inline-flex items-center gap-2"
           >
             Записаться 📅
           </button>

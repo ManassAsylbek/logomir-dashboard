@@ -9,7 +9,6 @@ import {
   NavbarMenuItem,
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
-import { Link } from "@heroui/link";
 import { LogIn } from "lucide-react";
 
 interface LandingNavbarProps {
@@ -22,6 +21,14 @@ const menuItems = [
   { label: "Logomir Mobile", href: "#app" },
   { label: "Тарифы", href: "#formats" },
 ];
+
+const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  if (href.startsWith("#")) {
+    e.preventDefault();
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }
+};
 
 export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,12 +65,13 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
       <NavbarContent className="hidden md:flex gap-7" justify="center">
         {menuItems.map((item) => (
           <NavbarItem key={item.href}>
-            <Link
+            <a
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className="text-[13px] text-[#242424] font-medium hover:text-[#3cb96a] transition-colors"
             >
               {item.label}
-            </Link>
+            </a>
           </NavbarItem>
         ))}
       </NavbarContent>
@@ -85,13 +93,13 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
       <NavbarMenu>
         {menuItems.map((item) => (
           <NavbarMenuItem key={item.href}>
-            <Link
+            <a
               href={item.href}
-              className="w-full text-base text-[#242424] font-medium py-2"
-              onPress={() => setIsMenuOpen(false)}
+              onClick={(e) => { handleNavClick(e, item.href); setIsMenuOpen(false); }}
+              className="w-full text-base text-[#242424] font-medium py-2 block"
             >
               {item.label}
-            </Link>
+            </a>
           </NavbarMenuItem>
         ))}
         <NavbarMenuItem>
