@@ -10,6 +10,18 @@ import {
   getRouteLessons,
 } from "@/shared/const/router";
 
+const THERAPIST_ONLY_ROUTES = [
+  "/dashboard",
+  "/settings",
+  "/students",
+  "/scheduled-lessons",
+  "/payment-requests",
+  "/therapists",
+  "/news",
+  "/presentations",
+  "/games",
+];
+
 const AppRouter: React.FC = () => {
   return (
     <Suspense fallback={<PageLoader />}>
@@ -18,14 +30,37 @@ const AppRouter: React.FC = () => {
           const isPublic =
             path === getRouteAuth() ||
             path === getRouteRegistration() ||
-            path === getRouteLanding() ||
-            path === getRouteLessons();
+            path === getRouteLanding();
 
-          const wrapped = isPublic ? (
-            element
-          ) : (
-            <RequireAuth>{element as React.ReactElement}</RequireAuth>
-          );
+          const isStudentRoute = path === getRouteLessons();
+
+          const isTherapistOnly = path
+            ? THERAPIST_ONLY_ROUTES.includes(path)
+            : false;
+
+          let wrapped: React.ReactElement;
+
+          if (isPublic) {
+            wrapped = element as React.ReactElement;
+          } else if (isStudentRoute) {
+            // Lessons доступны и студентам и учителям
+            wrapped = (
+              <RequireAuth allowedRoles={["student", "therapist"]}>
+                {element as React.ReactElement}
+              </RequireAuth>
+            );
+          } else if (isTherapistOnly) {
+            // Остальные страницы только для учителей
+            wrapped = (
+              <RequireAuth allowedRoles={["therapist"]}>
+                {element as React.ReactElement}
+              </RequireAuth>
+            );
+          } else {
+            wrapped = (
+              <RequireAuth>{element as React.ReactElement}</RequireAuth>
+            );
+          }
 
           return <Route key={path} path={path} element={wrapped} />;
         })}

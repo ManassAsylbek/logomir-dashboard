@@ -24,6 +24,7 @@ export interface UserProfile {
   avatar: string;
   is_child: boolean;
   tariff: Tariff;
+  roles: "student" | "therapist" | string;
 }
 
 export const getMe = (): Promise<AxiosResponse<UserProfile>> => {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Navbar,
   NavbarBrand,
@@ -9,7 +10,12 @@ import {
   NavbarMenuItem,
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
-import { LogIn } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
+import {
+  getAccessToken,
+  setAccessToken,
+  setRefreshToken,
+} from "@/shared/api/axios";
 
 interface LandingNavbarProps {
   onOpenModal: () => void;
@@ -22,16 +28,40 @@ const menuItems = [
   { label: "Тарифы", href: "#formats" },
 ];
 
-const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-  if (href.startsWith("#")) {
-    e.preventDefault();
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  }
-};
-
 export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const isLoggedIn = Boolean(getAccessToken());
+
+  const handleLogout = () => {
+    setAccessToken(null);
+    setRefreshToken(null);
+    localStorage.removeItem("user_role");
+    navigate("/");
+  };
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    e.preventDefault();
+    if (href.startsWith("#")) {
+      const scroll = () => {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      };
+      if (window.location.pathname !== "/") {
+        navigate("/");
+        setTimeout(scroll, 300);
+      } else {
+        scroll();
+      }
+    } else if (href === "/lessons" && !isLoggedIn) {
+      onOpenModal();
+    } else {
+      navigate(href);
+    }
+  };
 
   return (
     <Navbar
@@ -56,7 +86,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
 
       {/* Brand */}
       <NavbarBrand>
-        <a href="#">
+        <a href="/">
           <img src="/logo.png" alt="Logomir" className="h-10 w-auto" />
         </a>
       </NavbarBrand>
@@ -65,13 +95,13 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
       <NavbarContent className="hidden md:flex gap-7" justify="center">
         {menuItems.map((item) => (
           <NavbarItem key={item.href}>
-            <a
-              href={item.href}
+            <Link
+              to={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
               className="text-[13px] text-[#242424] font-medium hover:text-[#3cb96a] transition-colors"
             >
               {item.label}
-            </a>
+            </Link>
           </NavbarItem>
         ))}
       </NavbarContent>
@@ -79,13 +109,23 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
       {/* CTA button */}
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button
-            onPress={onOpenModal}
-            className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl h-9 px-5"
-            endContent={<LogIn size={18} />}
-          >
-            Войти
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              onPress={handleLogout}
+              className="bg-red-400 text-white text-sm font-semibold hover:bg-red-500 rounded-xl h-9 px-5"
+              endContent={<LogOut size={18} />}
+            >
+              Выйти
+            </Button>
+          ) : (
+            <Button
+              onPress={onOpenModal}
+              className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl h-9 px-5"
+              endContent={<LogIn size={18} />}
+            >
+              Войти
+            </Button>
+          )}
         </NavbarItem>
       </NavbarContent>
 
@@ -95,7 +135,10 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
           <NavbarMenuItem key={item.href}>
             <a
               href={item.href}
-              onClick={(e) => { handleNavClick(e, item.href); setIsMenuOpen(false); }}
+              onClick={(e) => {
+                handleNavClick(e, item.href);
+                setIsMenuOpen(false);
+              }}
               className="w-full text-base text-[#242424] font-medium py-2 block"
             >
               {item.label}
@@ -103,16 +146,29 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
           </NavbarMenuItem>
         ))}
         <NavbarMenuItem>
-          <Button
-            onPress={() => {
-              setIsMenuOpen(false);
-              onOpenModal();
-            }}
-            className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl w-full mt-2"
-            endContent={<LogIn size={18} />}
-          >
-            Войти
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              onPress={() => {
+                setIsMenuOpen(false);
+                handleLogout();
+              }}
+              className="bg-red-400 text-white text-sm font-semibold hover:bg-red-500 rounded-xl w-full mt-2"
+              endContent={<LogOut size={18} />}
+            >
+              Выйти
+            </Button>
+          ) : (
+            <Button
+              onPress={() => {
+                setIsMenuOpen(false);
+                onOpenModal();
+              }}
+              className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl w-full mt-2"
+              endContent={<LogIn size={18} />}
+            >
+              Войти
+            </Button>
+          )}
         </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>

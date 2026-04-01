@@ -118,6 +118,7 @@ requester.interceptors.response.use(
         // refresh failed => clear tokens and redirect to login
         setAccessToken(null);
         setRefreshToken(null);
+        localStorage.removeItem("user_role");
         isRefreshing = false;
         // navigate to login
         try {
@@ -135,7 +136,7 @@ requester.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export { requester };

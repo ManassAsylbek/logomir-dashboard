@@ -6,11 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { KEYS_AUTH } from "../keys";
 
 import { auth, LoginRequest } from "@/shared/api/auth/auth";
+import { getMe } from "@/shared/api/auth/me";
 import { formatDjangoError } from "@/shared/helpers/formatDjangoError";
 import { setAccessToken, setRefreshToken } from "@/shared/api/axios";
-import { getRouteMain } from "@/shared/const/router";
+import { getRouteMain, getRouteLessons } from "@/shared/const/router";
 
-export const useAuth = () => {
+export const useAuth = (options?: { noRedirect?: boolean }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -19,10 +20,8 @@ export const useAuth = () => {
       try {
         const response = await auth(data);
 
-        return response; // return full axios response for flexibility
+        return response;
       } catch (error: unknown) {
-        console.error("auth error:", error);
-
         if (isAxiosError(error)) {
           throw new Error(formatDjangoError(error.response?.data));
         }
@@ -31,14 +30,28 @@ export const useAuth = () => {
       }
     },
 
-    onSuccess: (response) => {
-      // Backend returns: { refresh: string, access: string }
+    onSuccess: async (response) => {
       const { access, refresh } = response.data;
 
       setAccessToken(access);
       setRefreshToken(refresh);
 
-      navigate(getRouteMain());
+      // Determine role from /me
+      try {
+        const me = await getMe();
+        const role = me.data.is_child ? "student" : "therapist";
+
+        localStorage.setItem("user_role", role);
+
+        if (!options?.noRedirect) {
+          navigate(role === "student" ? getRouteLessons() : getRouteMain());
+        }
+      } catch {
+        if (!options?.noRedirect) {
+          navigate(getRouteMain());
+        }
+      }
+
       toast.success("Вы успешно вошли в систему");
       queryClient.invalidateQueries({
         queryKey: [KEYS_AUTH.auth],

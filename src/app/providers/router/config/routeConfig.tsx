@@ -23,16 +23,28 @@ const AuthPage = lazy(() => import("@/pages/Auth/ui/AuthPage"));
 const MainPage = lazy(() => import("@/pages/Main/ui/MainPage"));
 const LandingPage = lazy(() => import("@/pages/Landing/ui/LandingPage"));
 const StudentsPage = lazy(() => import("@/pages/Students/ui/StudentsPage"));
-const StudentProfilePage = lazy(() => import("@/pages/StudentProfile/ui/StudentProfilePage"));
-const ScheduledLessonsPage = lazy(() => import("@/pages/ScheduledLessons/ui/ScheduledLessonsPage"));
+const StudentProfilePage = lazy(
+  () => import("@/pages/StudentProfile/ui/StudentProfilePage"),
+);
+const ScheduledLessonsPage = lazy(
+  () => import("@/pages/ScheduledLessons/ui/ScheduledLessonsPage"),
+);
 const SettingsPage = lazy(() => import("@/pages/Settings/ui/SettingsPage"));
-const PaymentRequestsPage = lazy(() => import("@/pages/PaymentRequests/ui/PaymentRequestsPage"));
-const TherapistsPage = lazy(() => import("@/pages/Therapists/ui/TherapistsPage"));
+const PaymentRequestsPage = lazy(
+  () => import("@/pages/PaymentRequests/ui/PaymentRequestsPage"),
+);
+const TherapistsPage = lazy(
+  () => import("@/pages/Therapists/ui/TherapistsPage"),
+);
 const NewsPage = lazy(() => import("@/pages/News/ui/NewsPage"));
-const PresentationsPage = lazy(() => import("@/pages/Presentations/ui/PresentationsPage"));
+const PresentationsPage = lazy(
+  () => import("@/pages/Presentations/ui/PresentationsPage"),
+);
 const GamesPage = lazy(() => import("@/pages/Games/ui/GamesPage"));
 const LessonsPage = lazy(() => import("@/pages/Lessons/ui/LessonsPage"));
-const RegistrationPage = lazy(() => import("@/pages/Registration/ui/RegistrationPage"));
+const RegistrationPage = lazy(
+  () => import("@/pages/Registration/ui/RegistrationPage"),
+);
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.LANDING]: {
