@@ -84,7 +84,6 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
         />
       </NavbarContent>
 
-      {/* Brand */}
       <NavbarBrand>
         <a href="/">
           <img src="/logo.png" alt="Logomir" className="h-10 w-auto" />
