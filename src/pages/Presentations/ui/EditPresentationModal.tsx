@@ -4,12 +4,14 @@ import { Textarea } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { ArrowRight, Upload, X, FileText } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import { useCreatePresentation } from "@/shared/services/presentations/useCreatePresentation";
-import { useState } from "react";
+import { useUpdatePresentation } from "@/shared/services/presentations/useUpdatePresentation";
+import { useState, useEffect } from "react";
+import { Presentation } from "@/shared/api/presentations/types";
 
-interface CreatePresentationModalProps {
+interface EditPresentationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  presentation: Presentation | null;
 }
 
 interface FormData {
@@ -19,14 +21,16 @@ interface FormData {
   file: File | null;
 }
 
-export function CreatePresentationModal({
+export default function EditPresentationModal({
   isOpen,
   onClose,
-}: CreatePresentationModalProps) {
+  presentation,
+}: EditPresentationModalProps) {
   const {
     control,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -37,16 +41,33 @@ export function CreatePresentationModal({
     },
   });
 
-  const { mutate: createPresentation, isPending } = useCreatePresentation();
+  const { mutate: updatePresentation, isPending } = useUpdatePresentation();
   const [fileName, setFileName] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (presentation) {
+      setValue("name", presentation.name);
+      setValue("description", presentation.description);
+      setValue("link", presentation.link || "");
+      if (presentation.file) {
+        const parts = presentation.file.split("/");
+        setFileName(parts[parts.length - 1]);
+      }
+    }
+  }, [presentation, setValue]);
+
   const onSubmit = (data: FormData) => {
-    createPresentation(
+    if (!presentation) return;
+
+    updatePresentation(
       {
-        name: data.name,
-        description: data.description,
-        link: data.link,
-        file: data.file,
+        id: presentation.id,
+        data: {
+          name: data.name,
+          description: data.description,
+          link: data.link,
+          file: data.file,
+        },
       },
       {
         onSuccess: () => {
@@ -75,6 +96,8 @@ export function CreatePresentationModal({
     }
   };
 
+  if (!presentation) return null;
+
   return (
     <Modal
       isOpen={isOpen}
@@ -84,7 +107,7 @@ export function CreatePresentationModal({
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
-          <h2 className="text-2xl font-medium">Добавьте презентацию</h2>
+          <h2 className="text-2xl font-medium">Редактировать презентацию</h2>
         </ModalHeader>
         <ModalBody className="px-6 pb-6">
           <div className="flex flex-col gap-4">
@@ -95,7 +118,7 @@ export function CreatePresentationModal({
               render={({ field: { onChange } }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Загрузите файл презентации (PDF)
+                    Файл презентации (PDF)
                   </label>
                   {fileName ? (
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center gap-3 bg-gray-50">
@@ -125,9 +148,6 @@ export function CreatePresentationModal({
                       </div>
                       <p className="text-sm text-gray-600">
                         Выберите или перетащите сюда файл
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        Файл должен весить не более 100 МБ
                       </p>
                       <input
                         type="file"
@@ -223,7 +243,7 @@ export function CreatePresentationModal({
                 onPress={() => handleSubmit(onSubmit)()}
                 isLoading={isPending}
               >
-                Добавить презентацию
+                Сохранить изменения
               </Button>
             </div>
           </div>

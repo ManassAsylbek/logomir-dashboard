@@ -19,7 +19,7 @@ export const KEYS_EMAIL_VERIFICATION_SEND = {
 export const KEYS_EMAIL_VERIFICATION_CONFIRM = {
   email_verification_confirm: getKey(
     "KEYS_EMAIL_VERIFICATION_CONFIRM",
-    "MUTATION"
+    "MUTATION",
   ),
 };
 
@@ -44,6 +44,11 @@ export const KEYS_SPECIALISTS = {
 export const KEYS_NEWS = {
   news: getKey("NEWS", "QUERY"),
   newsItem: (id: string) => getKey(`NEWS_${id}`, "QUERY"),
+};
+
+export const KEYS_PRESENTATIONS = {
+  presentations: getKey("PRESENTATIONS", "QUERY"),
+  presentation: (id: string) => getKey(`PRESENTATION_${id}`, "QUERY"),
 };
 
 export const KEYS_PAYMENTS = {

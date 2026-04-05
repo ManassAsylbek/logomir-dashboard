@@ -54,7 +54,7 @@ export default function CreateNewsModal({
           setImagePreview(null);
           onClose();
         },
-      }
+      },
     );
   };
 
@@ -66,7 +66,7 @@ export default function CreateNewsModal({
 
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    onChange: (value: File | null) => void
+    onChange: (value: File | null) => void,
   ) => {
     const file = e.target.files?.[0];
     if (file) {

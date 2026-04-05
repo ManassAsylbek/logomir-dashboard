@@ -6,7 +6,7 @@ import { News, UpdateNewsRequest } from "./types";
 
 export const updateNews = (
   id: number,
-  data: UpdateNewsRequest
+  data: UpdateNewsRequest,
 ): Promise<AxiosResponse<News>> => {
   const formData = new FormData();
 

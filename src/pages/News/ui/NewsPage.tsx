@@ -48,7 +48,7 @@ export default function NewsPage() {
   };
 
   const filteredNews = newsData?.results?.filter((news) =>
-    news.name?.toLowerCase().includes(searchQuery.toLowerCase())
+    news.name?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
