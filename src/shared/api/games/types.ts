@@ -1,3 +1,13 @@
+export enum GameType {
+  Quiz = "Quiz",
+  AudioSentenceOrdering = "Audio_sentence_ordering",
+}
+
+export const GAME_TYPE_LABELS: Record<GameType, string> = {
+  [GameType.Quiz]: "Викторина",
+  [GameType.AudioSentenceOrdering]: "Аудио: составь предложение",
+};
+
 export interface Answer {
   id?: string;
   name: string;
@@ -28,7 +38,7 @@ export interface Question {
 export interface Game {
   id: string;
   name: string;
-  game_type: "Quiz";
+  game_type: GameType;
   theme: string;
   creator: number;
   questions: Question[];
@@ -38,7 +48,7 @@ export interface Game {
 
 export interface CreateGameRequest {
   name: string;
-  game_type: "Quiz";
+  game_type: GameType;
   theme: string;
   questions: Question[];
   allowed_users?: number[];
@@ -46,7 +56,7 @@ export interface CreateGameRequest {
 
 export interface UpdateGameRequest {
   name?: string;
-  game_type?: "Quiz";
+  game_type?: GameType;
   theme?: string;
   questions?: Question[];
   allowed_users?: number[];

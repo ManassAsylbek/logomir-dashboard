@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
-import { Game } from "@/shared/api/games/types";
+import { Game, GAME_TYPE_LABELS, GameType } from "@/shared/api/games/types";
 
 export default function GamesPage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -47,7 +47,7 @@ export default function GamesPage() {
   };
 
   const filteredGames = gamesData?.results?.filter((game) =>
-    game.name.toLowerCase().includes(searchQuery.toLowerCase())
+    game.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -124,7 +124,8 @@ export default function GamesPage() {
                             {game.questions?.length || 0}
                           </td>
                           <td className="py-4 text-gray-600">
-                            {game.game_type}
+                            {GAME_TYPE_LABELS[game.game_type as GameType] ??
+                              game.game_type}
                           </td>
                           <td className="py-4 text-right">
                             <Dropdown>

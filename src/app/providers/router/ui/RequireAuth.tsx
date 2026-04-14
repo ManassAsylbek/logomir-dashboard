@@ -1,6 +1,10 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { getRouteAuth, getRouteLessons } from "@/shared/const/router";
+import {
+  getRouteAuth,
+  getRouteLessons,
+  getRouteMain,
+} from "@/shared/const/router";
 import useUser from "@/shared/services/user/useUser";
 import { PageLoader } from "@/widgets/PageLoader";
 
@@ -21,7 +25,7 @@ const RequireAuth: React.FC<{
     if (!allowedRoles.includes(role)) {
       return (
         <Navigate
-          to={role === "student" ? getRouteLessons() : getRouteAuth()}
+          to={role === "student" ? getRouteLessons() : getRouteMain()}
           replace
         />
       );

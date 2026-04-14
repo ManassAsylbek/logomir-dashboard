@@ -6,7 +6,7 @@ import { Game, UpdateGameRequest } from "./types";
 
 export const updateGame = (
   id: string,
-  data: UpdateGameRequest
+  data: UpdateGameRequest | FormData,
 ): Promise<AxiosResponse<Game>> => {
   return requester.patch<Game>(`/web-admin/games/${id}/`, data);
 };

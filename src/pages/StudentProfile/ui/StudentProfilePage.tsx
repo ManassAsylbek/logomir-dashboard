@@ -1,4 +1,3 @@
-import DefaultLayout from "@/shared/layouts/ui/DefaultLayout";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { User } from "@heroui/user";
 import { Progress } from "@heroui/progress";
@@ -49,8 +48,7 @@ export default function StudentProfilePage() {
   };
 
   return (
-    <DefaultLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Profile Card */}
         <Card className="border-2 bg-[#272727]">
           <CardBody className="p-6">
@@ -210,6 +208,5 @@ export default function StudentProfilePage() {
           </CardBody>
         </Card>
       </div>
-    </DefaultLayout>
   );
 }

@@ -1,4 +1,3 @@
-import DefaultLayout from "@/shared/layouts/ui/DefaultLayout";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
@@ -36,17 +35,14 @@ const SettingsPage = () => {
 
   if (isLoading) {
     return (
-      <DefaultLayout>
-        <div className="flex justify-center items-center h-96">
-          <Spinner size="lg" />
-        </div>
-      </DefaultLayout>
+      <div className="flex justify-center items-center h-96">
+        <Spinner size="lg" />
+      </div>
     );
   }
 
   return (
-    <DefaultLayout>
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Profile Section */}
         <Card className="bg-[#3d3d3d] border-none">
           <CardHeader className="pb-0">
@@ -205,7 +201,6 @@ const SettingsPage = () => {
           </CardBody>
         </Card>
       </div>
-    </DefaultLayout>
   );
 };
 

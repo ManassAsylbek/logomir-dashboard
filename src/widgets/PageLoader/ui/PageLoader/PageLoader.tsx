@@ -6,7 +6,9 @@ interface PageLoaderProps {
 }
 
 export const PageLoader = ({ className }: PageLoaderProps) => (
-  <div className={cn(className)}>
+  <div
+    className={cn("flex items-center justify-center min-h-screen", className)}
+  >
     <Spinner />
   </div>
 );

@@ -1,4 +1,3 @@
-import DefaultLayout from "@/shared/layouts/ui/DefaultLayout";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
@@ -68,7 +67,7 @@ export default function PaymentRequestsPage() {
   };
 
   return (
-    <DefaultLayout>
+    <>
       <div className="flex flex-col gap-6">
         {/* Search */}
         <div className="flex justify-start">
@@ -225,6 +224,6 @@ export default function PaymentRequestsPage() {
         isLoading={isPending}
         type={"success"}
       />
-    </DefaultLayout>
+    </>
   );
 }

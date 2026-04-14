@@ -1,4 +1,3 @@
-import DefaultLayout from "@/shared/layouts/ui/DefaultLayout";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
@@ -53,8 +52,7 @@ export default function NewsPage() {
 
   return (
     <>
-      <DefaultLayout>
-        <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6">
           {/* Filters */}
           <div className="flex items-center justify-between gap-4">
             <Input
@@ -165,7 +163,6 @@ export default function NewsPage() {
             </CardBody>
           </Card>
         </div>
-      </DefaultLayout>
 
       <CreateNewsModal
         isOpen={isModalOpen}

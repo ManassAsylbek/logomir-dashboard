@@ -55,3 +55,8 @@ export const KEYS_PAYMENTS = {
   payments: getKey("PAYMENTS", "QUERY"),
   payment: (id: string) => getKey(`PAYMENT_${id}`, "QUERY"),
 };
+
+export const KEYS_LESSONS = {
+  lessons: getKey("LESSONS", "QUERY"),
+  lesson: (id: number) => getKey(`LESSON_${id}`, "QUERY"),
+};

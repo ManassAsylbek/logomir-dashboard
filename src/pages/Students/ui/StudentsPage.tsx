@@ -1,4 +1,3 @@
-import DefaultLayout from "@/shared/layouts/ui/DefaultLayout";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Card, CardBody, CardHeader } from "@heroui/card";
@@ -131,8 +130,7 @@ const mockStudents: Student[] = [
 
 export default function StudentsPage() {
   return (
-    <DefaultLayout>
-      <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
         {/* Filters */}
         <div className="flex items-center justify-between gap-4">
           <Input
@@ -243,6 +241,5 @@ export default function StudentsPage() {
           </CardBody>
         </Card>
       </div>
-    </DefaultLayout>
   );
 }

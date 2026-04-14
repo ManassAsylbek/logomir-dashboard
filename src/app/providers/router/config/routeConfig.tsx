@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import {
   AppRoutes,
   getRouteAuth,
@@ -18,6 +18,20 @@ import {
 } from "@/shared/const/router";
 import { AppRoutesProps } from "@/shared/types/router";
 import { DefaultLayout } from "@/shared/layouts";
+import { PageLoader } from "@/widgets/PageLoader";
+
+/** Оборачивает lazy-страницу в Suspense без DefaultLayout */
+const withSuspense = (element: React.ReactElement) => (
+  <Suspense fallback={<PageLoader />}>{element}</Suspense>
+);
+
+/** Оборачивает lazy-страницу в Suspense + DefaultLayout.
+ *  Sidebar и layout рендерятся сразу, мигает только контент внутри. */
+const withLayout = (element: React.ReactElement) => (
+  <DefaultLayout>
+    <Suspense fallback={<PageLoader />}>{element}</Suspense>
+  </DefaultLayout>
+);
 
 const AuthPage = lazy(() => import("@/pages/Auth/ui/AuthPage"));
 const MainPage = lazy(() => import("@/pages/Main/ui/MainPage"));
@@ -49,70 +63,58 @@ const RegistrationPage = lazy(
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.LANDING]: {
     path: getRouteLanding(),
-    element: <LandingPage />,
+    element: withSuspense(<LandingPage />),
   },
   [AppRoutes.MAIN]: {
     path: getRouteMain(),
-    element: (
-      <DefaultLayout>
-        <MainPage />
-      </DefaultLayout>
-    ),
+    element: withLayout(<MainPage />),
   },
   [AppRoutes.AUTH]: {
     path: getRouteAuth(),
-    element: <AuthPage />,
+    element: withSuspense(<AuthPage />),
   },
   [AppRoutes.REGISTRATION]: {
     path: getRouteRegistration(),
-    element: <RegistrationPage />,
+    element: withSuspense(<RegistrationPage />),
   },
   [AppRoutes.SETTINGS]: {
     path: getRouteSettings(),
-    element: <SettingsPage />,
+    element: withLayout(<SettingsPage />),
   },
   [AppRoutes.STUDENTS]: {
     path: getRouteStudents(),
-    element: <StudentsPage />,
+    element: withLayout(<StudentsPage />),
   },
   [AppRoutes.STUDENT_PROFILE]: {
     path: getRouteStudentProfile(),
-    element: <StudentProfilePage />,
+    element: withLayout(<StudentProfilePage />),
   },
   [AppRoutes.SCHEDULED_LESSONS]: {
     path: getRouteScheduledLessons(),
-    element: <ScheduledLessonsPage />,
+    element: withLayout(<ScheduledLessonsPage />),
   },
   [AppRoutes.PAYMENT_REQUESTS]: {
     path: getRoutePaymentRequests(),
-    element: <PaymentRequestsPage />,
+    element: withLayout(<PaymentRequestsPage />),
   },
   [AppRoutes.THERAPISTS]: {
     path: getRouteTherapists(),
-    element: <TherapistsPage />,
+    element: withLayout(<TherapistsPage />),
   },
   [AppRoutes.NEWS]: {
     path: getRouteNews(),
-    element: <NewsPage />,
+    element: withLayout(<NewsPage />),
   },
   [AppRoutes.PRESENTATIONS]: {
     path: getRoutePresentations(),
-    element: (
-      <DefaultLayout>
-        <PresentationsPage />
-      </DefaultLayout>
-    ),
+    element: withLayout(<PresentationsPage />),
   },
   [AppRoutes.GAMES]: {
     path: getRouteGames(),
-    element: (
-      <DefaultLayout>
-        <GamesPage />
-      </DefaultLayout>
-    ),
+    element: withLayout(<GamesPage />),
   },
   [AppRoutes.LESSONS]: {
     path: getRouteLessons(),
-    element: <LessonsPage />,
+    element: withSuspense(<LessonsPage />),
   },
 };

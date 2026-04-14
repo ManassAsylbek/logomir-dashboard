@@ -1,15 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { toast } from "react-hot-toast";
+
 import { KEYS_GAMES } from "../keys";
+
 import { createGame } from "@/shared/api/games/createGame";
-import { CreateGameRequest } from "@/shared/api/games/types";
+import { CreateGameRequest, Game } from "@/shared/api/games/types";
+
+type CreateGamePayload = CreateGameRequest | FormData;
 
 export const useCreateGame = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: async (data: CreateGameRequest) => {
+  return useMutation<Game, unknown, CreateGamePayload>({
+    mutationFn: async (data: CreateGamePayload) => {
       const response = await createGame(data);
 
       return response.data;
