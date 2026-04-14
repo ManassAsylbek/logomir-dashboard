@@ -22,7 +22,7 @@ export default function PaymentRequestsPage() {
 
   const handleStatusChange = (
     id: number,
-    status: "success" | "failed" | "pending" | "pay_pending"
+    status: "success" | "failed" | "pending" | "pay_pending",
   ) => {
     setPendingAction({ id, status: status as "success" | "failed" });
     setIsConfirmOpen(true);
@@ -40,7 +40,7 @@ export default function PaymentRequestsPage() {
             setIsConfirmOpen(false);
             setPendingAction(null);
           },
-        }
+        },
       );
     }
   };

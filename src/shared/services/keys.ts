@@ -60,3 +60,8 @@ export const KEYS_LESSONS = {
   lessons: getKey("LESSONS", "QUERY"),
   lesson: (id: number) => getKey(`LESSON_${id}`, "QUERY"),
 };
+
+export const KEYS_STUDENTS = {
+  students: getKey("STUDENTS", "QUERY"),
+  student: (id: number) => getKey(`STUDENT_${id}`, "QUERY"),
+};

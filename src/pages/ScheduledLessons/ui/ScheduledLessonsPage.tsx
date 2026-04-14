@@ -59,153 +59,153 @@ export default function ScheduledLessonsPage() {
   return (
     <>
       <div className="flex flex-col gap-6">
-          {/* Search */}
-          <div className="flex items-center justify-between gap-4">
-            <Input
-              placeholder="Поиск"
-              startContent={<Search className="text-default-400" size={20} />}
-              className="max-w-4xl"
-              classNames={{ inputWrapper: "bg-white" }}
-              variant="bordered"
-              size="lg"
-              radius="full"
-              value={search}
-              onValueChange={setSearch}
-            />
-          </div>
-
-          <h1 className="text-3xl font-medium">Запланированные занятия</h1>
-
-          {isLoading && (
-            <div className="flex justify-center py-16">
-              <Spinner size="lg" />
-            </div>
-          )}
-
-          {isError && (
-            <div className="flex justify-center py-16 text-red-400">
-              Не удалось загрузить занятия. Попробуйте позже.
-            </div>
-          )}
-
-          {!isLoading && !isError && filtered.length === 0 && (
-            <div className="flex justify-center py-16 text-gray-400">
-              Занятия не найдены.
-            </div>
-          )}
-
-          {!isLoading && !isError && filtered.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {filtered.map((lesson) => (
-                <Card key={lesson.id} className="bg-white shadow-sm">
-                  <CardBody className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs px-3 py-1 bg-white rounded-full border border-gray-200">
-                          {formatDateRange(lesson.start_time, lesson.end_time)}
-                        </span>
-                        {getLessonTypeLabel(lesson) && (
-                          <span className="text-xs px-3 py-1 bg-white rounded-full border border-gray-200">
-                            {getLessonTypeLabel(lesson)}
-                          </span>
-                        )}
-                        {lesson.branch_name && (
-                          <span className="text-xs px-3 py-1 bg-white rounded-full border border-gray-200">
-                            {lesson.branch_name}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold text-gray-500">
-                        {(lesson.name ?? "?")[0].toUpperCase()}
-                      </div>
-                      <h3 className="text-lg font-medium">
-                        {lesson.name ?? `Занятие #${lesson.id}`}
-                      </h3>
-                    </div>
-
-                    {lesson.description && (
-                      <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                        {lesson.description}
-                      </p>
-                    )}
-
-                    <div className="mb-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-600">
-                          {lesson.user_tariff ?? 0}/33
-                        </span>
-                      </div>
-                      <Progress
-                        value={((lesson.user_tariff ?? 0) / 33) * 100}
-                        color="success"
-                        size="md"
-                        className="max-w-[200px]"
-                      />
-                    </div>
-
-                    <div className="flex gap-3">
-                      {lesson.record_file ? (
-                        <Button
-                          as="a"
-                          href={lesson.record_file}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          size="md"
-                          radius="full"
-                          className="bg-[#2d2d2d] text-white flex-1 flex justify-between"
-                          endContent={
-                            <div className="absolute right-2 w-7 h-7 bg-green-400 rounded-full flex items-center justify-center">
-                              <ArrowRight className="w-4 h-4 text-gray-800" />
-                            </div>
-                          }
-                        >
-                          Запись
-                        </Button>
-                      ) : (
-                        <Button
-                          size="md"
-                          radius="full"
-                          isDisabled
-                          className="bg-[#2d2d2d] text-white flex-1 flex justify-between opacity-50"
-                          endContent={
-                            <div className="absolute right-2 w-7 h-7 bg-green-400 rounded-full flex items-center justify-center">
-                              <ArrowRight className="w-4 h-4 text-gray-800" />
-                            </div>
-                          }
-                        >
-                          Google meet
-                        </Button>
-                      )}
-                      <Button
-                        size="md"
-                        radius="full"
-                        variant="bordered"
-                        className="bg-white border-gray-300 flex-1"
-                        onPress={() => handleOpenModal(lesson.id)}
-                      >
-                        Добавить примечание
-                      </Button>
-                      <Button
-                        size="md"
-                        radius="full"
-                        isIconOnly
-                        className="bg-[#22bb79] text-white min-w-[44px]"
-                        isDisabled={!lesson.record_file}
-                        as={lesson.record_file ? "a" : "button"}
-                        href={lesson.record_file ?? undefined}
-                      >
-                        <Download size={20} />
-                      </Button>
-                    </div>
-                  </CardBody>
-                </Card>
-              ))}
-            </div>
-          )}
+        {/* Search */}
+        <div className="flex items-center justify-between gap-4">
+          <Input
+            placeholder="Поиск"
+            startContent={<Search className="text-default-400" size={20} />}
+            className="max-w-4xl"
+            classNames={{ inputWrapper: "bg-white" }}
+            variant="bordered"
+            size="lg"
+            radius="full"
+            value={search}
+            onValueChange={setSearch}
+          />
         </div>
+
+        <h1 className="text-3xl font-medium">Запланированные занятия</h1>
+
+        {isLoading && (
+          <div className="flex justify-center py-16">
+            <Spinner size="lg" />
+          </div>
+        )}
+
+        {isError && (
+          <div className="flex justify-center py-16 text-red-400">
+            Не удалось загрузить занятия. Попробуйте позже.
+          </div>
+        )}
+
+        {!isLoading && !isError && filtered.length === 0 && (
+          <div className="flex justify-center py-16 text-gray-400">
+            Занятия не найдены.
+          </div>
+        )}
+
+        {!isLoading && !isError && filtered.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {filtered.map((lesson) => (
+              <Card key={lesson.id} className="bg-white shadow-sm">
+                <CardBody className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs px-3 py-1 bg-white rounded-full border border-gray-200">
+                        {formatDateRange(lesson.start_time, lesson.end_time)}
+                      </span>
+                      {getLessonTypeLabel(lesson) && (
+                        <span className="text-xs px-3 py-1 bg-white rounded-full border border-gray-200">
+                          {getLessonTypeLabel(lesson)}
+                        </span>
+                      )}
+                      {lesson.branch_name && (
+                        <span className="text-xs px-3 py-1 bg-white rounded-full border border-gray-200">
+                          {lesson.branch_name}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold text-gray-500">
+                      {(lesson.name ?? "?")[0].toUpperCase()}
+                    </div>
+                    <h3 className="text-lg font-medium">
+                      {lesson.name ?? `Занятие #${lesson.id}`}
+                    </h3>
+                  </div>
+
+                  {lesson.description && (
+                    <p className="text-sm text-gray-500 mb-4 line-clamp-2">
+                      {lesson.description}
+                    </p>
+                  )}
+
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-gray-600">
+                        {lesson.user_tariff ?? 0}/33
+                      </span>
+                    </div>
+                    <Progress
+                      value={((lesson.user_tariff ?? 0) / 33) * 100}
+                      color="success"
+                      size="md"
+                      className="max-w-[200px]"
+                    />
+                  </div>
+
+                  <div className="flex gap-3">
+                    {lesson.record_file ? (
+                      <Button
+                        as="a"
+                        href={lesson.record_file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        size="md"
+                        radius="full"
+                        className="bg-[#2d2d2d] text-white flex-1 flex justify-between"
+                        endContent={
+                          <div className="absolute right-2 w-7 h-7 bg-green-400 rounded-full flex items-center justify-center">
+                            <ArrowRight className="w-4 h-4 text-gray-800" />
+                          </div>
+                        }
+                      >
+                        Запись
+                      </Button>
+                    ) : (
+                      <Button
+                        size="md"
+                        radius="full"
+                        isDisabled
+                        className="bg-[#2d2d2d] text-white flex-1 flex justify-between opacity-50"
+                        endContent={
+                          <div className="absolute right-2 w-7 h-7 bg-green-400 rounded-full flex items-center justify-center">
+                            <ArrowRight className="w-4 h-4 text-gray-800" />
+                          </div>
+                        }
+                      >
+                        Google meet
+                      </Button>
+                    )}
+                    <Button
+                      size="md"
+                      radius="full"
+                      variant="bordered"
+                      className="bg-white border-gray-300 flex-1"
+                      onPress={() => handleOpenModal(lesson.id)}
+                    >
+                      Добавить примечание
+                    </Button>
+                    <Button
+                      size="md"
+                      radius="full"
+                      isIconOnly
+                      className="bg-[#22bb79] text-white min-w-[44px]"
+                      isDisabled={!lesson.record_file}
+                      as={lesson.record_file ? "a" : "button"}
+                      href={lesson.record_file ?? undefined}
+                    >
+                      <Download size={20} />
+                    </Button>
+                  </div>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
 
       <AddCommentModal
         isOpen={selectedLesson !== null}
