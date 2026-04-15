@@ -89,12 +89,16 @@ export default function StudentsPage() {
                             }}
                           />
                         </td>
-                        <td className="py-3 px-4 text-sm">{student.age} {t("students.years")}</td>
+                        <td className="py-3 px-4 text-sm">
+                          {student.age} {t("students.years")}
+                        </td>
                         <td className="py-3 px-4 text-sm">
                           {student.phone_number || "—"}
                         </td>
                         <td className="py-3 px-4 text-sm">
-                          {student.gender === "Male" ? t("students.male") : t("students.female")}
+                          {student.gender === "Male"
+                            ? t("students.male")
+                            : t("students.female")}
                         </td>
                         <td className="py-3 px-4">
                           <span className="text-xs px-2 py-1 bg-success-100 text-success-700 rounded">

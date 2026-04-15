@@ -8,10 +8,34 @@ export function FormatsSection({ onOpenModal }: FormatsSectionProps) {
   const { t } = useTranslation();
 
   const formats = [
-    { icon: "/format/1.png", labelKey: "format1Label", descKey: "format1Desc", timeKey: "format1Time", priceKey: "format1Price" },
-    { icon: "/format/2.png", labelKey: "format2Label", descKey: "format2Desc", timeKey: "format2Time", priceKey: "format2Price" },
-    { icon: "/format/3.png", labelKey: "format3Label", descKey: "format3Desc", timeKey: "format3Time", priceKey: "format3Price" },
-    { icon: "/format/4.png", labelKey: "format4Label", descKey: "format4Desc", timeKey: "format4Time", priceKey: "format4Price" },
+    {
+      icon: "/format/1.png",
+      labelKey: "format1Label",
+      descKey: "format1Desc",
+      timeKey: "format1Time",
+      priceKey: "format1Price",
+    },
+    {
+      icon: "/format/2.png",
+      labelKey: "format2Label",
+      descKey: "format2Desc",
+      timeKey: "format2Time",
+      priceKey: "format2Price",
+    },
+    {
+      icon: "/format/3.png",
+      labelKey: "format3Label",
+      descKey: "format3Desc",
+      timeKey: "format3Time",
+      priceKey: "format3Price",
+    },
+    {
+      icon: "/format/4.png",
+      labelKey: "format4Label",
+      descKey: "format4Desc",
+      timeKey: "format4Time",
+      priceKey: "format4Price",
+    },
   ];
   return (
     <section
@@ -31,7 +55,11 @@ export function FormatsSection({ onOpenModal }: FormatsSectionProps) {
             >
               <div>
                 <div className="text-2xl mb-3">
-                  <img src={item.icon} alt={t(`landing.formats.${item.labelKey}`)} className="w-8 h-8" />
+                  <img
+                    src={item.icon}
+                    alt={t(`landing.formats.${item.labelKey}`)}
+                    className="w-8 h-8"
+                  />
                 </div>
                 <h3 className="font-semibold text-[#3cb96a] text-md md:text-lg mb-1">
                   {t(`landing.formats.${item.labelKey}`)}
@@ -41,8 +69,12 @@ export function FormatsSection({ onOpenModal }: FormatsSectionProps) {
                 </p>
               </div>
               <div className="mt-1 md:mt-20">
-                <p className="text-gray-500 text-sm">{t(`landing.formats.${item.timeKey}`)}</p>
-                <p className="text-2xl font-bold text-[#3cb96a]">{t(`landing.formats.${item.priceKey}`)}</p>
+                <p className="text-gray-500 text-sm">
+                  {t(`landing.formats.${item.timeKey}`)}
+                </p>
+                <p className="text-2xl font-bold text-[#3cb96a]">
+                  {t(`landing.formats.${item.priceKey}`)}
+                </p>
               </div>
             </div>
           ))}

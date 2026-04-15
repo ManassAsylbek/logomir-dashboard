@@ -239,7 +239,8 @@ function RevenueModal({
                 {t("dashboard.revenueModal.recentTx")}
               </h3>
               <span className="text-xs text-gray-400">
-                {RECENT_TRANSACTIONS.length} {t("dashboard.revenueModal.records")}
+                {RECENT_TRANSACTIONS.length}{" "}
+                {t("dashboard.revenueModal.records")}
               </span>
             </div>
             <div className="divide-y divide-gray-50">
@@ -384,7 +385,9 @@ export default function MainPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t("dashboard.title")}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            {t("dashboard.title")}
+          </h1>
           <p className="text-sm text-gray-500 mt-0.5">
             {t("dashboard.subtitle")}
           </p>
@@ -405,7 +408,9 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">76%</div>
-            <div className="text-xs text-gray-500">{t("dashboard.successRate")}</div>
+            <div className="text-xs text-gray-500">
+              {t("dashboard.successRate")}
+            </div>
           </CardBody>
         </Card>
 
@@ -420,7 +425,9 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">18</div>
-            <div className="text-xs text-gray-500">{t("dashboard.upcomingLessons")}</div>
+            <div className="text-xs text-gray-500">
+              {t("dashboard.upcomingLessons")}
+            </div>
           </CardBody>
         </Card>
 
@@ -435,7 +442,9 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">47</div>
-            <div className="text-xs text-gray-500">{t("dashboard.activeStudents")}</div>
+            <div className="text-xs text-gray-500">
+              {t("dashboard.activeStudents")}
+            </div>
           </CardBody>
         </Card>
 
@@ -450,7 +459,9 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">$12.4k</div>
-            <div className="text-xs text-gray-500">{t("dashboard.revenue")}</div>
+            <div className="text-xs text-gray-500">
+              {t("dashboard.revenue")}
+            </div>
           </CardBody>
         </Card>
       </div>

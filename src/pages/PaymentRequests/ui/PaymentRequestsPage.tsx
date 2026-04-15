@@ -220,7 +220,12 @@ export default function PaymentRequestsPage() {
         }}
         onConfirm={handleConfirmStatusChange}
         title={t("payments.confirmTitle")}
-        message={t("payments.confirmMessage", { status: pendingAction?.status === "success" ? t("payments.paid") : t("payments.notPaid") })}
+        message={t("payments.confirmMessage", {
+          status:
+            pendingAction?.status === "success"
+              ? t("payments.paid")
+              : t("payments.notPaid"),
+        })}
         confirmText={t("payments.confirmBtn")}
         cancelText={t("payments.cancel")}
         isLoading={isPending}

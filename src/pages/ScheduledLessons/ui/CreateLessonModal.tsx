@@ -117,7 +117,9 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                           errors.user ? "border-danger-400" : "border-gray-300"
                         }`}
                       >
-                        <option value="">{t("lessons.createModal.selectStudent")}</option>
+                        <option value="">
+                          {t("lessons.createModal.selectStudent")}
+                        </option>
                         {studentsData?.results?.map((s) => (
                           <option key={s.id} value={s.id}>
                             {s.full_name || s.username}
@@ -147,8 +149,12 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                       {...field}
                       className="w-full h-12 rounded-xl border border-gray-300 bg-white px-3 text-sm"
                     >
-                      <option value="online">{t("lessons.createModal.online")}</option>
-                      <option value="offline">{t("lessons.createModal.offline")}</option>
+                      <option value="online">
+                        {t("lessons.createModal.online")}
+                      </option>
+                      <option value="offline">
+                        {t("lessons.createModal.offline")}
+                      </option>
                     </select>
                   )}
                 />
@@ -162,7 +168,9 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                   <Input
                     {...field}
                     label={t("lessons.createModal.description")}
-                    placeholder={t("lessons.createModal.descriptionPlaceholder")}
+                    placeholder={t(
+                      "lessons.createModal.descriptionPlaceholder",
+                    )}
                     size="lg"
                     variant="bordered"
                     classNames={{ inputWrapper: "bg-white" }}

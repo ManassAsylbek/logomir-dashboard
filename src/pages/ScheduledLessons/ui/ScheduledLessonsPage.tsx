@@ -196,7 +196,7 @@ export default function ScheduledLessonsPage() {
                             <ArrowRight className="w-4 h-4 text-gray-800" />
                           </div>
                         }
-                        >
+                      >
                         {t("lessons.googleMeet")}
                       </Button>
                     )}

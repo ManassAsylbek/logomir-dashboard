@@ -88,7 +88,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
 
       <NavbarBrand>
         <a href="/">
-          <img src="/logo.png" alt="Logomir" className="h-10 w-auto" />
+          <img src="/logo.png" alt="Logomir" className="h-14 w-auto" />
         </a>
       </NavbarBrand>
 
@@ -99,7 +99,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
             <Link
               to={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className="text-[13px] text-[#242424] font-medium hover:text-[#3cb96a] transition-colors"
+              className="text-base text-[#242424] font-medium hover:text-[#3cb96a] transition-colors"
             >
               {item.label}
             </Link>
@@ -172,7 +172,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
                 setIsMenuOpen(false);
                 handleLogout();
               }}
-              className="bg-red-400 text-white text-sm font-semibold hover:bg-red-500 rounded-xl w-full mt-2"
+              className="bg-red-400 text-white text-base font-semibold hover:bg-red-500 rounded-xl w-full mt-2"
               endContent={<LogOut size={18} />}
             >
               {t("landing.nav.logout")}
@@ -183,7 +183,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
                 setIsMenuOpen(false);
                 onOpenModal();
               }}
-              className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl w-full mt-2"
+              className="bg-[#7bcf58] text-white text-base font-semibold hover:bg-[#6fc44c] rounded-xl w-full mt-2"
               endContent={<LogIn size={18} />}
             >
               {t("landing.nav.login")}

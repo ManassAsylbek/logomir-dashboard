@@ -95,7 +95,9 @@ export default function CreateNewsModal({
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
-          <h2 className="text-2xl font-medium">{t("news.createModal.title")}</h2>
+          <h2 className="text-2xl font-medium">
+            {t("news.createModal.title")}
+          </h2>
         </ModalHeader>
         <ModalBody className="px-6 pb-6">
           <div className="flex flex-col gap-4">

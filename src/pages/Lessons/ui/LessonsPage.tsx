@@ -19,7 +19,10 @@ function formatTime(iso: string | null): string {
 
 type LabelType = "today" | "tomorrow" | "date";
 
-function getDateLabel(iso: string | null, t: (key: string) => string): { label: string; type: LabelType } {
+function getDateLabel(
+  iso: string | null,
+  t: (key: string) => string,
+): { label: string; type: LabelType } {
   if (!iso) return { label: "—", type: "date" };
   const lessonDate = new Date(iso);
   const today = new Date();
@@ -31,8 +34,10 @@ function getDateLabel(iso: string | null, t: (key: string) => string): { label: 
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate();
 
-  if (isSameDay(lessonDate, today)) return { label: t("landing.lessonsPage.today"), type: "today" };
-  if (isSameDay(lessonDate, tomorrow)) return { label: t("landing.lessonsPage.tomorrow"), type: "tomorrow" };
+  if (isSameDay(lessonDate, today))
+    return { label: t("landing.lessonsPage.today"), type: "today" };
+  if (isSameDay(lessonDate, tomorrow))
+    return { label: t("landing.lessonsPage.tomorrow"), type: "tomorrow" };
 
   const label = lessonDate.toLocaleDateString("ru-RU", {
     day: "2-digit",
@@ -81,7 +86,9 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
 
   const displayName = lesson.name ?? `Занятие #${lesson.id}`;
   const lessonTypeLabel =
-    lesson.lesson_type === "online" ? t("landing.lessonsPage.online") : (lesson.lesson_type ?? "—");
+    lesson.lesson_type === "online"
+      ? t("landing.lessonsPage.online")
+      : (lesson.lesson_type ?? "—");
   const branchLabel = lesson.branch_name ?? lessonTypeLabel;
 
   return (
@@ -115,8 +122,8 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
             className="inline-flex items-center gap-2 w-fit"
           >
             <span className="bg-[#333] text-white text-xs font-semibold px-4 py-2 rounded-full">
-                {t("landing.lessonsPage.recordLesson")}
-              </span>
+              {t("landing.lessonsPage.recordLesson")}
+            </span>
             <span className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
               <ArrowRight size={14} className="text-gray-600" />
             </span>
@@ -152,12 +159,18 @@ export default function LessonsPage() {
 
       {/* Content */}
       <main className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-20 pb-16 flex-1">
-        <p className="text-sm text-gray-400 mb-2">{t("landing.lessonsPage.breadcrumb")}</p>
-        <h1 className="text-3xl md:text-4xl font-bold mb-8">{t("landing.lessonsPage.title")}</h1>
+        <p className="text-sm text-gray-400 mb-2">
+          {t("landing.lessonsPage.breadcrumb")}
+        </p>
+        <h1 className="text-3xl md:text-4xl font-bold mb-8">
+          {t("landing.lessonsPage.title")}
+        </h1>
 
         {isLoading && (
           <div className="flex justify-center items-center py-20">
-            <span className="text-gray-400">{t("landing.lessonsPage.loading")}</span>
+            <span className="text-gray-400">
+              {t("landing.lessonsPage.loading")}
+            </span>
           </div>
         )}
 
@@ -171,7 +184,9 @@ export default function LessonsPage() {
 
         {!isLoading && !isError && lessons.length === 0 && (
           <div className="flex justify-center items-center py-20">
-            <span className="text-gray-400">{t("landing.lessonsPage.empty")}</span>
+            <span className="text-gray-400">
+              {t("landing.lessonsPage.empty")}
+            </span>
           </div>
         )}
 

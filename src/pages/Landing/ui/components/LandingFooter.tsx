@@ -43,7 +43,9 @@ export function LandingFooter() {
               </a>
             </div>
             <div className="flex flex-col gap-2 text-green-200">
-              <span className="text-white font-semibold mb-1">{t("landing.footer.phone")}</span>
+              <span className="text-white font-semibold mb-1">
+                {t("landing.footer.phone")}
+              </span>
               <span className="hover:text-white cursor-pointer transition-colors">
                 WhatsApp
               </span>
@@ -57,7 +59,9 @@ export function LandingFooter() {
           </div>
         </div>
         <div className="border-t border-green-600 pt-6 flex flex-col md:flex-row justify-between items-start gap-4">
-          <span className="text-green-100 text-xs">{t("landing.footer.copyright")}</span>
+          <span className="text-green-100 text-xs">
+            {t("landing.footer.copyright")}
+          </span>
           <span className="text-green-100 text-xs">
             Dubai Silicon Oasis, DDP,
             <br />

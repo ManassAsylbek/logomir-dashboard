@@ -2,8 +2,8 @@ import { useTranslation } from "react-i18next";
 
 const lessonStepsMeta = [
   { num: "01", color: "text-orange-400", img: "/lessons/1.png", key: "step1" },
-  { num: "02", color: "text-green-500",  img: "/lessons/2.png", key: "step2" },
-  { num: "03", color: "text-blue-400",   img: "/lessons/3.png", key: "step3" },
+  { num: "02", color: "text-green-500", img: "/lessons/2.png", key: "step2" },
+  { num: "03", color: "text-blue-400", img: "/lessons/3.png", key: "step3" },
   { num: "04", color: "text-purple-500", img: "/lessons/4.png", key: "step4" },
 ];
 
@@ -23,10 +23,21 @@ export function HowLessonsGoSection() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
           {lessonStepsMeta.map((item) => (
             <div>
-              <div key={item.num} className={`bg-white rounded-2xl p-0 flex flex-col`}>
-                <span className={`text-5xl mt-4 ml-4 font-semibold ${item.color}`}>{item.num}</span>
+              <div
+                key={item.num}
+                className={`bg-white rounded-2xl p-0 flex flex-col`}
+              >
+                <span
+                  className={`text-5xl mt-4 ml-4 font-semibold ${item.color}`}
+                >
+                  {item.num}
+                </span>
                 <div className="w-full aspect-square overflow-hidden rounded-xl">
-                  <img src={item.img} alt={t(`landing.howLessonsGo.${item.key}Title`)} className="w-full h-full object-cover" />
+                  <img
+                    src={item.img}
+                    alt={t(`landing.howLessonsGo.${item.key}Title`)}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
               <p className="mt-4 font-bold text-lg text-gray-800 leading-snug">

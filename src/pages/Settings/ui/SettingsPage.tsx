@@ -124,7 +124,9 @@ const SettingsPage = () => {
         <CardBody className="pt-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">{t("settings.email")}</label>
+              <label className="text-sm font-medium mb-2 block">
+                {t("settings.email")}
+              </label>
               <Input
                 type="email"
                 placeholder="logo@"
@@ -140,7 +142,9 @@ const SettingsPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">{t("settings.phone")}</label>
+              <label className="text-sm font-medium mb-2 block">
+                {t("settings.phone")}
+              </label>
               <Input
                 type="tel"
                 placeholder="+ 996 (771) - 15 - 15 - 17"
@@ -155,7 +159,9 @@ const SettingsPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">{t("settings.whatsapp")}</label>
+              <label className="text-sm font-medium mb-2 block">
+                {t("settings.whatsapp")}
+              </label>
               <Input
                 type="tel"
                 placeholder="+ 996 (771) - 15 - 15 - 17"
@@ -170,7 +176,9 @@ const SettingsPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">{t("settings.telegram")}</label>
+              <label className="text-sm font-medium mb-2 block">
+                {t("settings.telegram")}
+              </label>
               <Input
                 type="text"
                 placeholder="@logo"

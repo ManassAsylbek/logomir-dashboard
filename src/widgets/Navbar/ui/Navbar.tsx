@@ -28,7 +28,9 @@ export const Navbar = () => {
         className="bg-white border-b border-default-200"
       >
         <NavbarContent justify="start">
-          <h1 className="font-semibold text-xl text-default-700">{t("nav.company")}</h1>
+          <h1 className="font-semibold text-xl text-default-700">
+            {t("nav.company")}
+          </h1>
         </NavbarContent>
 
         <NavbarContent justify="end" className="gap-3">
@@ -68,7 +70,9 @@ export const Navbar = () => {
         <BreadcrumbItem>
           <Home size={14} className="text-default-600" />
         </BreadcrumbItem>
-        <BreadcrumbItem className="text-default-600">{t("nav.company")}</BreadcrumbItem>
+        <BreadcrumbItem className="text-default-600">
+          {t("nav.company")}
+        </BreadcrumbItem>
       </Breadcrumbs>
     </>
   );
