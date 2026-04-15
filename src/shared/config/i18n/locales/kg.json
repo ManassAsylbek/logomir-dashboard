@@ -355,6 +355,20 @@
       "whyUs": "Эмне үчүн биз",
       "phone": "Телефон",
       "copyright": "Copyright © 2026 Logomir"
+    },
+    "lessonsPage": {
+      "breadcrumb": "Сабактар",
+      "title": "Сиздин сабактарыңыз",
+      "loading": "Жүктөлүүдө...",
+      "loadError": "Сабактарды жүктөө мүмкүн болмоду. Кийинчерээк кайра аракет кылыңыз.",
+      "empty": "Азырынча сабактарыңыз жок.",
+      "recordLesson": "Сабактын жазуусу",
+      "recordUnavailable": "Жазуу жеткиликсиз",
+      "today": "БҮГҮН",
+      "tomorrow": "ЭРТЕҢ",
+      "online": "Онлайн",
+      "timeFrom": "ДАН",
+      "timeTo": "ГА"
     }
   }
 }

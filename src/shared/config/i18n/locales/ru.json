@@ -355,6 +355,20 @@
       "whyUs": "Почему мы",
       "phone": "Телефон",
       "copyright": "Copyright © 2026 Logomir"
+    },
+    "lessonsPage": {
+      "breadcrumb": "Занятия",
+      "title": "Ваши занятия",
+      "loading": "Загрузка...",
+      "loadError": "Не удалось загрузить занятия. Попробуйте позже.",
+      "empty": "У вас пока нет занятий.",
+      "recordLesson": "Запись занятия",
+      "recordUnavailable": "Запись недоступна",
+      "today": "СЕГОДНЯ",
+      "tomorrow": "ЗАВТРА",
+      "online": "Онлайн",
+      "timeFrom": "С",
+      "timeTo": "ПО"
     }
   }
 }

@@ -5,6 +5,7 @@ import { LandingFooter } from "../../Landing/ui/components/LandingFooter";
 import { BookingModal } from "../../Landing/ui/components/BookingModal";
 import { useLessons } from "../../../shared/services/lessons/useLessons";
 import type { Lesson } from "../../../shared/api/lessons/types";
+import { useTranslation } from "react-i18next";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -18,7 +19,7 @@ function formatTime(iso: string | null): string {
 
 type LabelType = "today" | "tomorrow" | "date";
 
-function getDateLabel(iso: string | null): { label: string; type: LabelType } {
+function getDateLabel(iso: string | null, t: (key: string) => string): { label: string; type: LabelType } {
   if (!iso) return { label: "—", type: "date" };
   const lessonDate = new Date(iso);
   const today = new Date();
@@ -30,9 +31,8 @@ function getDateLabel(iso: string | null): { label: string; type: LabelType } {
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate();
 
-  if (isSameDay(lessonDate, today)) return { label: "СЕГОДНЯ", type: "today" };
-  if (isSameDay(lessonDate, tomorrow))
-    return { label: "ЗАВТРА", type: "tomorrow" };
+  if (isSameDay(lessonDate, today)) return { label: t("landing.lessonsPage.today"), type: "today" };
+  if (isSameDay(lessonDate, tomorrow)) return { label: t("landing.lessonsPage.tomorrow"), type: "tomorrow" };
 
   const label = lessonDate.toLocaleDateString("ru-RU", {
     day: "2-digit",
@@ -71,16 +71,17 @@ function LessonBadge({ label, type }: { label: string; type: LabelType }) {
 // ─── card component ───────────────────────────────────────────────────────────
 
 function LessonCard({ lesson }: { lesson: Lesson }) {
-  const { label, type } = getDateLabel(lesson.start_time);
+  const { t } = useTranslation();
+  const { label, type } = getDateLabel(lesson.start_time, t);
 
   const timeRange =
     lesson.start_time && lesson.end_time
-      ? `С ${formatTime(lesson.start_time)} ПО ${formatTime(lesson.end_time)}`
+      ? `${t("landing.lessonsPage.timeFrom")} ${formatTime(lesson.start_time)} ${t("landing.lessonsPage.timeTo")} ${formatTime(lesson.end_time)}`
       : "—";
 
   const displayName = lesson.name ?? `Занятие #${lesson.id}`;
   const lessonTypeLabel =
-    lesson.lesson_type === "online" ? "Онлайн" : (lesson.lesson_type ?? "—");
+    lesson.lesson_type === "online" ? t("landing.lessonsPage.online") : (lesson.lesson_type ?? "—");
   const branchLabel = lesson.branch_name ?? lessonTypeLabel;
 
   return (
@@ -114,15 +115,15 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
             className="inline-flex items-center gap-2 w-fit"
           >
             <span className="bg-[#333] text-white text-xs font-semibold px-4 py-2 rounded-full">
-              Запись занятия
-            </span>
+                {t("landing.lessonsPage.recordLesson")}
+              </span>
             <span className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 transition-colors">
               <ArrowRight size={14} className="text-gray-600" />
             </span>
           </a>
         ) : (
           <span className="text-xs text-gray-400 italic">
-            Запись недоступна
+            {t("landing.lessonsPage.recordUnavailable")}
           </span>
         )}
       </div>
@@ -133,6 +134,7 @@ function LessonCard({ lesson }: { lesson: Lesson }) {
 // ─── page ─────────────────────────────────────────────────────────────────────
 
 export default function LessonsPage() {
+  const { t } = useTranslation();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const { data, isLoading, isError } = useLessons();
 
@@ -150,26 +152,26 @@ export default function LessonsPage() {
 
       {/* Content */}
       <main className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-20 pb-16 flex-1">
-        <p className="text-sm text-gray-400 mb-2">Занятия</p>
-        <h1 className="text-3xl md:text-4xl font-bold mb-8">Ваши занятия</h1>
+        <p className="text-sm text-gray-400 mb-2">{t("landing.lessonsPage.breadcrumb")}</p>
+        <h1 className="text-3xl md:text-4xl font-bold mb-8">{t("landing.lessonsPage.title")}</h1>
 
         {isLoading && (
           <div className="flex justify-center items-center py-20">
-            <span className="text-gray-400">Загрузка...</span>
+            <span className="text-gray-400">{t("landing.lessonsPage.loading")}</span>
           </div>
         )}
 
         {isError && (
           <div className="flex justify-center items-center py-20">
             <span className="text-red-400">
-              Не удалось загрузить занятия. Попробуйте позже.
+              {t("landing.lessonsPage.loadError")}
             </span>
           </div>
         )}
 
         {!isLoading && !isError && lessons.length === 0 && (
           <div className="flex justify-center items-center py-20">
-            <span className="text-gray-400">У вас пока нет занятий.</span>
+            <span className="text-gray-400">{t("landing.lessonsPage.empty")}</span>
           </div>
         )}
 
