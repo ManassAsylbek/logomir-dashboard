@@ -80,16 +80,14 @@ export default function StudentsPage() {
                         <td className="py-3 px-4">
                           <User
                             name={student.full_name}
-                            description={student.username}
+                            // description={student.username}
                             avatarProps={{
                               src: student.avatar ?? undefined,
                               size: "sm",
                             }}
                           />
                         </td>
-                        <td className="py-3 px-4 text-sm">
-                          {student.age} лет
-                        </td>
+                        <td className="py-3 px-4 text-sm">{student.age} лет</td>
                         <td className="py-3 px-4 text-sm">
                           {student.phone_number || "—"}
                         </td>

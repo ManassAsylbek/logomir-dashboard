@@ -31,7 +31,7 @@ export interface Question {
   id?: string;
   name: string;
   image?: string | null;
-  answers: Answer[];
+  answers?: Answer[];
   sentence?: Sentence;
 }
 

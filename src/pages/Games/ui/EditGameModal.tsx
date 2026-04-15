@@ -184,7 +184,7 @@ export function EditGameModal({ isOpen, onClose, game }: EditGameModalProps) {
     const formData = new FormData();
 
     formData.append(
-      "game_data",
+      "data",
       JSON.stringify({
         name: data.name,
         game_type: data.gameType,
@@ -196,11 +196,11 @@ export function EditGameModal({ isOpen, onClose, game }: EditGameModalProps) {
 
     data.questions.forEach((question, index) => {
       if (data.gameType === GameType.Quiz && question.image) {
-        formData.append(`image_q${index}`, question.image);
+        formData.append(`question_${index}_image`, question.image);
       }
 
       if (data.gameType === GameType.AudioSentenceOrdering && question.audio) {
-        formData.append(`audio_q${index}`, question.audio);
+        formData.append(`question_${index}_sentence_audio`, question.audio);
       }
     });
 

@@ -7,5 +7,11 @@ import { Game, CreateGameRequest } from "./types";
 export const createGame = (
   data: CreateGameRequest | FormData,
 ): Promise<AxiosResponse<Game>> => {
-  return requester.post<Game>(`/web-admin/games/`, data);
+  if (data instanceof FormData) {
+    return requester.post<Game>(`/web-admin/games/`, data);
+  }
+
+  return requester.post<Game>(`/web-admin/games/`, data, {
+    headers: { "Content-Type": "application/json" },
+  });
 };

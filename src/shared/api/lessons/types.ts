@@ -15,6 +15,15 @@ export interface Lesson {
   updated_at: string | null;
 }
 
+export interface CreateLessonRequest {
+  name: string;
+  user: number;
+  lesson_type: "online" | "offline";
+  description?: string;
+  user_tariff?: number;
+  time_slot?: number;
+}
+
 export interface LessonsListResponse {
   count: number;
   next: string | null;

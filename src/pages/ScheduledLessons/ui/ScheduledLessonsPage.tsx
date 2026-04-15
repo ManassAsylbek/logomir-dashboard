@@ -3,9 +3,10 @@ import { Button } from "@heroui/button";
 import { Progress } from "@heroui/progress";
 import { Input } from "@heroui/input";
 import { Spinner } from "@heroui/spinner";
-import { ArrowRight, Download, Search } from "lucide-react";
+import { ArrowRight, Download, Plus, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import AddCommentModal from "./AddCommentModal";
+import { CreateLessonModal } from "./CreateLessonModal";
 import { useLessons } from "@/shared/services/lessons/useLessons";
 import type { Lesson } from "@/shared/api/lessons/types";
 
@@ -33,6 +34,7 @@ function getLessonTypeLabel(lesson: Lesson): string {
 
 export default function ScheduledLessonsPage() {
   const [selectedLesson, setSelectedLesson] = useState<number | null>(null);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
 
   const { data, isLoading, isError } = useLessons();
@@ -72,6 +74,20 @@ export default function ScheduledLessonsPage() {
             value={search}
             onValueChange={setSearch}
           />
+          <Button
+            size="lg"
+            radius="full"
+            className="bg-[#2d2d2d] text-white pr-2 shrink-0"
+            startContent={<Plus size={18} />}
+            endContent={
+              <div className="w-8 h-8 bg-green-400 rounded-full flex items-center justify-center">
+                <ArrowRight className="w-4 h-4 text-gray-800" />
+              </div>
+            }
+            onPress={() => setIsCreateOpen(true)}
+          >
+            Добавить урок
+          </Button>
         </div>
 
         <h1 className="text-3xl font-medium">Запланированные занятия</h1>
@@ -95,9 +111,12 @@ export default function ScheduledLessonsPage() {
         )}
 
         {!isLoading && !isError && filtered.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex flex-row flex-wrap gap-4">
             {filtered.map((lesson) => (
-              <Card key={lesson.id} className="bg-white shadow-sm">
+              <Card
+                key={lesson.id}
+                className="bg-white shadow-sm w-full sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]"
+              >
                 <CardBody className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -211,6 +230,11 @@ export default function ScheduledLessonsPage() {
         isOpen={selectedLesson !== null}
         onClose={handleCloseModal}
         lessonId={selectedLesson}
+      />
+
+      <CreateLessonModal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
       />
     </>
   );

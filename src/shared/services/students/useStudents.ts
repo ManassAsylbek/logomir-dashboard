@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { KEYS_STUDENTS } from "../keys";
+
 import { getStudents } from "@/shared/api/students/getStudents";
 
 export const useStudents = (page?: number) => {
