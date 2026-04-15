@@ -1,5 +1,13 @@
+import { useState } from "react";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "@heroui/modal";
 import { CustomRangeDatePicker } from "@/shared/ui/CustomRangeDatePicker";
 import {
   TrendingUp,
@@ -9,6 +17,13 @@ import {
   DollarSign,
   BookOpen,
   ArrowRight,
+  X,
+  CreditCard,
+  Banknote,
+  BarChart2,
+  CheckCircle2,
+  Clock,
+  XCircle,
 } from "lucide-react";
 
 const CIRCUMFERENCE = 2 * Math.PI * 80;
@@ -24,6 +39,271 @@ const segments: DonutSegment[] = [
   { value: 30, color: "#1f2937", label: "Ролевые игры" },
   { value: 21, color: "#9ca3af", label: "Звуковые постановки" },
 ];
+
+const MONTHLY_DATA = [
+  { month: "Янв", som: 72000, usd: 820, transactions: 14 },
+  { month: "Фев", som: 85000, usd: 970, transactions: 18 },
+  { month: "Мар", som: 91000, usd: 1040, transactions: 21 },
+  { month: "Апр", som: 78000, usd: 890, transactions: 16 },
+  { month: "Май", som: 95000, usd: 1085, transactions: 23 },
+  { month: "Июн", som: 88000, usd: 1005, transactions: 19 },
+  { month: "Июл", som: 102000, usd: 1164, transactions: 26 },
+  { month: "Авг", som: 97000, usd: 1107, transactions: 22 },
+  { month: "Сен", som: 110000, usd: 1256, transactions: 28 },
+  { month: "Окт", som: 99000, usd: 1130, transactions: 24 },
+  { month: "Ноя", som: 108000, usd: 1233, transactions: 27 },
+  { month: "Дек", som: 58266, usd: 665, transactions: 13 },
+];
+
+const RECENT_TRANSACTIONS = [
+  {
+    id: "#TXN-001",
+    student: "Алия Бекова",
+    amount: 9500,
+    usd: 108,
+    status: "paid",
+    date: "15 апр",
+  },
+  {
+    id: "#TXN-002",
+    student: "Дамир Сейткали",
+    amount: 12000,
+    usd: 137,
+    status: "paid",
+    date: "14 апр",
+  },
+  {
+    id: "#TXN-003",
+    student: "Жанар Омарова",
+    amount: 9500,
+    usd: 108,
+    status: "pending",
+    date: "13 апр",
+  },
+  {
+    id: "#TXN-004",
+    student: "Арман Жаксыбеков",
+    amount: 15000,
+    usd: 171,
+    status: "paid",
+    date: "12 апр",
+  },
+  {
+    id: "#TXN-005",
+    student: "Санем Нурланова",
+    amount: 9500,
+    usd: 108,
+    status: "failed",
+    date: "11 апр",
+  },
+  {
+    id: "#TXN-006",
+    student: "Нурсултан Касым",
+    amount: 12000,
+    usd: 137,
+    status: "paid",
+    date: "10 апр",
+  },
+];
+
+function RevenueModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  const maxSom = Math.max(...MONTHLY_DATA.map((d) => d.som));
+
+  return (
+    <Modal
+      isOpen={open}
+      onClose={onClose}
+      size="4xl"
+      scrollBehavior="inside"
+      classNames={{
+        base: "bg-white",
+        header: "border-b border-gray-100",
+        footer: "border-t border-gray-100",
+      }}
+    >
+      <ModalContent>
+        <ModalHeader className="flex items-center justify-between pr-4">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">
+              Детали поступлений
+            </h2>
+            <p className="text-sm text-gray-500 font-normal mt-0.5">
+              Финансовая аналитика за текущий год
+            </p>
+          </div>
+        </ModalHeader>
+        <ModalBody className="p-6 flex flex-col gap-6">
+          {/* Summary KPI row */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              {
+                label: "Итого (сом)",
+                value: "1 083 266",
+                icon: <Banknote size={18} className="text-green-600" />,
+                bg: "bg-green-50",
+              },
+              {
+                label: "Итого (USD)",
+                value: "$12 389",
+                icon: <DollarSign size={18} className="text-blue-600" />,
+                bg: "bg-blue-50",
+              },
+              {
+                label: "Транзакций",
+                value: "251",
+                icon: <CreditCard size={18} className="text-purple-600" />,
+                bg: "bg-purple-50",
+              },
+              {
+                label: "Ср. платёж",
+                value: "4 315 с",
+                icon: <BarChart2 size={18} className="text-amber-600" />,
+                bg: "bg-amber-50",
+              },
+            ].map((kpi) => (
+              <div
+                key={kpi.label}
+                className="rounded-2xl border border-gray-100 p-4 flex flex-col gap-2"
+              >
+                <div
+                  className={`w-9 h-9 rounded-xl ${kpi.bg} flex items-center justify-center`}
+                >
+                  {kpi.icon}
+                </div>
+                <div className="text-xl font-bold text-gray-900">
+                  {kpi.value}
+                </div>
+                <div className="text-xs text-gray-500">{kpi.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Monthly bar chart */}
+          <div className="rounded-2xl border border-gray-100 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-gray-800">
+                Выручка по месяцам (сом)
+              </h3>
+              <span className="text-xs text-gray-400">2026</span>
+            </div>
+            <div className="flex items-end gap-2 h-36">
+              {MONTHLY_DATA.map((d, i) => (
+                <div
+                  key={d.month}
+                  className="flex flex-col items-center gap-1 flex-1 group"
+                >
+                  <div className="relative w-full flex justify-center">
+                    <div
+                      className="w-full rounded-t-md transition-all group-hover:opacity-80"
+                      style={{
+                        height: `${(d.som / maxSom) * 130}px`,
+                        background:
+                          i === 11
+                            ? "linear-gradient(to top, #16a34a, #4ade80)"
+                            : i === MONTHLY_DATA.length - 2
+                              ? "linear-gradient(to top, #2563eb, #60a5fa)"
+                              : "linear-gradient(to top, #e5e7eb, #f3f4f6)",
+                      }}
+                    />
+                    <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-900 text-white text-[10px] rounded px-1.5 py-0.5 whitespace-nowrap pointer-events-none transition-opacity">
+                      {(d.som / 1000).toFixed(0)}k сом
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-between mt-2">
+              {MONTHLY_DATA.map((d) => (
+                <div
+                  key={d.month}
+                  className="flex-1 text-center text-[10px] text-gray-400"
+                >
+                  {d.month}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Transactions table */}
+          <div className="rounded-2xl border border-gray-100 overflow-hidden">
+            <div className="px-5 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-800">
+                Последние транзакции
+              </h3>
+              <span className="text-xs text-gray-400">
+                {RECENT_TRANSACTIONS.length} записей
+              </span>
+            </div>
+            <div className="divide-y divide-gray-50">
+              {RECENT_TRANSACTIONS.map((tx) => (
+                <div
+                  key={tx.id}
+                  className="flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-300 to-green-500 flex items-center justify-center text-white text-sm font-semibold shrink-0">
+                      {tx.student[0]}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-gray-800">
+                        {tx.student}
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        {tx.id} · {tx.date}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <div className="text-sm font-semibold text-gray-900">
+                        {tx.amount.toLocaleString()} сом
+                      </div>
+                      <div className="text-xs text-gray-400">${tx.usd}</div>
+                    </div>
+                    <div
+                      className={`flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${
+                        tx.status === "paid"
+                          ? "bg-green-100 text-green-700"
+                          : tx.status === "pending"
+                            ? "bg-amber-100 text-amber-700"
+                            : "bg-red-100 text-red-600"
+                      }`}
+                    >
+                      {tx.status === "paid" && <CheckCircle2 size={11} />}
+                      {tx.status === "pending" && <Clock size={11} />}
+                      {tx.status === "failed" && <XCircle size={11} />}
+                      {tx.status === "paid"
+                        ? "Оплачено"
+                        : tx.status === "pending"
+                          ? "Ожидание"
+                          : "Отклонено"}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            variant="light"
+            className="rounded-xl text-gray-600"
+            onPress={onClose}
+            startContent={<X size={15} />}
+          >
+            Закрыть
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
 
 function DonutChart() {
   let offset = 0;
@@ -92,8 +372,11 @@ function DonutChart() {
 }
 
 export default function MainPage() {
+  const [revenueOpen, setRevenueOpen] = useState(false);
+
   return (
     <div className="flex flex-col gap-6">
+      <RevenueModal open={revenueOpen} onClose={() => setRevenueOpen(false)} />
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -199,6 +482,7 @@ export default function MainPage() {
                 size="sm"
                 className="bg-white/10 text-white border border-white/20 rounded-full px-4 hover:bg-white/20"
                 endContent={<ArrowRight size={14} />}
+                onPress={() => setRevenueOpen(true)}
               >
                 Подробнее
               </Button>
