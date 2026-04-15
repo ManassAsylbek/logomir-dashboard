@@ -1,176 +1,342 @@
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
 import { CustomRangeDatePicker } from "@/shared/ui/CustomRangeDatePicker";
+import {
+  TrendingUp,
+  TrendingDown,
+  CalendarDays,
+  Users,
+  DollarSign,
+  BookOpen,
+  ArrowRight,
+} from "lucide-react";
+
+const CIRCUMFERENCE = 2 * Math.PI * 80;
+
+interface DonutSegment {
+  value: number;
+  color: string;
+  label: string;
+}
+
+const segments: DonutSegment[] = [
+  { value: 49, color: "#4ade80", label: "Артикуляционные упражнения" },
+  { value: 30, color: "#1f2937", label: "Ролевые игры" },
+  { value: 21, color: "#9ca3af", label: "Звуковые постановки" },
+];
+
+function DonutChart() {
+  let offset = 0;
+  return (
+    <div className="flex items-center gap-6">
+      <div className="relative shrink-0">
+        <svg width="160" height="160" viewBox="0 0 220 220">
+          {segments.map((seg, i) => {
+            const dash = (seg.value / 100) * CIRCUMFERENCE;
+            const el = (
+              <circle
+                key={i}
+                cx="110"
+                cy="110"
+                r="80"
+                fill="none"
+                stroke={seg.color}
+                strokeWidth="38"
+                strokeDasharray={`${dash} ${CIRCUMFERENCE}`}
+                strokeDashoffset={-offset}
+                transform="rotate(-90 110 110)"
+                strokeLinecap="butt"
+              />
+            );
+            offset += dash;
+            return el;
+          })}
+          <circle cx="110" cy="110" r="61" fill="white" />
+          <text
+            x="110"
+            y="105"
+            textAnchor="middle"
+            fontSize="28"
+            fontWeight="700"
+            fill="#1f2937"
+          >
+            76%
+          </text>
+          <text
+            x="110"
+            y="128"
+            textAnchor="middle"
+            fontSize="12"
+            fill="#6b7280"
+          >
+            успешность
+          </text>
+        </svg>
+      </div>
+      <div className="flex flex-col gap-3 flex-1">
+        {segments.map((seg) => (
+          <div key={seg.label} className="flex items-center gap-2">
+            <div
+              className="w-2.5 h-2.5 rounded-full shrink-0"
+              style={{ backgroundColor: seg.color }}
+            />
+            <span className="text-xs text-gray-600 flex-1">{seg.label}</span>
+            <span className="text-xs font-semibold text-gray-800">
+              {seg.value}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function MainPage() {
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-medium">Аналитика</h1>
-        <div className="flex gap-2">
-          <CustomRangeDatePicker />
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Дашборд</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            Обзор показателей и аналитика
+          </p>
         </div>
-        {/* <div className="flex gap-2">
-          <Select
-            placeholder={currentMonth}
-            className="w-32"
-            size="sm"
-            classNames={{
-              trigger: "bg-white border border-gray-300",
-            }}
-          >
-            {months.map((month) => (
-              <SelectItem key={month} value={month}>
-                {month}
-              </SelectItem>
-            ))}
-          </Select>
-          <Select
-            placeholder={currentYear.toString()}
-            className="w-24"
-            size="sm"
-            classNames={{
-              trigger: "bg-white border border-gray-300",
-            }}
-          >
-            {[currentYear - 1, currentYear, currentYear + 1].map((year) => (
-              <SelectItem key={year} value={year.toString()}>
-                {year}
-              </SelectItem>
-            ))}
-          </Select>
-        </div> */}
+        <CustomRangeDatePicker />
       </div>
 
-      {/* Grid Layout */}
+      {/* KPI Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="border-none shadow-sm bg-gradient-to-br from-green-50 to-white">
+          <CardBody className="p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+                <TrendingUp size={20} className="text-green-600" />
+              </div>
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <TrendingUp size={11} /> +4%
+              </span>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-1">76%</div>
+            <div className="text-xs text-gray-500">Средняя успеваемость</div>
+          </CardBody>
+        </Card>
+
+        <Card className="border-none shadow-sm bg-gradient-to-br from-blue-50 to-white">
+          <CardBody className="p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                <CalendarDays size={20} className="text-blue-600" />
+              </div>
+              <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <TrendingUp size={11} /> +2
+              </span>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-1">18</div>
+            <div className="text-xs text-gray-500">Предстоящих занятий</div>
+          </CardBody>
+        </Card>
+
+        <Card className="border-none shadow-sm bg-gradient-to-br from-purple-50 to-white">
+          <CardBody className="p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                <Users size={20} className="text-purple-600" />
+              </div>
+              <span className="text-xs font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <TrendingDown size={11} /> -1
+              </span>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-1">47</div>
+            <div className="text-xs text-gray-500">Активных учеников</div>
+          </CardBody>
+        </Card>
+
+        <Card className="border-none shadow-sm bg-gradient-to-br from-amber-50 to-white">
+          <CardBody className="p-5">
+            <div className="flex items-start justify-between mb-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                <DollarSign size={20} className="text-amber-600" />
+              </div>
+              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <TrendingUp size={11} /> +12%
+              </span>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 mb-1">$12.4k</div>
+            <div className="text-xs text-gray-500">Выручка за период</div>
+          </CardBody>
+        </Card>
+      </div>
+
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Donut chart */}
+        <Card className="border-none shadow-sm">
+          <CardBody className="p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-base font-semibold text-gray-900">
+                Типы занятий
+              </h3>
+              <BookOpen size={16} className="text-gray-400" />
+            </div>
+            <DonutChart />
+          </CardBody>
+        </Card>
+
+        {/* Revenue card */}
+        <Card className="lg:col-span-2 border-none shadow-sm bg-[#1f2937] text-white">
+          <CardBody className="p-6">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h3 className="text-base font-semibold mb-1">
+                  Сумма поступлений
+                </h3>
+                <p className="text-gray-400 text-sm">
+                  Выручка на текущий момент
+                </p>
+              </div>
+              <Button
+                size="sm"
+                className="bg-white/10 text-white border border-white/20 rounded-full px-4 hover:bg-white/20"
+                endContent={<ArrowRight size={14} />}
+              >
+                Подробнее
+              </Button>
+            </div>
+            <div className="flex flex-col gap-1 mb-8">
+              <div className="text-gray-400 text-sm">1 083 266 сом</div>
+              <div className="text-5xl font-bold">$12 389</div>
+            </div>
+            <div className="flex items-end gap-1.5 h-16">
+              {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 88].map((h, i) => (
+                <div
+                  key={i}
+                  className="flex-1 rounded-t-sm"
+                  style={{
+                    height: `${h}%`,
+                    backgroundColor:
+                      i === 11 ? "#4ade80" : "rgba(255,255,255,0.15)",
+                  }}
+                />
+              ))}
+            </div>
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <span>Янв</span>
+              <span>Дек</span>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+
+      {/* Bottom row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Средний % успеваемости */}
-        <Card>
-          <CardBody className="p-8">
-            <div className="flex items-start justify-between mb-8">
-              <h3 className="text-lg font-medium">Средний % успеваемости</h3>
-            </div>
-            <div className="flex items-end justify-between">
-              <div className="text-7xl font-bold">76%</div>
-              <Button size="sm" className="bg-[#2d2d2d] text-white">
-                Узнать больше
+        {/* Upcoming lessons */}
+        <Card className="border-none shadow-sm">
+          <CardBody className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-semibold text-gray-900">
+                Ближайшие занятия
+              </h3>
+              <Button
+                size="sm"
+                variant="light"
+                className="text-gray-500 text-xs rounded-full"
+                endContent={<ArrowRight size={12} />}
+              >
+                Все
               </Button>
             </div>
+            <div className="flex flex-col gap-3">
+              {[
+                {
+                  name: "Алия Бекова",
+                  time: "10:00",
+                  type: "Онлайн",
+                  color: "bg-green-100 text-green-700",
+                },
+                {
+                  name: "Дамир Сейткали",
+                  time: "12:30",
+                  type: "Офлайн",
+                  color: "bg-gray-100 text-gray-700",
+                },
+                {
+                  name: "Жанар Омарова",
+                  time: "15:00",
+                  type: "Онлайн",
+                  color: "bg-green-100 text-green-700",
+                },
+              ].map((s) => (
+                <div
+                  key={s.name}
+                  className="flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-300 to-green-500 flex items-center justify-center text-white text-sm font-semibold">
+                      {s.name[0]}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-gray-800">
+                        {s.name}
+                      </div>
+                      <div className="text-xs text-gray-500">{s.time}</div>
+                    </div>
+                  </div>
+                  <span
+                    className={`text-xs font-medium px-2.5 py-1 rounded-full ${s.color}`}
+                  >
+                    {s.type}
+                  </span>
+                </div>
+              ))}
+            </div>
           </CardBody>
         </Card>
 
-        {/* Предстоящих занятий */}
-        <Card>
-          <CardBody className="p-8">
-            <div className="flex items-start justify-between mb-8">
-              <h3 className="text-lg font-medium">Предстоящих занятий</h3>
+        {/* Weekly activity */}
+        <Card className="border-none shadow-sm">
+          <CardBody className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-semibold text-gray-900">
+                Активность за неделю
+              </h3>
             </div>
-            <div className="flex items-end justify-between">
-              <div className="text-7xl font-bold">18</div>
-              <Button size="sm" className="bg-[#2d2d2d] text-white">
-                Узнать больше
-              </Button>
-            </div>
-          </CardBody>
-        </Card>
-
-        {/* Сумма поступлений */}
-        <Card>
-          <CardBody className="p-8">
-            <div className="flex items-start justify-between mb-8">
-              <h3 className="text-lg font-medium">Сумма поступлений</h3>
-            </div>
-            <div className="flex flex-col gap-2 mt-auto">
-              <div className="text-xl text-gray-600">1 083 266 сом</div>
-              <div className="text-4xl font-bold">$12.389</div>
-              <div className="text-sm text-gray-500">
-                Выручка на начавшея момент
-              </div>
-            </div>
-          </CardBody>
-        </Card>
-
-        {/* Аналитика по типам занятий */}
-        <Card>
-          <CardBody className="p-8">
-            <h3 className="text-lg font-medium mb-6">
-              Аналитика по типам занятий
-            </h3>
-
-            {/* Donut Chart */}
-            <div className="flex items-center justify-center mb-6 relative">
-              <svg width="220" height="220" viewBox="0 0 220 220">
-                {/* Light green segment - 49% */}
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="80"
-                  fill="none"
-                  stroke="#86efac"
-                  strokeWidth="40"
-                  strokeDasharray="245.04 500"
-                  strokeDashoffset="0"
-                  transform="rotate(-90 110 110)"
-                />
-                {/* Dark gray segment - 21% */}
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="80"
-                  fill="none"
-                  stroke="#6b7280"
-                  strokeWidth="40"
-                  strokeDasharray="105.56 500"
-                  strokeDashoffset="-245.04"
-                  transform="rotate(-90 110 110)"
-                />
-                {/* Black segment - 30% */}
-                <circle
-                  cx="110"
-                  cy="110"
-                  r="80"
-                  fill="none"
-                  stroke="#1f2937"
-                  strokeWidth="40"
-                  strokeDasharray="150.8 500"
-                  strokeDashoffset="-350.6"
-                  transform="rotate(-90 110 110)"
-                />
-                {/* White center */}
-                <circle cx="110" cy="110" r="60" fill="white" />
-              </svg>
-              {/* Labels */}
-              <div className="absolute top-2 right-8 flex items-center gap-2">
-                <span className="text-sm font-medium">21%</span>
-              </div>
-              <div className="absolute top-8 left-2 flex items-center gap-2">
-                <span className="text-sm font-medium">49%</span>
-              </div>
-              <div className="absolute bottom-8 right-4 flex items-center gap-2">
-                <span className="text-sm font-medium">30%</span>
-              </div>
-            </div>
-
-            {/* Legend */}
-            <div className="flex flex-col gap-2 text-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#86efac]"></div>
-                  <span>Артикуляционные упражнения</span>
+            <div className="flex items-end justify-between gap-2 h-32 mb-3">
+              {[
+                { day: "Пн", v: 60 },
+                { day: "Вт", v: 85 },
+                { day: "Ср", v: 45 },
+                { day: "Чт", v: 90 },
+                { day: "Пт", v: 70 },
+                { day: "Сб", v: 30 },
+                { day: "Вс", v: 20 },
+              ].map((d) => (
+                <div
+                  key={d.day}
+                  className="flex flex-col items-center gap-1.5 flex-1"
+                >
+                  <div
+                    className="w-full rounded-t-lg"
+                    style={{
+                      height: `${d.v}%`,
+                      background:
+                        d.v === 90
+                          ? "linear-gradient(to top, #16a34a, #4ade80)"
+                          : "linear-gradient(to top, #e5e7eb, #f3f4f6)",
+                    }}
+                  />
                 </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#1f2937]"></div>
-                  <span>Ролевые игры</span>
+              ))}
+            </div>
+            <div className="flex justify-between">
+              {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((d) => (
+                <div
+                  key={d}
+                  className="flex-1 text-center text-xs text-gray-400"
+                >
+                  {d}
                 </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#6b7280]"></div>
-                  <span>Звуковые постановки</span>
-                </div>
-              </div>
+              ))}
             </div>
           </CardBody>
         </Card>
