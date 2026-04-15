@@ -16,22 +16,24 @@ import {
   setAccessToken,
   setRefreshToken,
 } from "@/shared/api/axios";
+import { useTranslation } from "react-i18next";
 
 interface LandingNavbarProps {
   onOpenModal: () => void;
 }
 
-const menuItems = [
-  { label: "Занятия", href: "/lessons" },
-  { label: "Почему мы", href: "#why" },
-  { label: "Logomir Mobile", href: "#app" },
-  { label: "Тарифы", href: "#formats" },
-];
-
 export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = Boolean(getAccessToken());
+  const { i18n, t } = useTranslation();
+
+  const menuItems = [
+    { label: t("landing.nav.lessons"), href: "/lessons" },
+    { label: t("landing.nav.whyUs"), href: "#why" },
+    { label: t("landing.nav.app"), href: "#app" },
+    { label: t("landing.nav.tariffs"), href: "#formats" },
+  ];
 
   const handleLogout = () => {
     setAccessToken(null);
@@ -107,6 +109,25 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
 
       {/* CTA button */}
       <NavbarContent justify="end">
+        {/* Language switcher */}
+        <NavbarItem>
+          <div className="flex gap-1">
+            {["ru", "kg"].map((lang) => (
+              <button
+                key={lang}
+                onClick={() => i18n.changeLanguage(lang)}
+                className={`text-xs px-2.5 py-1 rounded-full font-medium transition-colors ${
+                  i18n.language === lang
+                    ? "bg-[#242424] text-white"
+                    : "text-[#242424] hover:bg-gray-100"
+                }`}
+              >
+                {lang.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </NavbarItem>
+
         <NavbarItem>
           {isLoggedIn ? (
             <Button
@@ -114,7 +135,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
               className="bg-red-400 text-white text-sm font-semibold hover:bg-red-500 rounded-xl h-9 px-5"
               endContent={<LogOut size={18} />}
             >
-              Выйти
+              {t("landing.nav.logout")}
             </Button>
           ) : (
             <Button
@@ -122,7 +143,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
               className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl h-9 px-5"
               endContent={<LogIn size={18} />}
             >
-              Войти
+              {t("landing.nav.login")}
             </Button>
           )}
         </NavbarItem>
@@ -154,7 +175,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
               className="bg-red-400 text-white text-sm font-semibold hover:bg-red-500 rounded-xl w-full mt-2"
               endContent={<LogOut size={18} />}
             >
-              Выйти
+              {t("landing.nav.logout")}
             </Button>
           ) : (
             <Button
@@ -165,7 +186,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
               className="bg-[#7bcf58] text-white text-sm font-semibold hover:bg-[#6fc44c] rounded-xl w-full mt-2"
               endContent={<LogIn size={18} />}
             >
-              Войти
+              {t("landing.nav.login")}
             </Button>
           )}
         </NavbarMenuItem>

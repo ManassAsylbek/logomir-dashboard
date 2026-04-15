@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface HeroSectionProps {
   onOpenModal: () => void;
@@ -11,6 +12,7 @@ const fadeUp = (delay = 0) => ({
 });
 
 export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
+  const { t } = useTranslation();
   return (
     <section
       className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[90vh] xl:min-h-[110vh] "
@@ -37,18 +39,14 @@ export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
           {...fadeUp(0.1)}
           className="text-4xl md:text-7xl font-bold leading-tight mb-4"
         >
-          Помогаем детям
-          <br />
-          говорить увереннее
+          {t("landing.hero.title")}
         </motion.h1>
 
         <motion.p
           {...fadeUp(0.25)}
           className="text-green-100 text-xl md:text-2xl leading-relaxed mb-8  mx-auto"
         >
-          Индивидуальные занятия с логопедом — онлайн или офлайн.
-          <br />
-          Без стресса, без лишней сложности.
+          {t("landing.hero.subtitle")}
         </motion.p>
 
         {/* <motion.div
