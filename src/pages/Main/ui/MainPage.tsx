@@ -25,6 +25,7 @@ import {
   Clock,
   XCircle,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const CIRCUMFERENCE = 2 * Math.PI * 80;
 
@@ -113,6 +114,7 @@ function RevenueModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const maxSom = Math.max(...MONTHLY_DATA.map((d) => d.som));
 
   return (
@@ -131,10 +133,10 @@ function RevenueModal({
         <ModalHeader className="flex items-center justify-between pr-4">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
-              Детали поступлений
+              {t("dashboard.revenueModal.title")}
             </h2>
             <p className="text-sm text-gray-500 font-normal mt-0.5">
-              Финансовая аналитика за текущий год
+              {t("dashboard.revenueModal.subtitle")}
             </p>
           </div>
         </ModalHeader>
@@ -143,25 +145,25 @@ function RevenueModal({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               {
-                label: "Итого (сом)",
+                label: t("dashboard.revenueModal.totalSom"),
                 value: "1 083 266",
                 icon: <Banknote size={18} className="text-green-600" />,
                 bg: "bg-green-50",
               },
               {
-                label: "Итого (USD)",
+                label: t("dashboard.revenueModal.totalUsd"),
                 value: "$12 389",
                 icon: <DollarSign size={18} className="text-blue-600" />,
                 bg: "bg-blue-50",
               },
               {
-                label: "Транзакций",
+                label: t("dashboard.revenueModal.transactions"),
                 value: "251",
                 icon: <CreditCard size={18} className="text-purple-600" />,
                 bg: "bg-purple-50",
               },
               {
-                label: "Ср. платёж",
+                label: t("dashboard.revenueModal.avgPayment"),
                 value: "4 315 с",
                 icon: <BarChart2 size={18} className="text-amber-600" />,
                 bg: "bg-amber-50",
@@ -188,7 +190,7 @@ function RevenueModal({
           <div className="rounded-2xl border border-gray-100 p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-gray-800">
-                Выручка по месяцам (сом)
+                {t("dashboard.revenueModal.monthlyChart")}
               </h3>
               <span className="text-xs text-gray-400">2026</span>
             </div>
@@ -234,10 +236,10 @@ function RevenueModal({
           <div className="rounded-2xl border border-gray-100 overflow-hidden">
             <div className="px-5 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-800">
-                Последние транзакции
+                {t("dashboard.revenueModal.recentTx")}
               </h3>
               <span className="text-xs text-gray-400">
-                {RECENT_TRANSACTIONS.length} записей
+                {RECENT_TRANSACTIONS.length} {t("dashboard.revenueModal.records")}
               </span>
             </div>
             <div className="divide-y divide-gray-50">
@@ -279,10 +281,10 @@ function RevenueModal({
                       {tx.status === "pending" && <Clock size={11} />}
                       {tx.status === "failed" && <XCircle size={11} />}
                       {tx.status === "paid"
-                        ? "Оплачено"
+                        ? t("dashboard.revenueModal.paid")
                         : tx.status === "pending"
-                          ? "Ожидание"
-                          : "Отклонено"}
+                          ? t("dashboard.revenueModal.pending")
+                          : t("dashboard.revenueModal.failed")}
                     </div>
                   </div>
                 </div>
@@ -297,7 +299,7 @@ function RevenueModal({
             onPress={onClose}
             startContent={<X size={15} />}
           >
-            Закрыть
+            {t("dashboard.revenueModal.close")}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -306,6 +308,7 @@ function RevenueModal({
 }
 
 function DonutChart() {
+  const { t } = useTranslation();
   let offset = 0;
   return (
     <div className="flex items-center gap-6">
@@ -349,7 +352,7 @@ function DonutChart() {
             fontSize="12"
             fill="#6b7280"
           >
-            успешность
+            {t("dashboard.successRate")}
           </text>
         </svg>
       </div>
@@ -372,6 +375,7 @@ function DonutChart() {
 }
 
 export default function MainPage() {
+  const { t } = useTranslation();
   const [revenueOpen, setRevenueOpen] = useState(false);
 
   return (
@@ -380,9 +384,9 @@ export default function MainPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Дашборд</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t("dashboard.title")}</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Обзор показателей и аналитика
+            {t("dashboard.subtitle")}
           </p>
         </div>
         <CustomRangeDatePicker />
@@ -401,7 +405,7 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">76%</div>
-            <div className="text-xs text-gray-500">Средняя успеваемость</div>
+            <div className="text-xs text-gray-500">{t("dashboard.successRate")}</div>
           </CardBody>
         </Card>
 
@@ -416,7 +420,7 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">18</div>
-            <div className="text-xs text-gray-500">Предстоящих занятий</div>
+            <div className="text-xs text-gray-500">{t("dashboard.upcomingLessons")}</div>
           </CardBody>
         </Card>
 
@@ -431,7 +435,7 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">47</div>
-            <div className="text-xs text-gray-500">Активных учеников</div>
+            <div className="text-xs text-gray-500">{t("dashboard.activeStudents")}</div>
           </CardBody>
         </Card>
 
@@ -446,7 +450,7 @@ export default function MainPage() {
               </span>
             </div>
             <div className="text-3xl font-bold text-gray-900 mb-1">$12.4k</div>
-            <div className="text-xs text-gray-500">Выручка за период</div>
+            <div className="text-xs text-gray-500">{t("dashboard.revenue")}</div>
           </CardBody>
         </Card>
       </div>
@@ -458,7 +462,7 @@ export default function MainPage() {
           <CardBody className="p-6">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-base font-semibold text-gray-900">
-                Типы занятий
+                {t("dashboard.lessonTypes")}
               </h3>
               <BookOpen size={16} className="text-gray-400" />
             </div>
@@ -472,10 +476,10 @@ export default function MainPage() {
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h3 className="text-base font-semibold mb-1">
-                  Сумма поступлений
+                  {t("dashboard.revenueCard")}
                 </h3>
                 <p className="text-gray-400 text-sm">
-                  Выручка на текущий момент
+                  {t("dashboard.revenueSubtitle")}
                 </p>
               </div>
               <Button
@@ -484,7 +488,7 @@ export default function MainPage() {
                 endContent={<ArrowRight size={14} />}
                 onPress={() => setRevenueOpen(true)}
               >
-                Подробнее
+                {t("dashboard.details")}
               </Button>
             </div>
             <div className="flex flex-col gap-1 mb-8">
@@ -519,7 +523,7 @@ export default function MainPage() {
           <CardBody className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-semibold text-gray-900">
-                Ближайшие занятия
+                {t("dashboard.upcomingList")}
               </h3>
               <Button
                 size="sm"
@@ -527,7 +531,7 @@ export default function MainPage() {
                 className="text-gray-500 text-xs rounded-full"
                 endContent={<ArrowRight size={12} />}
               >
-                Все
+                {t("dashboard.all")}
               </Button>
             </div>
             <div className="flex flex-col gap-3">
@@ -535,19 +539,19 @@ export default function MainPage() {
                 {
                   name: "Алия Бекова",
                   time: "10:00",
-                  type: "Онлайн",
+                  typeKey: "online",
                   color: "bg-green-100 text-green-700",
                 },
                 {
                   name: "Дамир Сейткали",
                   time: "12:30",
-                  type: "Офлайн",
+                  typeKey: "offline",
                   color: "bg-gray-100 text-gray-700",
                 },
                 {
                   name: "Жанар Омарова",
                   time: "15:00",
-                  type: "Онлайн",
+                  typeKey: "online",
                   color: "bg-green-100 text-green-700",
                 },
               ].map((s) => (
@@ -569,7 +573,7 @@ export default function MainPage() {
                   <span
                     className={`text-xs font-medium px-2.5 py-1 rounded-full ${s.color}`}
                   >
-                    {s.type}
+                    {t(`dashboard.${s.typeKey}`)}
                   </span>
                 </div>
               ))}
@@ -582,7 +586,7 @@ export default function MainPage() {
           <CardBody className="p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-base font-semibold text-gray-900">
-                Активность за неделю
+                {t("dashboard.weeklyActivity")}
               </h3>
             </div>
             <div className="flex items-end justify-between gap-2 h-32 mb-3">

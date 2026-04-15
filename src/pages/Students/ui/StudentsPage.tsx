@@ -7,8 +7,10 @@ import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useStudents } from "@/shared/services/students/useStudents";
+import { useTranslation } from "react-i18next";
 
 export default function StudentsPage() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const { data, isLoading, isError } = useStudents(1);
 
@@ -21,7 +23,7 @@ export default function StudentsPage() {
       {/* Filters */}
       <div className="flex items-center justify-between gap-4">
         <Input
-          placeholder="Поиск"
+          placeholder={t("students.search")}
           startContent={<Search className="text-default-400" size={20} />}
           className="max-w-4xl"
           classNames={{ inputWrapper: "bg-white" }}
@@ -45,7 +47,7 @@ export default function StudentsPage() {
             </div>
           ) : isError ? (
             <div className="py-8 text-center text-danger-500">
-              Ошибка загрузки данных
+              {t("students.loadError")}
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -53,19 +55,19 @@ export default function StudentsPage() {
                 <thead>
                   <tr className="border-y">
                     <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                      Имя
+                      {t("students.name")}
                     </th>
                     <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                      Возраст
+                      {t("students.age")}
                     </th>
                     <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                      Телефон
+                      {t("students.phone")}
                     </th>
                     <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                      Пол
+                      {t("students.gender")}
                     </th>
                     <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
-                      Статус
+                      {t("students.status")}
                     </th>
                     <th />
                   </tr>
@@ -87,16 +89,16 @@ export default function StudentsPage() {
                             }}
                           />
                         </td>
-                        <td className="py-3 px-4 text-sm">{student.age} лет</td>
+                        <td className="py-3 px-4 text-sm">{student.age} {t("students.years")}</td>
                         <td className="py-3 px-4 text-sm">
                           {student.phone_number || "—"}
                         </td>
                         <td className="py-3 px-4 text-sm">
-                          {student.gender === "Male" ? "Мужской" : "Женский"}
+                          {student.gender === "Male" ? t("students.male") : t("students.female")}
                         </td>
                         <td className="py-3 px-4">
                           <span className="text-xs px-2 py-1 bg-success-100 text-success-700 rounded">
-                            Активен
+                            {t("students.active")}
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right">
@@ -107,7 +109,7 @@ export default function StudentsPage() {
                             color="success"
                             variant="flat"
                           >
-                            Открыть
+                            {t("students.open")}
                           </Button>
                         </td>
                       </tr>
@@ -118,7 +120,7 @@ export default function StudentsPage() {
                         colSpan={6}
                         className="py-8 text-center text-gray-500"
                       >
-                        Ученики не найдены
+                        {t("students.notFound")}
                       </td>
                     </tr>
                   )}

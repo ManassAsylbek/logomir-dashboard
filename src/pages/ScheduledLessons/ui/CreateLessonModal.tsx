@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useCreateLesson } from "@/shared/services/lessons/useCreateLesson";
 import { useStudents } from "@/shared/services/students/useStudents";
 import type { CreateLessonRequest } from "@/shared/api/lessons/types";
+import { useTranslation } from "react-i18next";
 
 interface FormData {
   name: string;
@@ -28,6 +29,7 @@ interface CreateLessonModalProps {
 }
 
 export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -75,7 +77,7 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
         {(onClose) => (
           <>
             <ModalHeader className="px-6 py-5 border-b text-xl font-medium">
-              Создать урок
+              {t("lessons.createModal.title")}
             </ModalHeader>
 
             <ModalBody className="px-6 py-5 flex flex-col gap-4">
@@ -83,12 +85,12 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: "Введите название" }}
+                rules={{ required: t("lessons.createModal.nameRequired") }}
                 render={({ field }) => (
                   <Input
                     {...field}
-                    label="Название урока"
-                    placeholder="Введите название"
+                    label={t("lessons.createModal.name")}
+                    placeholder={t("lessons.createModal.namePlaceholder")}
                     size="lg"
                     variant="bordered"
                     isInvalid={!!errors.name}
@@ -101,12 +103,12 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
               {/* Ученик */}
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-gray-700">
-                  Ученик
+                  {t("lessons.createModal.student")}
                 </label>
                 <Controller
                   name="user"
                   control={control}
-                  rules={{ required: "Выберите ученика" }}
+                  rules={{ required: t("lessons.createModal.studentRequired") }}
                   render={({ field }) => (
                     <div>
                       <select
@@ -115,7 +117,7 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                           errors.user ? "border-danger-400" : "border-gray-300"
                         }`}
                       >
-                        <option value="">— Выберите ученика —</option>
+                        <option value="">{t("lessons.createModal.selectStudent")}</option>
                         {studentsData?.results?.map((s) => (
                           <option key={s.id} value={s.id}>
                             {s.full_name || s.username}
@@ -135,7 +137,7 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
               {/* Тип урока */}
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-gray-700">
-                  Тип урока
+                  {t("lessons.createModal.lessonType")}
                 </label>
                 <Controller
                   name="lesson_type"
@@ -145,8 +147,8 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                       {...field}
                       className="w-full h-12 rounded-xl border border-gray-300 bg-white px-3 text-sm"
                     >
-                      <option value="online">Онлайн</option>
-                      <option value="offline">Офлайн</option>
+                      <option value="online">{t("lessons.createModal.online")}</option>
+                      <option value="offline">{t("lessons.createModal.offline")}</option>
                     </select>
                   )}
                 />
@@ -159,8 +161,8 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                 render={({ field }) => (
                   <Input
                     {...field}
-                    label="Описание"
-                    placeholder="Необязательно"
+                    label={t("lessons.createModal.description")}
+                    placeholder={t("lessons.createModal.descriptionPlaceholder")}
                     size="lg"
                     variant="bordered"
                     classNames={{ inputWrapper: "bg-white" }}
@@ -176,8 +178,8 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label="Тариф пользователя"
-                      placeholder="ID тарифа"
+                      label={t("lessons.createModal.tariff")}
+                      placeholder={t("lessons.createModal.tariffPlaceholder")}
                       type="number"
                       size="lg"
                       variant="bordered"
@@ -193,8 +195,8 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                   render={({ field }) => (
                     <Input
                       {...field}
-                      label="Временной слот"
-                      placeholder="ID слота"
+                      label={t("lessons.createModal.timeSlot")}
+                      placeholder={t("lessons.createModal.timeSlotPlaceholder")}
                       type="number"
                       size="lg"
                       variant="bordered"
@@ -211,14 +213,14 @@ export function CreateLessonModal({ isOpen, onClose }: CreateLessonModalProps) {
                 onPress={onClose}
                 className="rounded-full text-gray-600 px-6"
               >
-                Отмена
+                {t("lessons.createModal.cancel")}
               </Button>
               <Button
                 className="bg-[#2d2d2d] text-white rounded-full px-8"
                 isLoading={isPending}
                 onPress={() => handleSubmit(onSubmit)()}
               >
-                Создать урок
+                {t("lessons.createModal.submit")}
               </Button>
             </ModalFooter>
           </>

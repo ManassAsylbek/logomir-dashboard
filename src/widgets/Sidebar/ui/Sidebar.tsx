@@ -1,13 +1,16 @@
-import { links } from "@/widgets/Sidebar/model/constants";
+import { useLinks } from "@/widgets/Sidebar/model/constants";
 import { Button } from "@heroui/button";
 import { LogOut, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { User } from "@heroui/user";
 import { getRouteAuth, getRouteSettings } from "@/shared/const/router";
 import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
+  const links = useLinks();
 
   const isSettingActive = pathname === getRouteSettings();
   return (
@@ -48,7 +51,7 @@ const Sidebar = () => {
           startContent={<Settings strokeWidth={1} />}
           radius="full"
         >
-          Настройки
+          {t("nav.settings")}
         </Button>
 
         <Popover placement="right">
@@ -69,7 +72,7 @@ const Sidebar = () => {
               startContent={<LogOut strokeWidth={1} />}
               radius="full"
             >
-              выйти
+              {t("nav.logout")}
             </Button>
           </PopoverContent>
         </Popover>

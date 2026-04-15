@@ -7,8 +7,11 @@ import { useUser } from "@/shared/services/user/useUser";
 import { useUpdateProfile } from "@/shared/services/user/useUpdateProfile";
 import { useState } from "react";
 import { Spinner } from "@heroui/spinner";
+import { useTranslation } from "react-i18next";
+import i18n from "@/shared/config/i18n";
 
 const SettingsPage = () => {
+  const { t } = useTranslation();
   const { data: user, isLoading } = useUser();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
 
@@ -29,8 +32,7 @@ const SettingsPage = () => {
 
   const languages = [
     { key: "ru", label: "Русский" },
-    { key: "en", label: "English" },
-    { key: "uk", label: "Українська" },
+    { key: "kg", label: "Кыргызча" },
   ];
 
   if (isLoading) {
@@ -46,7 +48,7 @@ const SettingsPage = () => {
       {/* Profile Section */}
       <Card className="bg-[#3d3d3d] border-none">
         <CardHeader className="pb-0">
-          <h3 className="text-sm text-gray-400">Профиль</h3>
+          <h3 className="text-sm text-gray-400">{t("settings.profile")}</h3>
         </CardHeader>
         <CardBody>
           <div className="flex items-center justify-between">
@@ -89,14 +91,15 @@ const SettingsPage = () => {
       {/* Language Section */}
       <Card>
         <CardHeader>
-          <h3 className="text-xl font-medium">Язык</h3>
+          <h3 className="text-xl font-medium">{t("settings.language")}</h3>
         </CardHeader>
         <CardBody>
           <Select
-            placeholder="Выберите язык"
+            placeholder={t("settings.selectLanguage")}
             radius="full"
             size="lg"
-            defaultSelectedKeys={["ru"]}
+            defaultSelectedKeys={[i18n.language || "ru"]}
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
             classNames={{
               trigger: "border-1 border-default-200 bg-transparent h-12",
               value: "text-base",
@@ -112,7 +115,7 @@ const SettingsPage = () => {
       {/* Contacts Section */}
       <Card className="bg-white border-none">
         <CardHeader className="flex-col items-start pb-2">
-          <h3 className="text-xl font-medium">Контакты</h3>
+          <h3 className="text-xl font-medium">{t("settings.contacts")}</h3>
           <p className="text-sm text-gray-600 mt-1">
             Increase conversion rates and add school contacts. Students will be
             able to ask you questions about the course or payment.
@@ -121,7 +124,7 @@ const SettingsPage = () => {
         <CardBody className="pt-4">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">Email</label>
+              <label className="text-sm font-medium mb-2 block">{t("settings.email")}</label>
               <Input
                 type="email"
                 placeholder="logo@"
@@ -137,7 +140,7 @@ const SettingsPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">Телефон</label>
+              <label className="text-sm font-medium mb-2 block">{t("settings.phone")}</label>
               <Input
                 type="tel"
                 placeholder="+ 996 (771) - 15 - 15 - 17"
@@ -152,7 +155,7 @@ const SettingsPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">Whatsapp</label>
+              <label className="text-sm font-medium mb-2 block">{t("settings.whatsapp")}</label>
               <Input
                 type="tel"
                 placeholder="+ 996 (771) - 15 - 15 - 17"
@@ -167,7 +170,7 @@ const SettingsPage = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">Telegram</label>
+              <label className="text-sm font-medium mb-2 block">{t("settings.telegram")}</label>
               <Input
                 type="text"
                 placeholder="@logo"
@@ -189,7 +192,7 @@ const SettingsPage = () => {
               onPress={handleSubmit}
               isLoading={isPending}
             >
-              Сохранить изменения
+              {t("settings.save")}
             </Button>
           </div>
         </CardBody>

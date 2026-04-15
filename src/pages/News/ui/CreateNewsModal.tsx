@@ -6,6 +6,7 @@ import { ArrowRight, Upload, X } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useCreateNews } from "@/shared/services/news/useCreateNews";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreateNewsModalProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export default function CreateNewsModal({
   isOpen,
   onClose,
 }: CreateNewsModalProps) {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -93,7 +95,7 @@ export default function CreateNewsModal({
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
-          <h2 className="text-2xl font-medium">Добавьте новости</h2>
+          <h2 className="text-2xl font-medium">{t("news.createModal.title")}</h2>
         </ModalHeader>
         <ModalBody className="px-6 pb-6">
           <div className="flex flex-col gap-4">
@@ -104,7 +106,7 @@ export default function CreateNewsModal({
               render={({ field: { onChange } }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Добавьте фото к новости
+                    {t("news.createModal.photo")}
                   </label>
                   {imagePreview ? (
                     <div className="relative border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
@@ -129,7 +131,7 @@ export default function CreateNewsModal({
                         <Upload className="text-white" size={24} />
                       </div>
                       <p className="text-sm text-gray-600">
-                        Выберите или перетащите сюда файлы
+                        {t("news.createModal.uploadHint")}
                       </p>
                       <input
                         type="file"
@@ -147,11 +149,11 @@ export default function CreateNewsModal({
             <Controller
               name="name"
               control={control}
-              rules={{ required: "Заголовок обязателен" }}
+              rules={{ required: t("news.createModal.headlineRequired") }}
               render={({ field }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Заголовок
+                    {t("news.createModal.headline")}
                   </label>
                   <Input
                     {...field}
@@ -170,15 +172,15 @@ export default function CreateNewsModal({
             <Controller
               name="decription"
               control={control}
-              rules={{ required: "Описание обязательно" }}
+              rules={{ required: t("news.createModal.contentRequired") }}
               render={({ field }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Наполнение
+                    {t("news.createModal.content")}
                   </label>
                   <Textarea
                     {...field}
-                    placeholder="Внесите полный текст статьи основного наполнения"
+                    placeholder={t("news.createModal.contentPlaceholder")}
                     minRows={6}
                     classNames={{
                       inputWrapper: "bg-white border-1 border-gray-300",
@@ -197,7 +199,7 @@ export default function CreateNewsModal({
               render={({ field }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Ссылка
+                    {t("news.createModal.link")}
                   </label>
                   <Input
                     {...field}
@@ -226,7 +228,7 @@ export default function CreateNewsModal({
                 onPress={() => handleSubmit(onSubmit)()}
                 isLoading={isPending}
               >
-                Добавить новость
+                {t("news.createModal.submit")}
               </Button>
             </div>
           </div>

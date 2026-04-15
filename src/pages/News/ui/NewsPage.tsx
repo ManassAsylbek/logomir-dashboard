@@ -16,8 +16,10 @@ import {
   DropdownItem,
 } from "@heroui/dropdown";
 import { News } from "@/shared/api/news/types";
+import { useTranslation } from "react-i18next";
 
 export default function NewsPage() {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
@@ -56,7 +58,7 @@ export default function NewsPage() {
         {/* Filters */}
         <div className="flex items-center justify-between gap-4">
           <Input
-            placeholder="Поиск"
+            placeholder={t("news.search")}
             startContent={<Search className="text-default-400" size={20} />}
             className="max-w-4xl"
             classNames={{ inputWrapper: "bg-white" }}
@@ -77,14 +79,14 @@ export default function NewsPage() {
             }
             onPress={() => setIsModalOpen(true)}
           >
-            Добавить новость
+            {t("news.addNews")}
           </Button>
         </div>
 
         {/* News Grid */}
         <Card className="p-4" radius="lg">
           <CardHeader>
-            <h3 className="text-3xl font-medium">Новости</h3>
+            <h3 className="text-3xl font-medium">{t("news.title")}</h3>
           </CardHeader>
           <CardBody>
             {isLoading ? (
@@ -121,13 +123,13 @@ export default function NewsPage() {
                                   ⋮
                                 </Button>
                               </DropdownTrigger>
-                              <DropdownMenu aria-label="Действия">
+                              <DropdownMenu aria-label="actions">
                                 <DropdownItem
                                   key="edit"
                                   startContent={<Edit size={16} />}
                                   onPress={() => handleEditClick(news)}
                                 >
-                                  Редактировать
+                                  {t("news.edit")}
                                 </DropdownItem>
                                 <DropdownItem
                                   key="delete"
@@ -136,7 +138,7 @@ export default function NewsPage() {
                                   startContent={<Trash2 size={16} />}
                                   onPress={() => handleDeleteClick(news.id)}
                                 >
-                                  Удалить
+                                  {t("news.delete")}
                                 </DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
@@ -155,7 +157,7 @@ export default function NewsPage() {
                   ))
                 ) : (
                   <div className="col-span-full py-8 text-center text-gray-500">
-                    Новости не найдены
+                    {t("news.notFound")}
                   </div>
                 )}
               </div>
@@ -185,10 +187,10 @@ export default function NewsPage() {
           setNewsToDelete(null);
         }}
         onConfirm={handleConfirmDelete}
-        title="Удаление новости"
-        message="Вы уверены, что хотите удалить эту новость? Это действие нельзя отменить."
-        confirmText="Удалить"
-        cancelText="Отмена"
+        title={t("news.deleteTitle")}
+        message={t("news.deleteMessage")}
+        confirmText={t("news.deleteConfirm")}
+        cancelText={t("news.cancel")}
         isLoading={isDeleting}
         type="danger"
       />

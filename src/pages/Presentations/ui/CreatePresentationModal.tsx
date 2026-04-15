@@ -6,6 +6,7 @@ import { ArrowRight, Upload, X, FileText } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useCreatePresentation } from "@/shared/services/presentations/useCreatePresentation";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface CreatePresentationModalProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export function CreatePresentationModal({
   isOpen,
   onClose,
 }: CreatePresentationModalProps) {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -84,7 +86,7 @@ export function CreatePresentationModal({
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1 px-6 pt-6">
-          <h2 className="text-2xl font-medium">Добавьте презентацию</h2>
+          <h2 className="text-2xl font-medium">{t("presentations.createModal.title")}</h2>
         </ModalHeader>
         <ModalBody className="px-6 pb-6">
           <div className="flex flex-col gap-4">
@@ -95,7 +97,7 @@ export function CreatePresentationModal({
               render={({ field: { onChange } }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Загрузите файл презентации (PDF)
+                    {t("presentations.createModal.fileLabel")}
                   </label>
                   {fileName ? (
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 flex items-center gap-3 bg-gray-50">
@@ -124,10 +126,10 @@ export function CreatePresentationModal({
                         <Upload className="text-white" size={24} />
                       </div>
                       <p className="text-sm text-gray-600">
-                        Выберите или перетащите сюда файл
+                        {t("presentations.createModal.uploadHint")}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
-                        Файл должен весить не более 100 МБ
+                        {t("presentations.createModal.fileSizeHint")}
                       </p>
                       <input
                         type="file"
@@ -145,11 +147,11 @@ export function CreatePresentationModal({
             <Controller
               name="name"
               control={control}
-              rules={{ required: "Название обязательно" }}
+              rules={{ required: t("presentations.createModal.nameRequired") }}
               render={({ field }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Название
+                    {t("presentations.createModal.name")}
                   </label>
                   <Input
                     {...field}
@@ -171,7 +173,7 @@ export function CreatePresentationModal({
               render={({ field }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Описание
+                    {t("presentations.createModal.description")}
                   </label>
                   <Textarea
                     {...field}
@@ -194,7 +196,7 @@ export function CreatePresentationModal({
               render={({ field }) => (
                 <div>
                   <label className="text-sm font-medium mb-2 block">
-                    Ссылка
+                    {t("presentations.createModal.link")}
                   </label>
                   <Input
                     {...field}
@@ -223,7 +225,7 @@ export function CreatePresentationModal({
                 onPress={() => handleSubmit(onSubmit)()}
                 isLoading={isPending}
               >
-                Добавить презентацию
+                {t("presentations.createModal.submit")}
               </Button>
             </div>
           </div>

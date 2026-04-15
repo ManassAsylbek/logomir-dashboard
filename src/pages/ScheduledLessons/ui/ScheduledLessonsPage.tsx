@@ -9,6 +9,7 @@ import AddCommentModal from "./AddCommentModal";
 import { CreateLessonModal } from "./CreateLessonModal";
 import { useLessons } from "@/shared/services/lessons/useLessons";
 import type { Lesson } from "@/shared/api/lessons/types";
+import { useTranslation } from "react-i18next";
 
 function formatTime(iso: string | null): string {
   if (!iso) return "";
@@ -33,6 +34,7 @@ function getLessonTypeLabel(lesson: Lesson): string {
 }
 
 export default function ScheduledLessonsPage() {
+  const { t } = useTranslation();
   const [selectedLesson, setSelectedLesson] = useState<number | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -64,7 +66,7 @@ export default function ScheduledLessonsPage() {
         {/* Search */}
         <div className="flex items-center justify-between gap-4">
           <Input
-            placeholder="Поиск"
+            placeholder={t("lessons.search")}
             startContent={<Search className="text-default-400" size={20} />}
             className="max-w-4xl"
             classNames={{ inputWrapper: "bg-white" }}
@@ -86,11 +88,11 @@ export default function ScheduledLessonsPage() {
             }
             onPress={() => setIsCreateOpen(true)}
           >
-            Добавить урок
+            {t("lessons.addLesson")}
           </Button>
         </div>
 
-        <h1 className="text-3xl font-medium">Запланированные занятия</h1>
+        <h1 className="text-3xl font-medium">{t("lessons.title")}</h1>
 
         {isLoading && (
           <div className="flex justify-center py-16">
@@ -100,13 +102,13 @@ export default function ScheduledLessonsPage() {
 
         {isError && (
           <div className="flex justify-center py-16 text-red-400">
-            Не удалось загрузить занятия. Попробуйте позже.
+            {t("lessons.loadError")}
           </div>
         )}
 
         {!isLoading && !isError && filtered.length === 0 && (
           <div className="flex justify-center py-16 text-gray-400">
-            Занятия не найдены.
+            {t("lessons.notFound")}
           </div>
         )}
 
@@ -181,7 +183,7 @@ export default function ScheduledLessonsPage() {
                           </div>
                         }
                       >
-                        Запись
+                        {t("lessons.record")}
                       </Button>
                     ) : (
                       <Button
@@ -194,8 +196,8 @@ export default function ScheduledLessonsPage() {
                             <ArrowRight className="w-4 h-4 text-gray-800" />
                           </div>
                         }
-                      >
-                        Google meet
+                        >
+                        {t("lessons.googleMeet")}
                       </Button>
                     )}
                     <Button
@@ -205,7 +207,7 @@ export default function ScheduledLessonsPage() {
                       className="bg-white border-gray-300 flex-1"
                       onPress={() => handleOpenModal(lesson.id)}
                     >
-                      Добавить примечание
+                      {t("lessons.addNote")}
                     </Button>
                     <Button
                       size="md"

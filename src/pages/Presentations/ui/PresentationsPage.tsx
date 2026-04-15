@@ -21,8 +21,10 @@ import { ConfirmModal } from "@/shared/ui/ConfirmModal";
 import { usePresentations } from "@/shared/services/presentations/usePresentations";
 import { useDeletePresentation } from "@/shared/services/presentations/useDeletePresentation";
 import { Presentation } from "@/shared/api/presentations/types";
+import { useTranslation } from "react-i18next";
 
 export default function PresentationsPage() {
+  const { t } = useTranslation();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editPresentation, setEditPresentation] = useState<Presentation | null>(
     null,
@@ -60,7 +62,7 @@ export default function PresentationsPage() {
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
           <Input
-            placeholder="Поиск"
+            placeholder={t("presentations.search")}
             value={search}
             onValueChange={setSearch}
             startContent={<Search className="text-default-400" size={20} />}
@@ -81,14 +83,14 @@ export default function PresentationsPage() {
             }
             onPress={() => setIsCreateModalOpen(true)}
           >
-            Добавить презентацию
+            {t("presentations.addPresentation")}
           </Button>
         </div>
 
         {/* Table */}
         <Card className="p-4" radius="lg">
           <CardHeader>
-            <h2 className="text-3xl font-medium">Презентации</h2>
+            <h2 className="text-3xl font-medium">{t("presentations.title")}</h2>
           </CardHeader>
           <CardBody>
             <div className="overflow-x-auto">
@@ -96,13 +98,13 @@ export default function PresentationsPage() {
                 <thead>
                   <tr className="border-y">
                     <th className="text-left py-2 font-medium text-gray-600">
-                      Название
+                      {t("presentations.name")}
                     </th>
                     <th className="text-left py-2 font-medium text-gray-600">
-                      Описание
+                      {t("presentations.description")}
                     </th>
                     <th className="text-left py-2 font-medium text-gray-600">
-                      Дата создания
+                      {t("presentations.createdAt")}
                     </th>
                     <th className="text-left py-2 font-medium text-gray-600"></th>
                   </tr>
@@ -114,7 +116,7 @@ export default function PresentationsPage() {
                         colSpan={4}
                         className="py-8 text-center text-gray-400"
                       >
-                        Загрузка...
+                        {t("presentations.loading")}
                       </td>
                     </tr>
                   ) : filtered.length === 0 ? (
@@ -123,7 +125,7 @@ export default function PresentationsPage() {
                         colSpan={4}
                         className="py-8 text-center text-gray-400"
                       >
-                        Презентации не найдены
+                        {t("presentations.notFound")}
                       </td>
                     </tr>
                   ) : (
@@ -177,14 +179,14 @@ export default function PresentationsPage() {
                                   />
                                 </Button>
                               </DropdownTrigger>
-                              <DropdownMenu aria-label="Действия">
+                              <DropdownMenu aria-label="actions">
                                 <DropdownItem
                                   key="edit"
                                   onPress={() =>
                                     setEditPresentation(presentation)
                                   }
                                 >
-                                  Редактировать
+                                  {t("presentations.edit")}
                                 </DropdownItem>
                                 <DropdownItem
                                   key="delete"
@@ -192,7 +194,7 @@ export default function PresentationsPage() {
                                   color="danger"
                                   onPress={() => setDeleteId(presentation.id)}
                                 >
-                                  Удалить
+                                  {t("presentations.delete")}
                                 </DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
@@ -213,7 +215,7 @@ export default function PresentationsPage() {
                   isDisabled={page === 1}
                   onPress={() => setPage((p) => p - 1)}
                 >
-                  Назад
+                  {t("presentations.prev")}
                 </Button>
                 <span className="text-sm text-gray-600">
                   {page} / {totalPages}
@@ -224,7 +226,7 @@ export default function PresentationsPage() {
                   isDisabled={page === totalPages}
                   onPress={() => setPage((p) => p + 1)}
                 >
-                  Вперёд
+                  {t("presentations.next")}
                 </Button>
               </div>
             )}
@@ -253,8 +255,8 @@ export default function PresentationsPage() {
             });
           }
         }}
-        title="Удалить презентацию"
-        message="Вы уверены, что хотите удалить эту презентацию? Это действие нельзя отменить."
+        title={t("presentations.deleteTitle")}
+        message={t("presentations.deleteMessage")}
         isLoading={isDeleting}
       />
     </>

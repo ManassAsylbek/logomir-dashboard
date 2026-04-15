@@ -7,8 +7,10 @@ import { usePayments } from "@/shared/services/payments/usePayments";
 import { useUpdatePayment } from "@/shared/services/payments/useUpdatePayment";
 import { Spinner } from "@heroui/spinner";
 import { ConfirmModal } from "@/shared/ui/ConfirmModal";
+import { useTranslation } from "react-i18next";
 
 export default function PaymentRequestsPage() {
+  const { t } = useTranslation();
   const [page] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -55,14 +57,14 @@ export default function PaymentRequestsPage() {
   const getStatusDisplay = (status?: string) => {
     switch (status) {
       case "success":
-        return "Оплачено";
+        return t("payments.paid");
       case "pending":
       case "pay_pending":
-        return "Ожидает";
+        return t("payments.pending");
       case "failed":
-        return "Не оплачено";
+        return t("payments.notPaid");
       default:
-        return "Неизвестно";
+        return t("payments.unknown");
     }
   };
 
@@ -72,7 +74,7 @@ export default function PaymentRequestsPage() {
         {/* Search */}
         <div className="flex justify-start">
           <Input
-            placeholder="Поиск"
+            placeholder={t("payments.search")}
             startContent={<Search className="text-default-400" size={20} />}
             className="max-w-4xl"
             classNames={{ inputWrapper: "bg-white" }}
@@ -86,7 +88,7 @@ export default function PaymentRequestsPage() {
 
         <Card className="p-4" radius="lg">
           <CardHeader>
-            <h3 className="text-3xl font-medium">Заявки на оплату</h3>
+            <h3 className="text-3xl font-medium">{t("payments.title")}</h3>
           </CardHeader>
           <CardBody>
             {isLoading ? (
@@ -99,22 +101,22 @@ export default function PaymentRequestsPage() {
                   <thead>
                     <tr className="border-y ">
                       <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                        ID Пользователя
+                        {t("payments.userId")}
                       </th>
                       <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                        Дата создания
+                        {t("payments.createdAt")}
                       </th>
                       <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                        Сумма (сом)
+                        {t("payments.amount")}
                       </th>
                       <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                        Тип урока
+                        {t("payments.lessonType")}
                       </th>
                       <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                        Текущий статус
+                        {t("payments.currentStatus")}
                       </th>
                       <th className="text-left py-2 px-6 text-sm font-medium text-gray-600">
-                        Выбрать статус оплаты
+                        {t("payments.selectStatus")}
                       </th>
                     </tr>
                   </thead>
@@ -138,9 +140,9 @@ export default function PaymentRequestsPage() {
                           </td>
                           <td className="py-4 px-6 text-sm">
                             {payment.lesson_type === "online"
-                              ? "Онлайн"
+                              ? t("payments.online")
                               : payment.lesson_type === "offline"
-                                ? "Оффлайн"
+                                ? t("payments.offline")
                                 : "—"}
                           </td>
                           <td className="py-4 px-6 text-sm">
@@ -171,7 +173,7 @@ export default function PaymentRequestsPage() {
                                     payment.status !== "pending")
                                 }
                               >
-                                Оплачено
+                                {t("payments.paid")}
                               </Button>
                               <Button
                                 size="sm"
@@ -186,7 +188,7 @@ export default function PaymentRequestsPage() {
                                     payment.status !== "pending")
                                 }
                               >
-                                Не оплачено
+                                {t("payments.notPaid")}
                               </Button>
                             </div>
                           </td>
@@ -198,7 +200,7 @@ export default function PaymentRequestsPage() {
                           colSpan={6}
                           className="py-8 text-center text-gray-500"
                         >
-                          Заявки на оплату не найдены
+                          {t("payments.notFound")}
                         </td>
                       </tr>
                     )}
@@ -217,10 +219,10 @@ export default function PaymentRequestsPage() {
           setPendingAction(null);
         }}
         onConfirm={handleConfirmStatusChange}
-        title="Изменение статуса оплаты"
-        message={`Вы уверены, что хотите изменить статус платежа на "${pendingAction?.status === "success" ? "Оплачено" : "Не оплачено"}"?`}
-        confirmText="Подтвердить"
-        cancelText="Отмена"
+        title={t("payments.confirmTitle")}
+        message={t("payments.confirmMessage", { status: pendingAction?.status === "success" ? t("payments.paid") : t("payments.notPaid") })}
+        confirmText={t("payments.confirmBtn")}
+        cancelText={t("payments.cancel")}
         isLoading={isPending}
         type={"success"}
       />

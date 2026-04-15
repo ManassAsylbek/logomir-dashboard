@@ -5,6 +5,7 @@ import { Input } from "@heroui/input";
 import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 export interface IAuthForm {
   username: string;
@@ -12,6 +13,7 @@ export interface IAuthForm {
 }
 
 const AuthForm = () => {
+  const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -40,7 +42,7 @@ const AuthForm = () => {
           </div>
         </CardHeader>
         <CardBody>
-          <h1 className="text-4xl font-semibold mb-2">Вход</h1>
+          <h1 className="text-4xl font-semibold mb-2">{t("auth.login")}</h1>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-6"
@@ -49,7 +51,7 @@ const AuthForm = () => {
               control={control}
               name="username"
               rules={{
-                required: "Обязательное поле",
+                required: t("auth.required"),
               }}
               render={({ field }) => (
                 <Input
@@ -59,7 +61,7 @@ const AuthForm = () => {
                   radius="full"
                   size="lg"
                   variant="bordered"
-                  placeholder="Введите E-mail"
+                  placeholder={t("auth.enterEmail")}
                   isInvalid={!!errors.username?.message}
                   errorMessage={errors.username?.message}
                   isRequired
@@ -70,7 +72,7 @@ const AuthForm = () => {
             <Controller
               control={control}
               name="password"
-              rules={{ required: "Обязательное поле" }}
+              rules={{ required: t("auth.required") }}
               render={({ field }) => (
                 <Input
                   radius="full"
@@ -79,7 +81,7 @@ const AuthForm = () => {
                   labelPlacement="outside"
                   // label="Пароль"
                   {...field}
-                  placeholder="Введите пароль"
+                  placeholder={t("auth.enterPassword")}
                   isInvalid={!!errors.password?.message}
                   errorMessage={errors.password?.message}
                   isRequired
@@ -115,18 +117,18 @@ const AuthForm = () => {
                 )
               }
             >
-              Войти
+              {t("auth.login")}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Нет аккаунта?{" "}
+              {t("auth.dontHaveAccount")}{" "}
               <a
                 href="/registration"
                 className="text-green-600 hover:underline font-medium"
               >
-                Зарегистрироваться
+                {t("auth.register")}
               </a>
             </p>
           </div>
