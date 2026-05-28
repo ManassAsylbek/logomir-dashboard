@@ -65,3 +65,15 @@ export const KEYS_STUDENTS = {
   students: getKey("STUDENTS", "QUERY"),
   student: (id: number) => getKey(`STUDENT_${id}`, "QUERY"),
 };
+
+export const KEYS_TIME_SLOTS = {
+  timeSlots: getKey("TIME_SLOTS", "QUERY"),
+};
+
+export const KEYS_BRANCHES = {
+  branches: getKey("BRANCHES", "QUERY"),
+};
+
+export const KEYS_GOOGLE_OAUTH = {
+  start: getKey("GOOGLE_OAUTH_START", "MUTATION"),
+};

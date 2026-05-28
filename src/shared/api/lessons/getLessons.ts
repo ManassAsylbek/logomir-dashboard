@@ -2,12 +2,13 @@ import { AxiosResponse } from "axios";
 
 import { requester } from "../axios";
 
-import { LessonsListResponse } from "./types";
+import { LessonsListParams, LessonsListResponse } from "./types";
 
 export const getLessons = (
-  page = 1,
+  params: LessonsListParams = {},
 ): Promise<AxiosResponse<LessonsListResponse>> => {
+  const { page = 1, ...rest } = params;
   return requester.get<LessonsListResponse>(`/activity/lessons/`, {
-    params: { page },
+    params: { page, ...rest },
   });
 };

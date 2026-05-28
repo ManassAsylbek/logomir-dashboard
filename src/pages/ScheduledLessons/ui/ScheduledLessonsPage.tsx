@@ -3,10 +3,11 @@ import { Button } from "@heroui/button";
 import { Progress } from "@heroui/progress";
 import { Input } from "@heroui/input";
 import { Spinner } from "@heroui/spinner";
-import { ArrowRight, Download, Plus, Search } from "lucide-react";
+import { ArrowRight, Download, Plus, Search, Settings2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import AddCommentModal from "./AddCommentModal";
 import { CreateLessonModal } from "./CreateLessonModal";
+import ManageLessonModal from "./ManageLessonModal";
 import { useLessons } from "@/shared/services/lessons/useLessons";
 import type { Lesson } from "@/shared/api/lessons/types";
 import { useTranslation } from "react-i18next";
@@ -36,6 +37,7 @@ function getLessonTypeLabel(lesson: Lesson): string {
 export default function ScheduledLessonsPage() {
   const { t } = useTranslation();
   const [selectedLesson, setSelectedLesson] = useState<number | null>(null);
+  const [manageLesson, setManageLesson] = useState<Lesson | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -213,6 +215,17 @@ export default function ScheduledLessonsPage() {
                       size="md"
                       radius="full"
                       isIconOnly
+                      variant="bordered"
+                      className="bg-white border-gray-300 min-w-[44px]"
+                      onPress={() => setManageLesson(lesson)}
+                      aria-label={t("lessons.manage.openButton")}
+                    >
+                      <Settings2 size={18} />
+                    </Button>
+                    <Button
+                      size="md"
+                      radius="full"
+                      isIconOnly
                       className="bg-[#22bb79] text-white min-w-[44px]"
                       isDisabled={!lesson.record_file}
                       as={lesson.record_file ? "a" : "button"}
@@ -237,6 +250,12 @@ export default function ScheduledLessonsPage() {
       <CreateLessonModal
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
+      />
+
+      <ManageLessonModal
+        isOpen={manageLesson !== null}
+        onClose={() => setManageLesson(null)}
+        lesson={manageLesson}
       />
     </>
   );

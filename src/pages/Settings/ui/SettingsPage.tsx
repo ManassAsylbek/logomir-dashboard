@@ -5,6 +5,7 @@ import { User } from "@heroui/user";
 import { Button } from "@heroui/button";
 import { useUser } from "@/shared/services/user/useUser";
 import { useUpdateProfile } from "@/shared/services/user/useUpdateProfile";
+import { useStartGoogleOauth } from "@/shared/services/google/useStartGoogleOauth";
 import { useState } from "react";
 import { Spinner } from "@heroui/spinner";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,8 @@ const SettingsPage = () => {
   const { t } = useTranslation();
   const { data: user, isLoading } = useUser();
   const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const { mutate: startGoogle, isPending: isGooglePending } =
+    useStartGoogleOauth();
 
   const [formData, setFormData] = useState({
     full_name: user?.full_name || "",
@@ -109,6 +112,28 @@ const SettingsPage = () => {
               <SelectItem key={lang.key}>{lang.label}</SelectItem>
             ))}
           </Select>
+        </CardBody>
+      </Card>
+
+      {/* Google Calendar Integration */}
+      <Card className="bg-white border-none">
+        <CardHeader className="flex-col items-start pb-2">
+          <h3 className="text-xl font-medium">{t("settings.googleTitle")}</h3>
+          <p className="text-sm text-gray-600 mt-1">
+            {t("settings.googleDescription")}
+          </p>
+        </CardHeader>
+        <CardBody className="pt-4">
+          <Button
+            color="primary"
+            size="lg"
+            radius="full"
+            isLoading={isGooglePending}
+            onPress={() => startGoogle()}
+            className="w-fit"
+          >
+            {t("settings.googleConnect")}
+          </Button>
         </CardBody>
       </Card>
 

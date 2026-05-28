@@ -7,8 +7,6 @@ const requester = axios.create({
   withCredentials: false,
 });
 
-console.log(API_BASE_URL);
-
 const getAccessToken = () => localStorage.getItem("access_token");
 
 export const setAccessToken = (token: string | null) => {

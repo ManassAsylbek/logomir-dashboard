@@ -88,7 +88,10 @@
     "email": "Email",
     "whatsapp": "Whatsapp",
     "telegram": "Telegram",
-    "save": "Өзгөртүүлөрдү сактоо"
+    "save": "Өзгөртүүлөрдү сактоо",
+    "googleTitle": "Google Календарь / Meet",
+    "googleDescription": "Онлайн сабактар үчүн Meet шилтемесин автоматтык түрдө түзүү үчүн Google аккаунтуңузду байлап коюңуз. Бул бир жолу гана аткарылат.",
+    "googleConnect": "Google'га байлоо"
   },
   "company": {
     "title": "Компания",
@@ -151,8 +154,36 @@
       "tariffPlaceholder": "Тариф ID",
       "timeSlot": "Убакыт слоту",
       "timeSlotPlaceholder": "Слот ID",
+      "specialist": "Адис",
+      "selectSpecialist": "— Адисти тандаңыз —",
+      "branch": "Филиал",
+      "selectBranch": "— Филиалды тандаңыз —",
+      "branchRequired": "Оффлайн үчүн филиал милдеттүү",
+      "loadingSlots": "Слоттор жүктөлүүдө...",
+      "noSlots": "Бош слоттор жок",
+      "selectSlot": "— Слотту тандаңыз —",
       "cancel": "Жокко чыгаруу",
       "submit": "Сабак түзүү"
+    },
+    "manage": {
+      "title": "Сабакты башкаруу",
+      "reschedule": "Жылдыруу",
+      "changeType": "Сабак түрү",
+      "changeBranch": "Филиал",
+      "delete": "Жок кылуу",
+      "noSpecialist": "Сабакта адис көрсөтүлгөн эмес — слот тандай албайсыз.",
+      "noSlots": "Адистин бош слоттору жок.",
+      "loading": "Жүктөлүүдө...",
+      "branch": "Филиал",
+      "selectBranch": "— Филиалды тандаңыз —",
+      "applyReschedule": "Жылдыруу",
+      "applyType": "Түрүн өзгөртүү",
+      "applyBranch": "Филиалды өзгөртүү",
+      "onlyOffline": "Филиал офлайн сабактарда гана өзгөртүлөт.",
+      "deleteWarning": "Сабакты өчүрүүнү каалайсызбы? Слот автоматтык түрдө бошотулбайт.",
+      "deleteConfirm": "Өчүрүүнү ырастайм",
+      "deleteAction": "Сабакты өчүрүү",
+      "openButton": "Башкаруу"
     }
   },
   "news": {

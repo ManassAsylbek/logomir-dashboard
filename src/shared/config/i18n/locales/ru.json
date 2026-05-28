@@ -88,7 +88,10 @@
     "email": "Email",
     "whatsapp": "Whatsapp",
     "telegram": "Telegram",
-    "save": "Сохранить изменения"
+    "save": "Сохранить изменения",
+    "googleTitle": "Google Календарь / Meet",
+    "googleDescription": "Привяжите Google-аккаунт, чтобы автоматически создавать ссылки Meet для онлайн-уроков. Это разовая операция.",
+    "googleConnect": "Привязать Google"
   },
   "company": {
     "title": "Компания",
@@ -151,8 +154,36 @@
       "tariffPlaceholder": "ID тарифа",
       "timeSlot": "Временной слот",
       "timeSlotPlaceholder": "ID слота",
+      "specialist": "Специалист",
+      "selectSpecialist": "— Выберите специалиста —",
+      "branch": "Филиал",
+      "selectBranch": "— Выберите филиал —",
+      "branchRequired": "Для оффлайн обязателен филиал",
+      "loadingSlots": "Загрузка слотов...",
+      "noSlots": "Свободных слотов нет",
+      "selectSlot": "— Выберите слот —",
       "cancel": "Отмена",
       "submit": "Создать урок"
+    },
+    "manage": {
+      "title": "Управление уроком",
+      "reschedule": "Перенос",
+      "changeType": "Тип урока",
+      "changeBranch": "Филиал",
+      "delete": "Удалить",
+      "noSpecialist": "У урока не указан специалист — нельзя выбрать слот.",
+      "noSlots": "У специалиста нет свободных слотов.",
+      "loading": "Загрузка...",
+      "branch": "Филиал",
+      "selectBranch": "— Выберите филиал —",
+      "applyReschedule": "Перенести",
+      "applyType": "Сменить тип",
+      "applyBranch": "Сменить филиал",
+      "onlyOffline": "Филиал меняется только у оффлайн-уроков.",
+      "deleteWarning": "Вы уверены, что хотите удалить этот урок? Слот при удалении не освобождается автоматически.",
+      "deleteConfirm": "Подтверждаю удаление",
+      "deleteAction": "Удалить урок",
+      "openButton": "Управлять"
     }
   },
   "news": {
