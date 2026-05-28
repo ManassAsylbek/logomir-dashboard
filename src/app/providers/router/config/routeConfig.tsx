@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import {
   AppRoutes,
   getRouteAuth,
-  getRouteRegistration,
   getRouteLanding,
   getRouteMain,
   getRouteSettings,
@@ -56,9 +55,6 @@ const PresentationsPage = lazy(
 );
 const GamesPage = lazy(() => import("@/pages/Games/ui/GamesPage"));
 const LessonsPage = lazy(() => import("@/pages/Lessons/ui/LessonsPage"));
-const RegistrationPage = lazy(
-  () => import("@/pages/Registration/ui/RegistrationPage"),
-);
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.LANDING]: {
@@ -72,10 +68,6 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.AUTH]: {
     path: getRouteAuth(),
     element: withSuspense(<AuthPage />),
-  },
-  [AppRoutes.REGISTRATION]: {
-    path: getRouteRegistration(),
-    element: withSuspense(<RegistrationPage />),
   },
   [AppRoutes.SETTINGS]: {
     path: getRouteSettings(),

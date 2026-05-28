@@ -4,7 +4,6 @@ import { routeConfig } from "../config/routeConfig";
 import RequireAuth from "./RequireAuth";
 import {
   getRouteAuth,
-  getRouteRegistration,
   getRouteLanding,
   getRouteLessons,
 } from "@/shared/const/router";
@@ -26,9 +25,7 @@ const AppRouter: React.FC = () => {
     <Routes>
       {Object.values(routeConfig).map(({ element, path }) => {
         const isPublic =
-          path === getRouteAuth() ||
-          path === getRouteRegistration() ||
-          path === getRouteLanding();
+          path === getRouteAuth() || path === getRouteLanding();
 
         const isStudentRoute = path === getRouteLessons();
 

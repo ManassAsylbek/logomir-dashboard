@@ -120,18 +120,6 @@ const AuthForm = () => {
               {t("auth.login")}
             </Button>
           </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              {t("auth.dontHaveAccount")}{" "}
-              <a
-                href="/registration"
-                className="text-green-600 hover:underline font-medium"
-              >
-                {t("auth.register")}
-              </a>
-            </p>
-          </div>
         </CardBody>
 
         <div className="flex items-center justify-start gap-3 mt-6">
