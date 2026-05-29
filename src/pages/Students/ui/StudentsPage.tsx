@@ -8,10 +8,13 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useStudents } from "@/shared/services/students/useStudents";
 import { useTranslation } from "react-i18next";
+import type { Student } from "@/shared/api/students/types";
+import EnrollStudentModal from "./EnrollStudentModal";
 
 export default function StudentsPage() {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [enrollStudent, setEnrollStudent] = useState<Student | null>(null);
   const { data, isLoading, isError } = useStudents(1);
 
   const filteredStudents = data?.results?.filter((s) =>
@@ -106,15 +109,24 @@ export default function StudentsPage() {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <Button
-                            as={Link}
-                            to={`/students/${student.id}`}
-                            size="sm"
-                            color="success"
-                            variant="flat"
-                          >
-                            {t("students.open")}
-                          </Button>
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              size="sm"
+                              variant="bordered"
+                              onPress={() => setEnrollStudent(student)}
+                            >
+                              {t("students.enroll")}
+                            </Button>
+                            <Button
+                              as={Link}
+                              to={`/students/${student.id}`}
+                              size="sm"
+                              color="success"
+                              variant="flat"
+                            >
+                              {t("students.open")}
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))
@@ -134,6 +146,12 @@ export default function StudentsPage() {
           )}
         </CardBody>
       </Card>
+
+      <EnrollStudentModal
+        isOpen={enrollStudent !== null}
+        onClose={() => setEnrollStudent(null)}
+        student={enrollStudent}
+      />
     </div>
   );
 }

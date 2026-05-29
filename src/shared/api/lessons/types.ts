@@ -49,6 +49,20 @@ export interface ChangeLessonBranchRequest {
   branch: number;
 }
 
+export interface BulkCreateLessonsRequest {
+  user: number;
+  user_tariff?: number;
+  lesson_type: LessonType;
+  branch?: number | null;
+  time_slots: number[];
+  name: string;
+}
+
+export interface BulkCreateLessonsResponse {
+  created: number;
+  lessons: Lesson[];
+}
+
 export interface LessonsListParams {
   page?: number;
   user?: number;
