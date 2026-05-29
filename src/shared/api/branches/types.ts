@@ -4,6 +4,9 @@ export interface Branch {
   address?: string | null;
   city?: string | null;
   phone_number?: string | null;
+  description?: string | null;
+  link?: string | null;
+  photo?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
 }
