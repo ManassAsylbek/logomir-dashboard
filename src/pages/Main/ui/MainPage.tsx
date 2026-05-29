@@ -35,54 +35,21 @@ import type {
   LessonTypeShare,
   PaymentsAnalytics,
 } from "@/shared/api/analytics/types";
+import {
+  formatRu,
+  monthLabel,
+  weekdayLabel,
+  formatTime,
+  deltaText,
+  isPositiveDelta,
+} from "@/pages/Main/lib/format";
 
 const CIRCUMFERENCE = 2 * Math.PI * 80;
 
 const DONUT_COLORS = ["#4ade80", "#1f2937", "#9ca3af", "#60a5fa", "#f59e0b"];
 
-const MONTHS_RU = [
-  "Янв",
-  "Фев",
-  "Мар",
-  "Апр",
-  "Май",
-  "Июн",
-  "Июл",
-  "Авг",
-  "Сен",
-  "Окт",
-  "Ноя",
-  "Дек",
-];
-
-const formatRu = (n: number) => Math.round(n).toLocaleString("ru-RU");
-
-const monthLabel = (month: string) => {
-  const idx = Number(month.split("-")[1]) - 1;
-
-  return MONTHS_RU[idx] ?? month;
-};
-
-const weekdayLabel = (day: string) => {
-  const label = new Date(`${day}T00:00:00`).toLocaleDateString("ru-RU", {
-    weekday: "short",
-  });
-
-  return label.charAt(0).toUpperCase() + label.slice(1);
-};
-
-const formatTime = (iso: string | null) => {
-  if (!iso) return "";
-
-  return new Date(iso).toLocaleTimeString("ru-RU", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-};
-
 function DeltaBadge({ delta, percent }: { delta: number; percent?: boolean }) {
-  const positive = delta >= 0;
-  const text = `${positive ? "+" : ""}${delta}${percent ? "%" : ""}`;
+  const positive = isPositiveDelta(delta);
 
   return (
     <span
@@ -90,7 +57,8 @@ function DeltaBadge({ delta, percent }: { delta: number; percent?: boolean }) {
         positive ? "text-green-600 bg-green-100" : "text-red-500 bg-red-50"
       }`}
     >
-      {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />} {text}
+      {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />}{" "}
+      {deltaText(delta, percent)}
     </span>
   );
 }

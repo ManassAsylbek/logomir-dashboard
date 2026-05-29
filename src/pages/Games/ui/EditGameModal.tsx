@@ -11,12 +11,8 @@ import { Upload, Plus, X } from "lucide-react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useUpdateGame } from "@/shared/services/games/useUpdateGame";
 import { useEffect } from "react";
-import {
-  Game,
-  GameType,
-  GAME_TYPE_LABELS,
-  Word,
-} from "@/shared/api/games/types";
+import { Game, GameType, GAME_TYPE_LABELS, Word } from "@/shared/api/games/types";
+import { buildQuestionsData } from "@/pages/Games/lib/buildGamePayload";
 
 interface Answer {
   id?: string;
@@ -157,51 +153,7 @@ export function EditGameModal({ isOpen, onClose, game }: EditGameModalProps) {
       }
     }
 
-    const buildWords = (text: string, originalWords: Word[] = []): Word[] => {
-      const words: Word[] = text
-        .trim()
-        .split(/\s+/)
-        .filter((word) => word.length > 0)
-        .map((word, index) => {
-          const originalId = originalWords[index]?.id;
-
-          return {
-            ...(originalId ? { id: originalId } : {}),
-            text: word,
-            position: index + 1,
-          };
-        });
-
-      if (words.length < 2) {
-        words.push({ text: "слово", position: words.length + 1 });
-      }
-
-      return words;
-    };
-
-    const questionsData = data.questions.map((q) => {
-      if (data.gameType === GameType.Quiz) {
-        return {
-          ...(q.id ? { id: q.id } : {}),
-          name: q.question,
-          answers: q.answers.map((a) => ({
-            ...(a.id ? { id: a.id } : {}),
-            name: a.text,
-            is_correct: a.isCorrect,
-          })),
-        };
-      }
-
-      return {
-        ...(q.id ? { id: q.id } : {}),
-        name: q.question,
-        sentence: {
-          ...(q.sentenceId ? { id: q.sentenceId } : {}),
-          text: q.question,
-          words: buildWords(q.question, q.words),
-        },
-      };
-    });
+    const questionsData = buildQuestionsData(data.questions, data.gameType);
 
     const formData = new FormData();
 

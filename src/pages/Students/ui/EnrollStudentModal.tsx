@@ -20,6 +20,7 @@ import { useCreateLessonsBulk } from "@/shared/services/lessons/useCreateLessons
 import { useSpecialists } from "@/shared/services/specialists/useSpecialists";
 import { useBranches } from "@/shared/services/branches/useBranches";
 import { useTimeSlots } from "@/shared/services/timeSlots/useTimeSlots";
+import { buildBulkLessonsPayload } from "@/pages/Students/lib/buildBulkPayload";
 
 type TabKey = "balance" | "lessons";
 
@@ -118,14 +119,14 @@ export default function EnrollStudentModal({
     if (isOffline && !branch) return;
 
     bookLessons.mutate(
-      {
+      buildBulkLessonsPayload({
         user: student.id,
-        ...(deductTariff ? { user_tariff: deductTariff } : {}),
-        lesson_type: lessonType,
-        ...(isOffline ? { branch } : {}),
-        time_slots: selectedSlots,
-        name: name.trim() || "Курс",
-      },
+        lessonType,
+        branch,
+        deductTariff,
+        timeSlots: selectedSlots,
+        name,
+      }),
       { onSuccess: () => setSelectedSlots([]) },
     );
   };
