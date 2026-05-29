@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
+import { Spinner } from "@heroui/spinner";
 import {
   Modal,
   ModalContent,
@@ -27,95 +29,86 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { useDashboardAnalytics } from "@/shared/services/analytics/useDashboardAnalytics";
+import { usePaymentsAnalytics } from "@/shared/services/analytics/usePaymentsAnalytics";
+import type {
+  LessonTypeShare,
+  PaymentsAnalytics,
+} from "@/shared/api/analytics/types";
+
 const CIRCUMFERENCE = 2 * Math.PI * 80;
 
-interface DonutSegment {
-  value: number;
-  color: string;
-  label: string;
+const DONUT_COLORS = ["#4ade80", "#1f2937", "#9ca3af", "#60a5fa", "#f59e0b"];
+
+const MONTHS_RU = [
+  "Янв",
+  "Фев",
+  "Мар",
+  "Апр",
+  "Май",
+  "Июн",
+  "Июл",
+  "Авг",
+  "Сен",
+  "Окт",
+  "Ноя",
+  "Дек",
+];
+
+const formatRu = (n: number) => Math.round(n).toLocaleString("ru-RU");
+
+const monthLabel = (month: string) => {
+  const idx = Number(month.split("-")[1]) - 1;
+
+  return MONTHS_RU[idx] ?? month;
+};
+
+const weekdayLabel = (day: string) => {
+  const label = new Date(`${day}T00:00:00`).toLocaleDateString("ru-RU", {
+    weekday: "short",
+  });
+
+  return label.charAt(0).toUpperCase() + label.slice(1);
+};
+
+const formatTime = (iso: string | null) => {
+  if (!iso) return "";
+
+  return new Date(iso).toLocaleTimeString("ru-RU", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+function DeltaBadge({ delta, percent }: { delta: number; percent?: boolean }) {
+  const positive = delta >= 0;
+  const text = `${positive ? "+" : ""}${delta}${percent ? "%" : ""}`;
+
+  return (
+    <span
+      className={`text-xs font-medium px-2 py-0.5 rounded-full flex items-center gap-1 ${
+        positive ? "text-green-600 bg-green-100" : "text-red-500 bg-red-50"
+      }`}
+    >
+      {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />} {text}
+    </span>
+  );
 }
-
-const segments: DonutSegment[] = [
-  { value: 49, color: "#4ade80", label: "Артикуляционные упражнения" },
-  { value: 30, color: "#1f2937", label: "Ролевые игры" },
-  { value: 21, color: "#9ca3af", label: "Звуковые постановки" },
-];
-
-const MONTHLY_DATA = [
-  { month: "Янв", som: 72000, usd: 820, transactions: 14 },
-  { month: "Фев", som: 85000, usd: 970, transactions: 18 },
-  { month: "Мар", som: 91000, usd: 1040, transactions: 21 },
-  { month: "Апр", som: 78000, usd: 890, transactions: 16 },
-  { month: "Май", som: 95000, usd: 1085, transactions: 23 },
-  { month: "Июн", som: 88000, usd: 1005, transactions: 19 },
-  { month: "Июл", som: 102000, usd: 1164, transactions: 26 },
-  { month: "Авг", som: 97000, usd: 1107, transactions: 22 },
-  { month: "Сен", som: 110000, usd: 1256, transactions: 28 },
-  { month: "Окт", som: 99000, usd: 1130, transactions: 24 },
-  { month: "Ноя", som: 108000, usd: 1233, transactions: 27 },
-  { month: "Дек", som: 58266, usd: 665, transactions: 13 },
-];
-
-const RECENT_TRANSACTIONS = [
-  {
-    id: "#TXN-001",
-    student: "Алия Бекова",
-    amount: 9500,
-    usd: 108,
-    status: "paid",
-    date: "15 апр",
-  },
-  {
-    id: "#TXN-002",
-    student: "Дамир Сейткали",
-    amount: 12000,
-    usd: 137,
-    status: "paid",
-    date: "14 апр",
-  },
-  {
-    id: "#TXN-003",
-    student: "Жанар Омарова",
-    amount: 9500,
-    usd: 108,
-    status: "pending",
-    date: "13 апр",
-  },
-  {
-    id: "#TXN-004",
-    student: "Арман Жаксыбеков",
-    amount: 15000,
-    usd: 171,
-    status: "paid",
-    date: "12 апр",
-  },
-  {
-    id: "#TXN-005",
-    student: "Санем Нурланова",
-    amount: 9500,
-    usd: 108,
-    status: "failed",
-    date: "11 апр",
-  },
-  {
-    id: "#TXN-006",
-    student: "Нурсултан Касым",
-    amount: 12000,
-    usd: 137,
-    status: "paid",
-    date: "10 апр",
-  },
-];
 
 function RevenueModal({
   open,
   onClose,
+  payments,
 }: {
   open: boolean;
   onClose: () => void;
+  payments?: PaymentsAnalytics;
 }) {
   const { t } = useTranslation();
-  const maxSom = Math.max(...MONTHLY_DATA.map((d) => d.som));
+  const monthly = payments?.monthly ?? [];
+  const totals = payments?.totals;
+  const transactions = payments?.recent_transactions ?? [];
+  const maxSom = Math.max(...monthly.map((d) => d.som), 1);
 
   return (
     <Modal
@@ -146,25 +139,25 @@ function RevenueModal({
             {[
               {
                 label: t("dashboard.revenueModal.totalSom"),
-                value: "1 083 266",
+                value: formatRu(totals?.total_som ?? 0),
                 icon: <Banknote size={18} className="text-green-600" />,
                 bg: "bg-green-50",
               },
               {
                 label: t("dashboard.revenueModal.totalUsd"),
-                value: "$12 389",
+                value: `$${formatRu(totals?.total_usd ?? 0)}`,
                 icon: <DollarSign size={18} className="text-blue-600" />,
                 bg: "bg-blue-50",
               },
               {
                 label: t("dashboard.revenueModal.transactions"),
-                value: "251",
+                value: formatRu(totals?.transactions_count ?? 0),
                 icon: <CreditCard size={18} className="text-purple-600" />,
                 bg: "bg-purple-50",
               },
               {
                 label: t("dashboard.revenueModal.avgPayment"),
-                value: "4 315 с",
+                value: `${formatRu(totals?.avg_payment_som ?? 0)} с`,
                 icon: <BarChart2 size={18} className="text-amber-600" />,
                 bg: "bg-amber-50",
               },
@@ -192,10 +185,9 @@ function RevenueModal({
               <h3 className="text-sm font-semibold text-gray-800">
                 {t("dashboard.revenueModal.monthlyChart")}
               </h3>
-              <span className="text-xs text-gray-400">2026</span>
             </div>
             <div className="flex items-end gap-2 h-36">
-              {MONTHLY_DATA.map((d, i) => (
+              {monthly.map((d, i) => (
                 <div
                   key={d.month}
                   className="flex flex-col items-center gap-1 flex-1 group"
@@ -206,11 +198,9 @@ function RevenueModal({
                       style={{
                         height: `${(d.som / maxSom) * 130}px`,
                         background:
-                          i === 11
+                          i === monthly.length - 1
                             ? "linear-gradient(to top, #16a34a, #4ade80)"
-                            : i === MONTHLY_DATA.length - 2
-                              ? "linear-gradient(to top, #2563eb, #60a5fa)"
-                              : "linear-gradient(to top, #e5e7eb, #f3f4f6)",
+                            : "linear-gradient(to top, #e5e7eb, #f3f4f6)",
                       }}
                     />
                     <div className="absolute -top-7 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-gray-900 text-white text-[10px] rounded px-1.5 py-0.5 whitespace-nowrap pointer-events-none transition-opacity">
@@ -221,12 +211,12 @@ function RevenueModal({
               ))}
             </div>
             <div className="flex justify-between mt-2">
-              {MONTHLY_DATA.map((d) => (
+              {monthly.map((d) => (
                 <div
                   key={d.month}
                   className="flex-1 text-center text-[10px] text-gray-400"
                 >
-                  {d.month}
+                  {monthLabel(d.month)}
                 </div>
               ))}
             </div>
@@ -239,23 +229,22 @@ function RevenueModal({
                 {t("dashboard.revenueModal.recentTx")}
               </h3>
               <span className="text-xs text-gray-400">
-                {RECENT_TRANSACTIONS.length}{" "}
-                {t("dashboard.revenueModal.records")}
+                {transactions.length} {t("dashboard.revenueModal.records")}
               </span>
             </div>
             <div className="divide-y divide-gray-50">
-              {RECENT_TRANSACTIONS.map((tx) => (
+              {transactions.map((tx) => (
                 <div
                   key={tx.id}
                   className="flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-300 to-green-500 flex items-center justify-center text-white text-sm font-semibold shrink-0">
-                      {tx.student[0]}
+                      {(tx.student_name ?? "?")[0]}
                     </div>
                     <div>
                       <div className="text-sm font-medium text-gray-800">
-                        {tx.student}
+                        {tx.student_name ?? "—"}
                       </div>
                       <div className="text-xs text-gray-400">
                         {tx.id} · {tx.date}
@@ -265,9 +254,11 @@ function RevenueModal({
                   <div className="flex items-center gap-4">
                     <div className="text-right">
                       <div className="text-sm font-semibold text-gray-900">
-                        {tx.amount.toLocaleString()} сом
+                        {formatRu(tx.amount_som)} сом
                       </div>
-                      <div className="text-xs text-gray-400">${tx.usd}</div>
+                      <div className="text-xs text-gray-400">
+                        ${tx.amount_usd}
+                      </div>
                     </div>
                     <div
                       className={`flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${
@@ -308,23 +299,30 @@ function RevenueModal({
   );
 }
 
-function DonutChart() {
+function DonutChart({
+  segments,
+  successRate,
+}: {
+  segments: LessonTypeShare[];
+  successRate: number;
+}) {
   const { t } = useTranslation();
   let offset = 0;
+
   return (
     <div className="flex items-center gap-6">
       <div className="relative shrink-0">
         <svg width="160" height="160" viewBox="0 0 220 220">
           {segments.map((seg, i) => {
-            const dash = (seg.value / 100) * CIRCUMFERENCE;
+            const dash = (seg.percent / 100) * CIRCUMFERENCE;
             const el = (
               <circle
-                key={i}
+                key={seg.label}
                 cx="110"
                 cy="110"
                 r="80"
                 fill="none"
-                stroke={seg.color}
+                stroke={DONUT_COLORS[i % DONUT_COLORS.length]}
                 strokeWidth="38"
                 strokeDasharray={`${dash} ${CIRCUMFERENCE}`}
                 strokeDashoffset={-offset}
@@ -332,7 +330,9 @@ function DonutChart() {
                 strokeLinecap="butt"
               />
             );
+
             offset += dash;
+
             return el;
           })}
           <circle cx="110" cy="110" r="61" fill="white" />
@@ -344,29 +344,23 @@ function DonutChart() {
             fontWeight="700"
             fill="#1f2937"
           >
-            76%
+            {successRate}%
           </text>
-          <text
-            x="110"
-            y="128"
-            textAnchor="middle"
-            fontSize="12"
-            fill="#6b7280"
-          >
+          <text x="110" y="128" textAnchor="middle" fontSize="12" fill="#6b7280">
             {t("dashboard.successRate")}
           </text>
         </svg>
       </div>
       <div className="flex flex-col gap-3 flex-1">
-        {segments.map((seg) => (
+        {segments.map((seg, i) => (
           <div key={seg.label} className="flex items-center gap-2">
             <div
               className="w-2.5 h-2.5 rounded-full shrink-0"
-              style={{ backgroundColor: seg.color }}
+              style={{ backgroundColor: DONUT_COLORS[i % DONUT_COLORS.length] }}
             />
             <span className="text-xs text-gray-600 flex-1">{seg.label}</span>
             <span className="text-xs font-semibold text-gray-800">
-              {seg.value}%
+              {seg.percent}%
             </span>
           </div>
         ))}
@@ -378,10 +372,36 @@ function DonutChart() {
 export default function MainPage() {
   const { t } = useTranslation();
   const [revenueOpen, setRevenueOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const params = {
+    date_from: searchParams.get("start_date") ?? undefined,
+    date_to: searchParams.get("end_date") ?? undefined,
+  };
+
+  const { data: dashboard, isLoading: dashboardLoading } =
+    useDashboardAnalytics(params);
+  const { data: payments, isLoading: paymentsLoading } =
+    usePaymentsAnalytics(params);
+
+  const kpi = dashboard?.kpi;
+  const lessonTypes = dashboard?.lesson_types ?? [];
+  const upcoming = dashboard?.upcoming_lessons ?? [];
+  const weekly = dashboard?.weekly_activity ?? [];
+  const maxWeekly = Math.max(...weekly.map((d) => d.lessons_count), 1);
+
+  const monthly = payments?.monthly ?? [];
+  const maxMonthlySom = Math.max(...monthly.map((d) => d.som), 1);
+
+  const isInitialLoading = dashboardLoading || paymentsLoading;
 
   return (
     <div className="flex flex-col gap-6">
-      <RevenueModal open={revenueOpen} onClose={() => setRevenueOpen(false)} />
+      <RevenueModal
+        open={revenueOpen}
+        onClose={() => setRevenueOpen(false)}
+        payments={payments}
+      />
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -395,251 +415,256 @@ export default function MainPage() {
         <CustomRangeDatePicker />
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-none shadow-sm bg-gradient-to-br from-green-50 to-white">
-          <CardBody className="p-5">
-            <div className="flex items-start justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
-                <TrendingUp size={20} className="text-green-600" />
-              </div>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <TrendingUp size={11} /> +4%
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">76%</div>
-            <div className="text-xs text-gray-500">
-              {t("dashboard.successRate")}
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card className="border-none shadow-sm bg-gradient-to-br from-blue-50 to-white">
-          <CardBody className="p-5">
-            <div className="flex items-start justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                <CalendarDays size={20} className="text-blue-600" />
-              </div>
-              <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <TrendingUp size={11} /> +2
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">18</div>
-            <div className="text-xs text-gray-500">
-              {t("dashboard.upcomingLessons")}
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card className="border-none shadow-sm bg-gradient-to-br from-purple-50 to-white">
-          <CardBody className="p-5">
-            <div className="flex items-start justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-                <Users size={20} className="text-purple-600" />
-              </div>
-              <span className="text-xs font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <TrendingDown size={11} /> -1
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">47</div>
-            <div className="text-xs text-gray-500">
-              {t("dashboard.activeStudents")}
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card className="border-none shadow-sm bg-gradient-to-br from-amber-50 to-white">
-          <CardBody className="p-5">
-            <div className="flex items-start justify-between mb-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-                <DollarSign size={20} className="text-amber-600" />
-              </div>
-              <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <TrendingUp size={11} /> +12%
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">$12.4k</div>
-            <div className="text-xs text-gray-500">
-              {t("dashboard.revenue")}
-            </div>
-          </CardBody>
-        </Card>
-      </div>
-
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Donut chart */}
-        <Card className="border-none shadow-sm">
-          <CardBody className="p-6">
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-base font-semibold text-gray-900">
-                {t("dashboard.lessonTypes")}
-              </h3>
-              <BookOpen size={16} className="text-gray-400" />
-            </div>
-            <DonutChart />
-          </CardBody>
-        </Card>
-
-        {/* Revenue card */}
-        <Card className="lg:col-span-2 border-none shadow-sm bg-[#1f2937] text-white">
-          <CardBody className="p-6">
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <h3 className="text-base font-semibold mb-1">
-                  {t("dashboard.revenueCard")}
-                </h3>
-                <p className="text-gray-400 text-sm">
-                  {t("dashboard.revenueSubtitle")}
-                </p>
-              </div>
-              <Button
-                size="sm"
-                className="bg-white/10 text-white border border-white/20 rounded-full px-4 hover:bg-white/20"
-                endContent={<ArrowRight size={14} />}
-                onPress={() => setRevenueOpen(true)}
-              >
-                {t("dashboard.details")}
-              </Button>
-            </div>
-            <div className="flex flex-col gap-1 mb-8">
-              <div className="text-gray-400 text-sm">1 083 266 сом</div>
-              <div className="text-5xl font-bold">$12 389</div>
-            </div>
-            <div className="flex items-end gap-1.5 h-16">
-              {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 88].map((h, i) => (
-                <div
-                  key={i}
-                  className="flex-1 rounded-t-sm"
-                  style={{
-                    height: `${h}%`,
-                    backgroundColor:
-                      i === 11 ? "#4ade80" : "rgba(255,255,255,0.15)",
-                  }}
-                />
-              ))}
-            </div>
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>Янв</span>
-              <span>Дек</span>
-            </div>
-          </CardBody>
-        </Card>
-      </div>
-
-      {/* Bottom row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Upcoming lessons */}
-        <Card className="border-none shadow-sm">
-          <CardBody className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-gray-900">
-                {t("dashboard.upcomingList")}
-              </h3>
-              <Button
-                size="sm"
-                variant="light"
-                className="text-gray-500 text-xs rounded-full"
-                endContent={<ArrowRight size={12} />}
-              >
-                {t("dashboard.all")}
-              </Button>
-            </div>
-            <div className="flex flex-col gap-3">
-              {[
-                {
-                  name: "Алия Бекова",
-                  time: "10:00",
-                  typeKey: "online",
-                  color: "bg-green-100 text-green-700",
-                },
-                {
-                  name: "Дамир Сейткали",
-                  time: "12:30",
-                  typeKey: "offline",
-                  color: "bg-gray-100 text-gray-700",
-                },
-                {
-                  name: "Жанар Омарова",
-                  time: "15:00",
-                  typeKey: "online",
-                  color: "bg-green-100 text-green-700",
-                },
-              ].map((s) => (
-                <div
-                  key={s.name}
-                  className="flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-300 to-green-500 flex items-center justify-center text-white text-sm font-semibold">
-                      {s.name[0]}
-                    </div>
-                    <div>
-                      <div className="text-sm font-medium text-gray-800">
-                        {s.name}
-                      </div>
-                      <div className="text-xs text-gray-500">{s.time}</div>
-                    </div>
+      {isInitialLoading ? (
+        <div className="flex justify-center py-32">
+          <Spinner size="lg" />
+        </div>
+      ) : (
+        <>
+          {/* KPI Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="border-none shadow-sm bg-gradient-to-br from-green-50 to-white">
+              <CardBody className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+                    <TrendingUp size={20} className="text-green-600" />
                   </div>
-                  <span
-                    className={`text-xs font-medium px-2.5 py-1 rounded-full ${s.color}`}
-                  >
-                    {t(`dashboard.${s.typeKey}`)}
-                  </span>
+                  <DeltaBadge delta={kpi?.success_rate.delta ?? 0} percent />
                 </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
+                <div className="text-3xl font-bold text-gray-900 mb-1">
+                  {kpi?.success_rate.value ?? 0}%
+                </div>
+                <div className="text-xs text-gray-500">
+                  {t("dashboard.successRate")}
+                </div>
+              </CardBody>
+            </Card>
 
-        {/* Weekly activity */}
-        <Card className="border-none shadow-sm">
-          <CardBody className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-gray-900">
-                {t("dashboard.weeklyActivity")}
-              </h3>
-            </div>
-            <div className="flex items-end justify-between gap-2 h-32 mb-3">
-              {[
-                { day: "Пн", v: 60 },
-                { day: "Вт", v: 85 },
-                { day: "Ср", v: 45 },
-                { day: "Чт", v: 90 },
-                { day: "Пт", v: 70 },
-                { day: "Сб", v: 30 },
-                { day: "Вс", v: 20 },
-              ].map((d) => (
-                <div
-                  key={d.day}
-                  className="flex flex-col items-center gap-1.5 flex-1"
-                >
-                  <div
-                    className="w-full rounded-t-lg"
-                    style={{
-                      height: `${d.v}%`,
-                      background:
-                        d.v === 90
-                          ? "linear-gradient(to top, #16a34a, #4ade80)"
-                          : "linear-gradient(to top, #e5e7eb, #f3f4f6)",
-                    }}
-                  />
+            <Card className="border-none shadow-sm bg-gradient-to-br from-blue-50 to-white">
+              <CardBody className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <CalendarDays size={20} className="text-blue-600" />
+                  </div>
+                  <DeltaBadge delta={kpi?.upcoming_lessons.delta ?? 0} />
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-between">
-              {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((d) => (
-                <div
-                  key={d}
-                  className="flex-1 text-center text-xs text-gray-400"
-                >
-                  {d}
+                <div className="text-3xl font-bold text-gray-900 mb-1">
+                  {kpi?.upcoming_lessons.value ?? 0}
                 </div>
-              ))}
-            </div>
-          </CardBody>
-        </Card>
-      </div>
+                <div className="text-xs text-gray-500">
+                  {t("dashboard.upcomingLessons")}
+                </div>
+              </CardBody>
+            </Card>
+
+            <Card className="border-none shadow-sm bg-gradient-to-br from-purple-50 to-white">
+              <CardBody className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+                    <Users size={20} className="text-purple-600" />
+                  </div>
+                  <DeltaBadge delta={kpi?.active_students.delta ?? 0} />
+                </div>
+                <div className="text-3xl font-bold text-gray-900 mb-1">
+                  {kpi?.active_students.value ?? 0}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {t("dashboard.activeStudents")}
+                </div>
+              </CardBody>
+            </Card>
+
+            <Card className="border-none shadow-sm bg-gradient-to-br from-amber-50 to-white">
+              <CardBody className="p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                    <DollarSign size={20} className="text-amber-600" />
+                  </div>
+                  <DeltaBadge delta={kpi?.revenue_usd.delta ?? 0} percent />
+                </div>
+                <div className="text-3xl font-bold text-gray-900 mb-1">
+                  ${((kpi?.revenue_usd.value ?? 0) / 1000).toFixed(1)}k
+                </div>
+                <div className="text-xs text-gray-500">
+                  {t("dashboard.revenue")}
+                </div>
+              </CardBody>
+            </Card>
+          </div>
+
+          {/* Main Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Donut chart */}
+            <Card className="border-none shadow-sm">
+              <CardBody className="p-6">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {t("dashboard.lessonTypes")}
+                  </h3>
+                  <BookOpen size={16} className="text-gray-400" />
+                </div>
+                <DonutChart
+                  segments={lessonTypes}
+                  successRate={kpi?.success_rate.value ?? 0}
+                />
+              </CardBody>
+            </Card>
+
+            {/* Revenue card */}
+            <Card className="lg:col-span-2 border-none shadow-sm bg-[#1f2937] text-white">
+              <CardBody className="p-6">
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <h3 className="text-base font-semibold mb-1">
+                      {t("dashboard.revenueCard")}
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      {t("dashboard.revenueSubtitle")}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    className="bg-white/10 text-white border border-white/20 rounded-full px-4 hover:bg-white/20"
+                    endContent={<ArrowRight size={14} />}
+                    onPress={() => setRevenueOpen(true)}
+                  >
+                    {t("dashboard.details")}
+                  </Button>
+                </div>
+                <div className="flex flex-col gap-1 mb-8">
+                  <div className="text-gray-400 text-sm">
+                    {formatRu(payments?.totals.total_som ?? 0)} сом
+                  </div>
+                  <div className="text-5xl font-bold">
+                    ${formatRu(payments?.totals.total_usd ?? 0)}
+                  </div>
+                </div>
+                <div className="flex items-end gap-1.5 h-16">
+                  {monthly.map((d, i) => (
+                    <div
+                      key={d.month}
+                      className="flex-1 rounded-t-sm"
+                      style={{
+                        height: `${Math.max((d.som / maxMonthlySom) * 100, 4)}%`,
+                        backgroundColor:
+                          i === monthly.length - 1
+                            ? "#4ade80"
+                            : "rgba(255,255,255,0.15)",
+                      }}
+                    />
+                  ))}
+                </div>
+                {monthly.length > 0 && (
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>{monthLabel(monthly[0].month)}</span>
+                    <span>{monthLabel(monthly[monthly.length - 1].month)}</span>
+                  </div>
+                )}
+              </CardBody>
+            </Card>
+          </div>
+
+          {/* Bottom row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Upcoming lessons */}
+            <Card className="border-none shadow-sm">
+              <CardBody className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {t("dashboard.upcomingList")}
+                  </h3>
+                  <Button
+                    size="sm"
+                    variant="light"
+                    className="text-gray-500 text-xs rounded-full"
+                    endContent={<ArrowRight size={12} />}
+                  >
+                    {t("dashboard.all")}
+                  </Button>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {upcoming.length === 0 && (
+                    <p className="text-sm text-gray-400 py-4 text-center">
+                      {t("dashboard.notFound")}
+                    </p>
+                  )}
+                  {upcoming.map((lesson) => (
+                    <div
+                      key={lesson.id}
+                      className="flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-300 to-green-500 flex items-center justify-center text-white text-sm font-semibold">
+                          {(lesson.student_name ?? "?")[0]}
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-gray-800">
+                            {lesson.student_name ?? "—"}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {formatTime(lesson.start_time)}
+                          </div>
+                        </div>
+                      </div>
+                      <span
+                        className={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                          lesson.lesson_type === "online"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {lesson.lesson_type
+                          ? t(`dashboard.${lesson.lesson_type}`)
+                          : ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+
+            {/* Weekly activity */}
+            <Card className="border-none shadow-sm">
+              <CardBody className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-base font-semibold text-gray-900">
+                    {t("dashboard.weeklyActivity")}
+                  </h3>
+                </div>
+                <div className="flex items-end justify-between gap-2 h-32 mb-3">
+                  {weekly.map((d) => (
+                    <div
+                      key={d.day}
+                      className="flex flex-col items-center gap-1.5 flex-1"
+                    >
+                      <div
+                        className="w-full rounded-t-lg"
+                        style={{
+                          height: `${Math.max((d.lessons_count / maxWeekly) * 100, 4)}%`,
+                          background:
+                            d.lessons_count === maxWeekly && maxWeekly > 0
+                              ? "linear-gradient(to top, #16a34a, #4ade80)"
+                              : "linear-gradient(to top, #e5e7eb, #f3f4f6)",
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between">
+                  {weekly.map((d) => (
+                    <div
+                      key={d.day}
+                      className="flex-1 text-center text-xs text-gray-400"
+                    >
+                      {weekdayLabel(d.day)}
+                    </div>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+          </div>
+        </>
+      )}
     </div>
   );
 }

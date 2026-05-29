@@ -69,3 +69,16 @@ export const KEYS_BRANCHES = {
 export const KEYS_GOOGLE_OAUTH = {
   start: getKey("GOOGLE_OAUTH_START", "MUTATION"),
 };
+
+export const KEYS_ANALYTICS = {
+  dashboard: getKey("ANALYTICS_DASHBOARD", "QUERY"),
+  payments: getKey("ANALYTICS_PAYMENTS", "QUERY"),
+};
+
+export const KEYS_TARIFFS = {
+  tariffs: getKey("TARIFFS", "QUERY"),
+};
+
+export const KEYS_USER_TARIFFS = {
+  list: getKey("USER_TARIFFS", "QUERY"),
+};
