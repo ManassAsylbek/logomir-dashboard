@@ -2,6 +2,7 @@ import {
   getRouteMain,
   getRouteStudents,
   getRouteScheduledLessons,
+  getRouteClientBooking,
   getRoutePaymentRequests,
   getRouteTherapists,
   getRouteNews,
@@ -17,6 +18,7 @@ import {
   Newspaper,
   Presentation,
   Gamepad2,
+  UserPlus,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -41,6 +43,12 @@ export const useLinks = () => {
       label: t("nav.scheduledLessons"),
       icon: <CalendarDays strokeWidth={1} />,
       href: getRouteScheduledLessons(),
+    },
+    {
+      id: 10,
+      label: t("nav.clientBooking"),
+      icon: <UserPlus strokeWidth={1} />,
+      href: getRouteClientBooking(),
     },
     {
       id: 5,

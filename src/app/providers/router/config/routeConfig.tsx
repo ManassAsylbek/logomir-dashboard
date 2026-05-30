@@ -8,6 +8,7 @@ import {
   getRouteStudents,
   getRouteStudentProfile,
   getRouteScheduledLessons,
+  getRouteClientBooking,
   getRoutePaymentRequests,
   getRouteTherapists,
   getRouteNews,
@@ -41,6 +42,9 @@ const StudentProfilePage = lazy(
 );
 const ScheduledLessonsPage = lazy(
   () => import("@/pages/ScheduledLessons/ui/ScheduledLessonsPage"),
+);
+const ClientBookingPage = lazy(
+  () => import("@/pages/ClientBooking/ui/ClientBookingPage"),
 );
 const SettingsPage = lazy(() => import("@/pages/Settings/ui/SettingsPage"));
 const PaymentRequestsPage = lazy(
@@ -84,6 +88,10 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.SCHEDULED_LESSONS]: {
     path: getRouteScheduledLessons(),
     element: withLayout(<ScheduledLessonsPage />),
+  },
+  [AppRoutes.CLIENT_BOOKING]: {
+    path: getRouteClientBooking(),
+    element: withLayout(<ClientBookingPage />),
   },
   [AppRoutes.PAYMENT_REQUESTS]: {
     path: getRoutePaymentRequests(),
