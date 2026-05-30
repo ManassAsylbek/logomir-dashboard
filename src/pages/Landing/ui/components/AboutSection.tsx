@@ -49,23 +49,6 @@ export function AboutSection() {
       id="about"
       className="px-7 md:px-16 py-12 md:py-20 max-w-6xl mx-auto"
     >
-      {/* Lead */}
-      <div className="text-center mb-12 md:mb-16">
-        <div className="inline-flex items-center gap-2 mb-5 px-3 py-1 rounded-full bg-[#E7F9F0] text-[#0e6b3f] text-xs font-semibold uppercase tracking-wider">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#3cb96a]" />
-          О нас
-        </div>
-        <p className="text-2xl md:text-4xl font-bold text-gray-800 max-w-3xl mx-auto leading-tight">
-          <span className="relative inline-block text-[#3cb96a]">
-            «Логомир»
-            <span className="absolute left-0 right-0 bottom-1 h-2 md:h-3 bg-[#3cb96a]/15 -z-10 rounded" />
-          </span>{" "}
-          — место, где дети начинают говорить, развиваться и раскрывать свой
-          потенциал
-          <span className="ml-2">💙</span>
-        </p>
-      </div>
-
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 md:gap-6 mb-10 md:mb-14">
         {stats.map((s) => (
