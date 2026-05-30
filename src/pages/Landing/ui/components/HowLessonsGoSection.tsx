@@ -1,5 +1,11 @@
 import { useTranslation } from "react-i18next";
 
+const splitLines = (text: string) =>
+  text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
 const lessonStepsMeta = [
   { num: "01", color: "text-orange-400", img: "/lessons/1.png", key: "step1" },
   { num: "02", color: "text-green-500", img: "/lessons/2.png", key: "step2" },
@@ -9,6 +15,8 @@ const lessonStepsMeta = [
 
 export function HowLessonsGoSection() {
   const { t } = useTranslation();
+  const founderBullets = splitLines(t("landing.about.founderBullets"));
+
   return (
     <section id="lessons" className="p-7 md:p-16 max-w-6xl mx-auto">
       <div className="max-w-5xl mx-auto grid gap-14">
@@ -50,27 +58,44 @@ export function HowLessonsGoSection() {
           ))}
         </div>
 
-        {/* Specialist block */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-4 rounded-3xl overflow-hidden">
-          <div className="flex-1 md:flex-9/12 bg-[#d4efe3] rounded-3xl p-5 lg:p-8 flex flex-col justify-between">
-            <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-lg inline-block w-min">
+        {/* Founder / Leader block */}
+        <div className="flex flex-col md:flex-row gap-4 rounded-3xl overflow-hidden">
+          <div className="flex-1 md:flex-9/12 bg-[#d4efe3] rounded-3xl p-5 lg:p-8 flex flex-col gap-3">
+            <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-lg inline-block w-min whitespace-nowrap">
               {t("landing.howLessonsGo.leaderBadge")}
             </span>
-            <h3 className="text-xl lg:text-3xl font-bold mb-3 leading-snug mt-auto">
-              {t("landing.howLessonsGo.leaderTitle")}
+            <h3 className="text-xl lg:text-3xl font-bold leading-snug">
+              {t("landing.about.founderName")}
             </h3>
-            <p className="text-gray-600 text-md lg:text-xl leading-relaxed">
-              {t("landing.howLessonsGo.leaderDesc")}
+            <span className="text-sm text-gray-600 -mt-1">
+              {t("landing.about.founderRole")}
+            </span>
+            <p className="text-gray-600 text-md lg:text-lg leading-relaxed">
+              {t("landing.about.founderIntro")}
+            </p>
+            <ul className="space-y-2 mt-2">
+              {founderBullets.map((b) => (
+                <li
+                  key={b}
+                  className="flex items-start gap-2 text-gray-700 text-sm md:text-base leading-snug"
+                >
+                  <span className="text-[#3cb96a] font-bold mt-0.5 shrink-0">
+                    ✓
+                  </span>
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-gray-600 text-sm md:text-md italic mt-3">
+              {t("landing.about.founderClosing")}
             </p>
           </div>
-          <div className="flex-1 md:flex-7/12 bg-gray-200 rounded-3xl min-h-44 flex items-center justify-center">
-            <div className="w-full aspect-square overflow-hidden rounded-3xl">
-              <img
-                src={"/lessons/specialist.webp"}
-                alt="Специалист"
-                className="w-full h-full object-cover"
-              />
-            </div>
+          <div className="flex-1 md:flex-7/12 rounded-3xl overflow-hidden bg-gray-200 min-h-[300px]">
+            <img
+              src={"/lessons/specialist.webp"}
+              alt={t("landing.about.founderName")}
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>
