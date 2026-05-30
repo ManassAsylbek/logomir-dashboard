@@ -5,11 +5,5 @@ services:
       dockerfile: Dockerfile
     container_name: logomir-admin
     restart: unless-stopped
-    expose:
-      - "80"
-    networks:
-      - logomir_back_default
-
-networks:
-  logomir_back_default:
-    external: true
+    ports:
+      - "127.0.0.1:3000:80"
