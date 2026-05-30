@@ -4,33 +4,22 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: {}
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Copy files to server via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "."
-          target: "/opt/logomir-admin"
+      - name: Write .env
+        run: |
+          echo "VITE_PUBLIC_API_BASE_URL=${{ secrets.VITE_PUBLIC_API_BASE_URL }}" > .env
 
-      - name: Build and deploy on server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            cd /opt/logomir-admin
-            echo "VITE_PUBLIC_API_BASE_URL=${{ secrets.VITE_PUBLIC_API_BASE_URL }}" > .env
-            docker compose down
-            docker compose up -d --build
-            docker image prune -f
+      - name: Deploy with docker compose
+        run: |
+          docker compose down --remove-orphans || true
+          docker compose up -d --build
+          docker image prune -f
