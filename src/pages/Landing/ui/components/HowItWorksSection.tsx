@@ -83,16 +83,14 @@ export function HowItWorksSection({
           </p>
           <button
             onClick={onOpenModal}
-            className="bg-[#3cb96a] text-white px-4 py-2 rounded-xl font-semibold text-2xl hover:bg-[#2fa85e] transition-colors flex items-center gap-2"
+            className="bg-[#3cb96a] text-white px-8 py-4 md:px-10 md:py-5 rounded-2xl font-bold text-2xl md:text-3xl hover:bg-[#2fa85e] hover:scale-105 transition-all shadow-lg shadow-[#3cb96a]/30 flex items-center gap-3"
           >
             {t("landing.howItWorks.consultBtn")}
-            <div>
-              <img
-                src={"/how_is_work/bear-icon.png"}
-                alt="Мишка"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <img
+              src={"/how_is_work/bear-icon.png"}
+              alt="Мишка"
+              className="w-9 h-9 md:w-11 md:h-11 object-contain"
+            />
           </button>
         </div>
         <div className="flex-1 flex justify-center">

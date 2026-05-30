@@ -90,7 +90,7 @@ export function FormatsSection({ onOpenModal }: FormatsSectionProps) {
           </h2>
           <button
             onClick={onOpenModal}
-            className="bg-[#3cb96a] text-white px-8 py-3 rounded-xl font-semibold text-2xl hover:bg-[#2fa85e] transition-colors inline-flex items-center gap-2"
+            className="bg-[#3cb96a] text-white px-10 py-5 md:px-12 md:py-6 rounded-2xl font-bold text-2xl md:text-3xl hover:bg-[#2fa85e] hover:scale-105 transition-all shadow-lg shadow-[#3cb96a]/30 inline-flex items-center gap-2"
           >
             {t("landing.formats.ctaBtn")}
           </button>

@@ -4,6 +4,7 @@ import { LandingNavbar } from "./components/LandingNavbar";
 import { LoginModal } from "./components/LoginModal";
 import { HowItWorksSection } from "./components/HowItWorksSection";
 import { WhyUsSection } from "./components/WhyUsSection";
+import { AboutSection } from "./components/AboutSection";
 import { HowLessonsGoSection } from "./components/HowLessonsGoSection";
 import { AppSection } from "./components/AppSection";
 import { FormatsSection } from "./components/FormatsSection";
@@ -27,6 +28,7 @@ export default function LandingPage() {
         <HowItWorksSection onOpenModal={() => setIsBookingOpen(true)} />
 
         <div id="why"><WhyUsSection /></div>
+        <AboutSection />
         <HowLessonsGoSection />
         <div id="app"><AppSection /></div>
         <div id="formats"><FormatsSection onOpenModal={() => setIsModalOpen(true)} /></div>
