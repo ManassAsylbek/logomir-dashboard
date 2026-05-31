@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Развивающие занятия">
+  <g transform="translate(4 4)">
+    <rect x="27" y="48" width="34" height="34" rx="7" fill="#7cc1ee"></rect>
+    <text x="44" y="71" font-family="-apple-system,&#39;Segoe UI&#39;,Roboto,sans-serif" font-weight="800" font-size="20" fill="#fff" text-anchor="middle">А</text>
+    <rect x="59" y="58" width="34" height="34" rx="7" fill="#f6b283"></rect>
+    <text x="76" y="81" font-family="-apple-system,&#39;Segoe UI&#39;,Roboto,sans-serif" font-weight="800" font-size="20" fill="#fff" text-anchor="middle">Б</text>
+    <rect x="46" y="20" width="30" height="30" rx="6" fill="#5cc08f"></rect>
+    <text x="61" y="41" font-family="-apple-system,&#39;Segoe UI&#39;,Roboto,sans-serif" font-weight="800" font-size="18" fill="#fff" text-anchor="middle">В</text>
+    <path fill="#ffcb4d" transform="translate(92 14) scale(0.5)" d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z"></path>
+  </g>
+</svg>

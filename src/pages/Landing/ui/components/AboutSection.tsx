@@ -6,14 +6,6 @@ const splitLines = (text: string) =>
     .map((line) => line.trim())
     .filter(Boolean);
 
-const splitService = (line: string) => {
-  const idx = line.indexOf(" ");
-
-  if (idx === -1) return { emoji: "", label: line };
-
-  return { emoji: line.slice(0, idx), label: line.slice(idx + 1) };
-};
-
 const splitStat = (line: string) => {
   const [value, label = ""] = line.split("|");
 
@@ -33,7 +25,7 @@ export function AboutSection() {
 
   const stats = splitLines(t("landing.about.stats")).map(splitStat);
   const conditions = splitLines(t("landing.about.conditions"));
-  const services = splitLines(t("landing.about.services")).map(splitService);
+  const services = splitLines(t("landing.about.services"));
 
   return (
     <section id="about" className="p-7 md:p-16 max-w-6xl mx-auto">
@@ -132,12 +124,16 @@ export function AboutSection() {
 
               return (
                 <div
-                  key={`${s.label}-${i}`}
+                  key={s}
                   className={`${bg} rounded-2xl p-5 flex flex-col items-center text-center gap-3`}
                 >
-                  <div className="text-5xl md:text-6xl">{s.emoji}</div>
+                  <img
+                    src={`/napravleniya/${i + 1}.svg`}
+                    alt={s}
+                    className="w-16 h-16 md:w-20 md:h-20 object-contain"
+                  />
                   <p className="font-bold text-sm md:text-md text-gray-800 leading-snug">
-                    {s.label}
+                    {s}
                   </p>
                 </div>
               );
