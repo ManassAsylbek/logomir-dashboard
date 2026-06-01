@@ -139,4 +139,11 @@ requester.interceptors.response.use(
 
 export { requester };
 
+/**
+ * Axios instance without auth interceptors — for public endpoints
+ * (landing forms etc.) where we must NOT send a Bearer token even if
+ * a staff session happens to be open in another tab.
+ */
+export { plain as publicRequester };
+
 export { getAccessToken, getRefreshToken };

@@ -90,3 +90,7 @@ export const KEYS_ACHIEVEMENTS = {
 export const KEYS_USER_ACHIEVEMENTS = {
   list: getKey("USER_ACHIEVEMENTS", "QUERY"),
 };
+
+export const KEYS_CONSULTATIONS = {
+  list: getKey("CONSULTATIONS", "QUERY"),
+};

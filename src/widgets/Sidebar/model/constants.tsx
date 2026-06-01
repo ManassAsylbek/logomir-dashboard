@@ -4,6 +4,7 @@ import {
   getRouteScheduledLessons,
   getRouteClientBooking,
   getRouteAchievements,
+  getRouteConsultations,
   getRoutePaymentRequests,
   getRouteTherapists,
   getRouteNews,
@@ -21,6 +22,7 @@ import {
   Gamepad2,
   UserPlus,
   Trophy,
+  PhoneCall,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -51,6 +53,12 @@ export const useLinks = () => {
       label: t("nav.clientBooking"),
       icon: <UserPlus strokeWidth={1} />,
       href: getRouteClientBooking(),
+    },
+    {
+      id: 12,
+      label: t("nav.consultations"),
+      icon: <PhoneCall strokeWidth={1} />,
+      href: getRouteConsultations(),
     },
     {
       id: 11,

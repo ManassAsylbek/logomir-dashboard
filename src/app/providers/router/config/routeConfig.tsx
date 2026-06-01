@@ -10,6 +10,7 @@ import {
   getRouteScheduledLessons,
   getRouteClientBooking,
   getRouteAchievements,
+  getRouteConsultations,
   getRoutePaymentRequests,
   getRouteTherapists,
   getRouteNews,
@@ -49,6 +50,9 @@ const ClientBookingPage = lazy(
 );
 const AchievementsPage = lazy(
   () => import("@/pages/Achievements/ui/AchievementsPage"),
+);
+const ConsultationsPage = lazy(
+  () => import("@/pages/Consultations/ui/ConsultationsPage"),
 );
 const SettingsPage = lazy(() => import("@/pages/Settings/ui/SettingsPage"));
 const PaymentRequestsPage = lazy(
@@ -100,6 +104,10 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.ACHIEVEMENTS]: {
     path: getRouteAchievements(),
     element: withLayout(<AchievementsPage />),
+  },
+  [AppRoutes.CONSULTATIONS]: {
+    path: getRouteConsultations(),
+    element: withLayout(<ConsultationsPage />),
   },
   [AppRoutes.PAYMENT_REQUESTS]: {
     path: getRoutePaymentRequests(),

@@ -15,6 +15,7 @@ const THERAPIST_ONLY_ROUTES = [
   "/scheduled-lessons",
   "/client-booking",
   "/achievements",
+  "/consultation-requests",
   "/payment-requests",
   "/therapists",
   "/news",
