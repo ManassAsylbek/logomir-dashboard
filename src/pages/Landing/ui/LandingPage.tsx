@@ -33,7 +33,7 @@ export default function LandingPage() {
         <HowLessonsGoSection />
         <div id="app"><AppSection /></div>
         <NewsSection />
-        <div id="formats"><FormatsSection onOpenModal={() => setIsModalOpen(true)} /></div>
+        <div id="formats"><FormatsSection onOpenModal={() => setIsBookingOpen(true)} /></div>
         <LandingFooter />
       </div>
     </div>
