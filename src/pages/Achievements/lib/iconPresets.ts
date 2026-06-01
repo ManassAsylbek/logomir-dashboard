@@ -1,7 +1,7 @@
 import { AchievementCategory } from "@/shared/api/achievements/types";
 
 export interface IconPreset {
-  /** filename inside /public/achievement-icons/ */
+  /** filename inside /public/achive/ */
   file: string;
   /** suggested template values when the user picks this preset */
   name: string;
@@ -11,14 +11,13 @@ export interface IconPreset {
 }
 
 /**
- * 15 base icons that the logoped can pick from when creating an achievement.
- * Drop the matching PNGs into /public/achievement-icons/ as 01.png … 15.png.
- * When a logoped selects a preset, the form is auto-filled with these
- * suggestions — they can still edit before submitting.
+ * 15 base icons available at /public/achive/.
+ * When a logoped picks a preset, the form fields are pre-filled with
+ * the recommended values below; they can still edit before submitting.
  */
 export const ICON_PRESETS: IconPreset[] = [
   {
-    file: "01.png",
+    file: "01_zvuk_r_tigr.png",
     name: "Победитель звука «Р»",
     description:
       "Получается за успешное прохождение всех упражнений на постановку и автоматизацию звука «Р».",
@@ -26,106 +25,106 @@ export const ICON_PRESETS: IconPreset[] = [
     points: 20,
   },
   {
-    file: "02.png",
-    name: "Звук «Р» закреплён",
-    description: "Стабильно произносит звук «Р» в речи.",
+    file: "02_zvuk_l_lev.png",
+    name: "Победитель звука «Л»",
+    description: "Уверенно произносит звук «Л» во всех позициях.",
     category: "study",
-    points: 15,
+    points: 20,
   },
   {
-    file: "03.png",
-    name: "Звук «Л» закреплён",
-    description: "Уверенно произносит звук «Л» в речи.",
-    category: "study",
-    points: 15,
-  },
-  {
-    file: "04.png",
+    file: "03_shipyashchie_zmeyka.png",
     name: "Шипящие подружились",
     description: "Чисто произносит шипящие звуки (ш, ж, щ, ч).",
     category: "study",
     points: 15,
   },
   {
-    file: "05.png",
+    file: "04_svistyashchie_ptenets.png",
     name: "Свистящие подружились",
     description: "Чисто произносит свистящие звуки (с, з, ц).",
     category: "study",
     points: 15,
   },
   {
-    file: "06.png",
-    name: "Первое слово",
-    description: "Произнёс своё первое слово на занятии.",
-    category: "progress",
-    points: 10,
-  },
-  {
-    file: "07.png",
-    name: "Первое предложение",
-    description: "Составил и произнёс полное предложение.",
-    category: "progress",
+    file: "05_zvonkie_kolokolchik.png",
+    name: "Звонкие звуки",
+    description: "Различает и произносит звонкие согласные.",
+    category: "study",
     points: 15,
   },
   {
-    file: "08.png",
-    name: "Внимательный слушатель",
-    description: "Не отвлекался всё занятие.",
-    category: "behavior",
-    points: 5,
-  },
-  {
-    file: "09.png",
-    name: "Старательный ученик",
-    description: "Особенно старался на этом занятии.",
-    category: "behavior",
-    points: 5,
-  },
-  {
-    file: "10.png",
-    name: "Лучший друг",
-    description: "Помогал другим ребятам на групповом занятии.",
-    category: "behavior",
-    points: 10,
-  },
-  {
-    file: "11.png",
-    name: "Активный участник",
-    description: "Активно отвечал на вопросы и участвовал в играх.",
-    category: "activity",
-    points: 10,
-  },
-  {
-    file: "12.png",
-    name: "Без пропусков",
-    description: "Месяц без пропусков занятий.",
-    category: "activity",
-    points: 20,
-  },
-  {
-    file: "13.png",
-    name: "Домашнее задание",
-    description: "Выполнил все домашние задания за неделю.",
-    category: "activity",
-    points: 10,
-  },
-  {
-    file: "14.png",
-    name: "Маленькая победа",
-    description: "Преодолел сложность, с которой раньше не получалось.",
-    category: "progress",
-    points: 15,
-  },
-  {
-    file: "15.png",
-    name: "Новая вершина",
-    description: "Достиг важной вехи в развитии речи.",
+    file: "06_drakon_shchit.png",
+    name: "Победил дракона",
+    description: "Справился с трудным звуком, который долго не получался.",
     category: "progress",
     points: 25,
   },
+  {
+    file: "07_strana_slogov_zamok.png",
+    name: "Страна слогов",
+    description: "Освоил слоговую структуру — читает и составляет слоги.",
+    category: "study",
+    points: 15,
+  },
+  {
+    file: "08_volshebnik_proiznosheniya.png",
+    name: "Волшебник произношения",
+    description: "Чистая и выразительная речь на занятии.",
+    category: "study",
+    points: 20,
+  },
+  {
+    file: "09_tri_dnya.png",
+    name: "Три дня подряд",
+    description: "Выполнял домашние задания три дня подряд.",
+    category: "activity",
+    points: 10,
+  },
+  {
+    file: "10_nedelya_uspehov.png",
+    name: "Неделя успехов",
+    description: "Неделя без пропусков занятий и с выполненными заданиями.",
+    category: "activity",
+    points: 15,
+  },
+  {
+    file: "11_kazhdyy_den.png",
+    name: "Каждый день",
+    description: "Занимался каждый день в течение всей недели.",
+    category: "activity",
+    points: 15,
+  },
+  {
+    file: "12_zheleznaya_privychka.png",
+    name: "Железная привычка",
+    description: "Месяц регулярных занятий и упражнений дома.",
+    category: "behavior",
+    points: 25,
+  },
+  {
+    file: "13_uverennyy_start_raketa.png",
+    name: "Уверенный старт",
+    description: "Отличное начало — освоил первые шаги программы.",
+    category: "progress",
+    points: 10,
+  },
+  {
+    file: "14_vse_luchshe_stupenki.png",
+    name: "Всё лучше и лучше",
+    description: "Заметный прогресс по сравнению с прошлым месяцем.",
+    category: "progress",
+    points: 15,
+  },
+  {
+    file: "15_novaya_vershina_gora.png",
+    name: "Новая вершина",
+    description: "Достиг важной вехи в развитии речи.",
+    category: "progress",
+    points: 30,
+  },
 ];
 
-export const iconPresetPath = (file: string) => `/achievement-icons/${file}`;
+export const iconPresetPath = (file: string) => `/achive/${file}`;
 
 export const fetchPresetAsBlob = async (file: string): Promise<Blob> => {
   const response = await fetch(iconPresetPath(file));
