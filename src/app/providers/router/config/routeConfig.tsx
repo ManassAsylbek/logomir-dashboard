@@ -9,6 +9,7 @@ import {
   getRouteStudentProfile,
   getRouteScheduledLessons,
   getRouteClientBooking,
+  getRouteAchievements,
   getRoutePaymentRequests,
   getRouteTherapists,
   getRouteNews,
@@ -45,6 +46,9 @@ const ScheduledLessonsPage = lazy(
 );
 const ClientBookingPage = lazy(
   () => import("@/pages/ClientBooking/ui/ClientBookingPage"),
+);
+const AchievementsPage = lazy(
+  () => import("@/pages/Achievements/ui/AchievementsPage"),
 );
 const SettingsPage = lazy(() => import("@/pages/Settings/ui/SettingsPage"));
 const PaymentRequestsPage = lazy(
@@ -92,6 +96,10 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.CLIENT_BOOKING]: {
     path: getRouteClientBooking(),
     element: withLayout(<ClientBookingPage />),
+  },
+  [AppRoutes.ACHIEVEMENTS]: {
+    path: getRouteAchievements(),
+    element: withLayout(<AchievementsPage />),
   },
   [AppRoutes.PAYMENT_REQUESTS]: {
     path: getRoutePaymentRequests(),

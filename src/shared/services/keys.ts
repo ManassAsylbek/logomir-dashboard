@@ -82,3 +82,11 @@ export const KEYS_TARIFFS = {
 export const KEYS_USER_TARIFFS = {
   list: getKey("USER_TARIFFS", "QUERY"),
 };
+
+export const KEYS_ACHIEVEMENTS = {
+  list: getKey("ACHIEVEMENTS", "QUERY"),
+};
+
+export const KEYS_USER_ACHIEVEMENTS = {
+  list: getKey("USER_ACHIEVEMENTS", "QUERY"),
+};

@@ -7,6 +7,7 @@ export enum AppRoutes {
   STUDENT_PROFILE = "student-profile",
   SCHEDULED_LESSONS = "scheduled-lessons",
   CLIENT_BOOKING = "client-booking",
+  ACHIEVEMENTS = "achievements",
   PAYMENT_REQUESTS = "payment-requests",
   THERAPISTS = "therapists",
   NEWS = "news",
@@ -24,6 +25,7 @@ export const getRouteStudents = () => "/students";
 export const getRouteStudentProfile = (id: string = ":id") => `/students/${id}`;
 export const getRouteScheduledLessons = () => "/scheduled-lessons";
 export const getRouteClientBooking = () => "/client-booking";
+export const getRouteAchievements = () => "/achievements";
 export const getRoutePaymentRequests = () => "/payment-requests";
 export const getRouteTherapists = () => "/therapists";
 export const getRouteNews = () => "/news";
@@ -42,6 +44,7 @@ export const AppRouteByPathPattern: Record<string, AppRoutes> = {
   [getRouteStudentProfile()]: AppRoutes.STUDENT_PROFILE,
   [getRouteScheduledLessons()]: AppRoutes.SCHEDULED_LESSONS,
   [getRouteClientBooking()]: AppRoutes.CLIENT_BOOKING,
+  [getRouteAchievements()]: AppRoutes.ACHIEVEMENTS,
   [getRoutePaymentRequests()]: AppRoutes.PAYMENT_REQUESTS,
   [getRouteTherapists()]: AppRoutes.THERAPISTS,
   [getRouteNews()]: AppRoutes.NEWS,
