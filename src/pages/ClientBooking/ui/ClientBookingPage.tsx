@@ -5,14 +5,12 @@ import { Spinner } from "@heroui/spinner";
 import { Progress } from "@heroui/progress";
 import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
-import { ArrowRight, CheckCircle2, Phone, ShieldCheck, UserPlus, Wallet } from "lucide-react";
+import { ArrowRight, CheckCircle2, Phone, UserPlus, Wallet } from "lucide-react";
 
 import { getStudents } from "@/shared/api/students/getStudents";
 import { Student } from "@/shared/api/students/types";
 import { Tariff } from "@/shared/api/tariffs/types";
 import { LessonType } from "@/shared/api/lessons/types";
-import { useValidateUsername } from "@/shared/services/auth/useValidateUsername";
-import { useValidateOtp } from "@/shared/services/auth/useValidateOtp";
 import { useRegister } from "@/shared/services/auth/useRegister";
 import { useTariffs } from "@/shared/services/tariffs/useTariffs";
 import { useUserTariffs } from "@/shared/services/userTariffs/useUserTariffs";
@@ -30,7 +28,6 @@ import {
 
 type Step =
   | "phone"
-  | "otp"
   | "register"
   | "existing"
   | "tariff"
@@ -92,8 +89,7 @@ function formatSlot(start: string | null, end: string | null): string {
 
 const STEP_TITLES: Record<Step, string> = {
   phone: "Шаг 1. Телефон клиента",
-  otp: "Шаг 2. Код из SMS",
-  register: "Шаг 3. Данные клиента",
+  register: "Шаг 2. Данные клиента",
   existing: "Клиент найден",
   tariff: "Выбор тарифа и оплата",
   balance_book: "Запись из текущего тарифа",
@@ -103,15 +99,16 @@ const STEP_TITLES: Record<Step, string> = {
 export default function ClientBookingPage() {
   const [step, setStep] = useState<Step>("phone");
   const [phone, setPhone] = useState(PHONE_COUNTRY_CODE);
-  const [otp, setOtp] = useState("");
   const [userId, setUserId] = useState<number | null>(null);
   const [foundStudent, setFoundStudent] = useState<Student | null>(null);
+  const [lookupPending, setLookupPending] = useState(false);
 
   const [newUser, setNewUser] = useState({
     full_name: "",
     password: "",
     age: "",
     gender: "Male" as "Male" | "Female",
+    is_child: true,
   });
 
   const [selectedTariff, setSelectedTariff] = useState<number | null>(null);
@@ -123,8 +120,6 @@ export default function ClientBookingPage() {
 
   const [result, setResult] = useState<DoneResult | null>(null);
 
-  const validateUsername = useValidateUsername();
-  const validateOtp = useValidateOtp();
   const register = useRegister();
   const createPayment = useCreatePayment();
   const confirmPayment = useConfirmPayment();
@@ -168,87 +163,50 @@ export default function ClientBookingPage() {
   const resetAll = () => {
     setStep("phone");
     setPhone(PHONE_COUNTRY_CODE);
-    setOtp("");
     setUserId(null);
     setFoundStudent(null);
-    setNewUser({ full_name: "", password: "", age: "", gender: "Male" });
+    setNewUser({
+      full_name: "",
+      password: "",
+      age: "",
+      gender: "Male",
+      is_child: true,
+    });
     resetSelections();
     setResult(null);
   };
 
   // ── Handlers ─────────────────────────────────────────────────────────
 
-  const handlePhoneSubmit = () => {
+  /**
+   * Phone step.
+   * Backend no longer requires OTP for staff registration, so we just look
+   * the client up in /accounts/children/. If found → existing flow; if not
+   * → register form. Conflict on submit (number already taken) is handled
+   * inside handleRegister as a fallback.
+   */
+  const handlePhoneSubmit = async () => {
     if (!isValidPhone(phone)) {
       toast.error("Введите номер в формате +996 XXX XXX XXX");
 
       return;
     }
-    validateUsername.mutate(
-      { username: phone.trim() },
-      {
-        onSuccess: () => {
-          setStep("otp");
-          toast.success("Код отправлен в SMS");
-        },
-        onError: async (error: any) => {
-          const status = error?.response?.status;
+    setLookupPending(true);
+    try {
+      const student = await findStudentByPhone(phone);
 
-          if (status === 400) {
-            try {
-              const student = await findStudentByPhone(phone);
-
-              if (!student) {
-                toast.error(
-                  "Клиент существует, но не найден в первых страницах учеников. Нужен поиск на бэке.",
-                );
-
-                return;
-              }
-              setFoundStudent(student);
-              setUserId(student.id);
-              setStep("existing");
-            } catch {
-              toast.error("Не удалось найти клиента");
-            }
-          } else {
-            toast.error(
-              error?.response?.data?.detail ?? "Ошибка проверки номера",
-            );
-          }
-        },
-      },
-    );
-  };
-
-  const handleResendOtp = () => {
-    validateUsername.mutate(
-      { username: phone.trim() },
-      {
-        onSuccess: () => toast.success("Код отправлен повторно"),
-        onError: (e: any) =>
-          toast.error(e?.response?.data?.detail ?? "Не удалось отправить код"),
-      },
-    );
-  };
-
-  const handleOtpSubmit = () => {
-    if (!/^\d{6}$/.test(otp)) {
-      toast.error("Введите 6-значный код");
-
-      return;
+      if (student) {
+        setFoundStudent(student);
+        setUserId(student.id);
+        setStep("existing");
+      } else {
+        setStep("register");
+      }
+    } catch {
+      toast.error("Не удалось проверить клиента, попробуйте ещё раз");
+    } finally {
+      setLookupPending(false);
     }
-    validateOtp.mutate(
-      { username: phone.trim(), code: otp },
-      {
-        onSuccess: () => {
-          setStep("register");
-          toast.success("Код подтверждён");
-        },
-        onError: (e: any) =>
-          toast.error(e?.response?.data?.detail ?? "Код неверный или истёк"),
-      },
-    );
   };
 
   const handleRegister = () => {
@@ -270,7 +228,7 @@ export default function ClientBookingPage() {
         full_name: newUser.full_name.trim(),
         age: newUser.age ? Number(newUser.age) : undefined,
         gender: newUser.gender,
-        is_child: true,
+        is_child: newUser.is_child,
       },
       {
         onSuccess: async (res) => {
@@ -289,10 +247,51 @@ export default function ClientBookingPage() {
           setUserId(id);
           resetSelections();
           setStep("tariff");
-          toast.success("Клиент зарегистрирован");
+          toast.success("Клиент создан");
         },
-        onError: (e: any) =>
-          toast.error(e?.response?.data?.detail ?? "Ошибка регистрации"),
+        onError: async (e: any) => {
+          const data = e?.response?.data;
+          const usernameErr = Array.isArray(data?.username)
+            ? data.username[0]
+            : data?.username;
+
+          // Treat duplicate-number response as "user already exists" and
+          // pivot into the existing-client flow.
+          if (
+            typeof usernameErr === "string" &&
+            (usernameErr.includes("уже существует") ||
+              usernameErr.toLowerCase().includes("логин"))
+          ) {
+            try {
+              const student = await findStudentByPhone(phone);
+
+              if (student) {
+                setFoundStudent(student);
+                setUserId(student.id);
+                setStep("existing");
+                toast("Клиент уже существует — открыли его профиль", {
+                  icon: "ℹ️",
+                });
+
+                return;
+              }
+            } catch {
+              // fall through to generic toast
+            }
+          }
+
+          const passwordErr = Array.isArray(data?.password)
+            ? data.password[0]
+            : data?.password;
+          const msg =
+            usernameErr ??
+            passwordErr ??
+            data?.non_field_errors?.[0] ??
+            data?.detail ??
+            "Ошибка регистрации";
+
+          toast.error(typeof msg === "string" ? msg : "Ошибка регистрации");
+        },
       },
     );
   };
@@ -527,50 +526,11 @@ export default function ClientBookingPage() {
             <Button
               className="bg-[#2d2d2d] text-white rounded-full self-end px-6"
               endContent={<ArrowRight size={16} />}
-              isLoading={validateUsername.isPending}
+              isLoading={lookupPending}
               onPress={handlePhoneSubmit}
             >
               Продолжить
             </Button>
-          </CardBody>
-        </Card>
-      )}
-
-      {/* OTP */}
-      {step === "otp" && (
-        <Card className="bg-white shadow-sm">
-          <CardHeader className="px-6 pt-5 pb-3 flex items-center gap-2">
-            <ShieldCheck size={18} className="text-[#3cb96a]" />
-            <span className="text-lg font-medium">
-              Введите код из SMS для {phone}
-            </span>
-          </CardHeader>
-          <CardBody className="px-6 pb-6 flex flex-col gap-4">
-            <Input
-              placeholder="6 цифр"
-              value={otp}
-              onValueChange={(v) => setOtp(v.replace(/\D/g, "").slice(0, 6))}
-              size="lg"
-              variant="bordered"
-              classNames={{ inputWrapper: "bg-white" }}
-            />
-            <div className="flex justify-between items-center">
-              <Button
-                variant="light"
-                onPress={handleResendOtp}
-                isLoading={validateUsername.isPending}
-              >
-                Отправить код заново
-              </Button>
-              <Button
-                className="bg-[#2d2d2d] text-white rounded-full px-6"
-                endContent={<ArrowRight size={16} />}
-                isLoading={validateOtp.isPending}
-                onPress={handleOtpSubmit}
-              >
-                Подтвердить
-              </Button>
-            </div>
           </CardBody>
         </Card>
       )}
@@ -580,7 +540,10 @@ export default function ClientBookingPage() {
         <Card className="bg-white shadow-sm">
           <CardHeader className="px-6 pt-5 pb-3 flex items-center gap-2">
             <UserPlus size={18} className="text-[#3cb96a]" />
-            <span className="text-lg font-medium">Данные нового клиента</span>
+            <div className="flex flex-col">
+              <span className="text-lg font-medium">Данные нового клиента</span>
+              <span className="text-xs text-gray-500">{phone}</span>
+            </div>
           </CardHeader>
           <CardBody className="px-6 pb-6 flex flex-col gap-4">
             <Input
@@ -630,6 +593,17 @@ export default function ClientBookingPage() {
                 </select>
               </div>
             </div>
+            <label className="inline-flex items-center gap-2 text-sm text-gray-700 select-none">
+              <input
+                type="checkbox"
+                checked={newUser.is_child}
+                onChange={(e) =>
+                  setNewUser((u) => ({ ...u, is_child: e.target.checked }))
+                }
+                className="w-4 h-4"
+              />
+              Учётка ребёнка
+            </label>
             <Button
               className="bg-[#2d2d2d] text-white rounded-full self-end px-6"
               endContent={<ArrowRight size={16} />}
