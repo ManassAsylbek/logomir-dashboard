@@ -7,6 +7,7 @@ import { WhyUsSection } from "./components/WhyUsSection";
 import { AboutSection } from "./components/AboutSection";
 import { HowLessonsGoSection } from "./components/HowLessonsGoSection";
 import { AppSection } from "./components/AppSection";
+import { NewsSection } from "./components/NewsSection";
 import { FormatsSection } from "./components/FormatsSection";
 import { LandingFooter } from "./components/LandingFooter";
 import { BookingModal } from "./components/BookingModal";
@@ -31,6 +32,7 @@ export default function LandingPage() {
         <AboutSection />
         <HowLessonsGoSection />
         <div id="app"><AppSection /></div>
+        <NewsSection />
         <div id="formats"><FormatsSection onOpenModal={() => setIsModalOpen(true)} /></div>
         <LandingFooter />
       </div>

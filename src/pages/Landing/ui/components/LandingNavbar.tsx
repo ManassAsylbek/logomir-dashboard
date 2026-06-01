@@ -32,6 +32,7 @@ export function LandingNavbar({ onOpenModal }: LandingNavbarProps) {
     { label: t("landing.nav.lessons"), href: "/lessons" },
     { label: t("landing.nav.whyUs"), href: "#why" },
     { label: t("landing.nav.app"), href: "#app" },
+    { label: t("landing.nav.news"), href: "#news" },
     { label: t("landing.nav.tariffs"), href: "#formats" },
   ];
 
