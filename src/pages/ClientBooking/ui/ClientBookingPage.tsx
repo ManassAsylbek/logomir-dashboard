@@ -22,6 +22,11 @@ import { useTimeSlots } from "@/shared/services/timeSlots/useTimeSlots";
 import { useCreatePayment } from "@/shared/services/payments/useCreatePayment";
 import { useConfirmPayment } from "@/shared/services/payments/useConfirmPayment";
 import { useCreateLesson } from "@/shared/services/lessons/useCreateLesson";
+import {
+  PHONE_COUNTRY_CODE,
+  isValidPhone,
+  normalizePhone,
+} from "@/shared/lib/phone";
 
 type Step =
   | "phone"
@@ -41,17 +46,17 @@ interface DoneResult {
   branchName?: string | null;
 }
 
-const normalizePhone = (raw: string) => raw.replace(/\D/g, "");
+const digitsOnly = (raw: string) => raw.replace(/\D/g, "");
 
 async function findStudentByPhone(phone: string): Promise<Student | null> {
-  const target = normalizePhone(phone);
+  const target = digitsOnly(phone);
   let page = 1;
 
   while (page <= 10) {
     const { data } = await getStudents(page);
     const found = data.results.find((s) => {
-      const p = normalizePhone(s.phone_number ?? "");
-      const u = normalizePhone(s.username ?? "");
+      const p = digitsOnly(s.phone_number ?? "");
+      const u = digitsOnly(s.username ?? "");
 
       return p === target || u === target;
     });
@@ -97,7 +102,7 @@ const STEP_TITLES: Record<Step, string> = {
 
 export default function ClientBookingPage() {
   const [step, setStep] = useState<Step>("phone");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(PHONE_COUNTRY_CODE);
   const [otp, setOtp] = useState("");
   const [userId, setUserId] = useState<number | null>(null);
   const [foundStudent, setFoundStudent] = useState<Student | null>(null);
@@ -162,7 +167,7 @@ export default function ClientBookingPage() {
 
   const resetAll = () => {
     setStep("phone");
-    setPhone("");
+    setPhone(PHONE_COUNTRY_CODE);
     setOtp("");
     setUserId(null);
     setFoundStudent(null);
@@ -174,8 +179,8 @@ export default function ClientBookingPage() {
   // ── Handlers ─────────────────────────────────────────────────────────
 
   const handlePhoneSubmit = () => {
-    if (!phone.trim()) {
-      toast.error("Введите номер телефона");
+    if (!isValidPhone(phone)) {
+      toast.error("Введите номер в формате +996 XXX XXX XXX");
 
       return;
     }
@@ -510,9 +515,11 @@ export default function ClientBookingPage() {
           </CardHeader>
           <CardBody className="px-6 pb-6 flex flex-col gap-4">
             <Input
+              type="tel"
+              inputMode="tel"
               placeholder="+996 700 000 000"
               value={phone}
-              onValueChange={setPhone}
+              onValueChange={(v) => setPhone(normalizePhone(v))}
               size="lg"
               variant="bordered"
               classNames={{ inputWrapper: "bg-white" }}

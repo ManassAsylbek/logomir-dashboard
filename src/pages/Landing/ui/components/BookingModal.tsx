@@ -7,6 +7,11 @@ import {
   ConsultationFormat,
   CreateConsultationRequest,
 } from "@/shared/api/consultations/types";
+import {
+  PHONE_COUNTRY_CODE,
+  isValidPhone,
+  normalizePhone,
+} from "@/shared/lib/phone";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -57,7 +62,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [desiredLocal, setDesiredLocal] = useState("");
   const [form, setForm] = useState({
     parent_name: "",
-    phone: "",
+    phone: PHONE_COUNTRY_CODE,
     child_name: "",
     child_age: "",
     message: "",
@@ -80,7 +85,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
       setDesiredLocal("");
       setForm({
         parent_name: "",
-        phone: "",
+        phone: PHONE_COUNTRY_CODE,
         child_name: "",
         child_age: "",
         message: "",
@@ -124,10 +129,8 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
     if (form.parent_name.trim().length < 2) {
       errs.parent_name = "Минимум 2 символа";
     }
-    const phoneDigits = form.phone.replace(/[^\d+]/g, "");
-
-    if (phoneDigits.replace(/\D/g, "").length < 9) {
-      errs.phone = "Введите телефон (минимум 9 цифр)";
+    if (!isValidPhone(form.phone)) {
+      errs.phone = "Введите телефон в формате +996 XXX XXX XXX";
     }
     if (Object.keys(errs).length) {
       setFieldErrors(errs);
@@ -428,12 +431,24 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     </label>
                     <input
                       type="tel"
-                      placeholder="+ 996 000 000 000"
+                      inputMode="tel"
+                      placeholder="+996 700 000 000"
                       required
                       value={form.phone}
                       onChange={(e) =>
-                        setForm({ ...form, phone: e.target.value })
+                        setForm({
+                          ...form,
+                          phone: normalizePhone(e.target.value),
+                        })
                       }
+                      onFocus={(e) => {
+                        if (!form.phone) {
+                          setForm({ ...form, phone: PHONE_COUNTRY_CODE });
+                        }
+                        // put cursor at end
+                        const v = e.currentTarget.value;
+                        e.currentTarget.setSelectionRange(v.length, v.length);
+                      }}
                       className={`w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] ${
                         fieldErrors.phone ? "ring-2 ring-red-300" : ""
                       }`}

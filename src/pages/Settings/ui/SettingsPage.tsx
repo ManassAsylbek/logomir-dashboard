@@ -10,6 +10,11 @@ import { useState } from "react";
 import { Spinner } from "@heroui/spinner";
 import { useTranslation } from "react-i18next";
 import i18n from "@/shared/config/i18n";
+import {
+  PHONE_COUNTRY_CODE,
+  isValidPhone,
+  normalizePhone,
+} from "@/shared/lib/phone";
 
 const SettingsPage = () => {
   const { t } = useTranslation();
@@ -20,13 +25,18 @@ const SettingsPage = () => {
 
   const [formData, setFormData] = useState({
     full_name: user?.full_name || "",
-    phone_number: user?.phone_number || "",
+    phone_number: normalizePhone(user?.phone_number || ""),
     email: user?.username || "",
-    whatsapp: user?.phone_number || "",
+    whatsapp: normalizePhone(user?.phone_number || ""),
     telegram: "",
   });
 
   const handleSubmit = () => {
+    if (!isValidPhone(formData.phone_number)) {
+      alert("Введите телефон в формате +996 XXX XXX XXX");
+
+      return;
+    }
     updateProfile({
       full_name: formData.full_name,
       phone_number: formData.phone_number,
@@ -172,10 +182,22 @@ const SettingsPage = () => {
               </label>
               <Input
                 type="tel"
-                placeholder="+ 996 (771) - 15 - 15 - 17"
+                inputMode="tel"
+                placeholder="+996 700 000 000"
                 value={formData.phone_number}
+                onFocus={() => {
+                  if (!formData.phone_number) {
+                    setFormData({
+                      ...formData,
+                      phone_number: PHONE_COUNTRY_CODE,
+                    });
+                  }
+                }}
                 onChange={(e) =>
-                  setFormData({ ...formData, phone_number: e.target.value })
+                  setFormData({
+                    ...formData,
+                    phone_number: normalizePhone(e.target.value),
+                  })
                 }
                 classNames={{
                   input: "text-base",
@@ -189,10 +211,22 @@ const SettingsPage = () => {
               </label>
               <Input
                 type="tel"
-                placeholder="+ 996 (771) - 15 - 15 - 17"
+                inputMode="tel"
+                placeholder="+996 700 000 000"
                 value={formData.whatsapp}
+                onFocus={() => {
+                  if (!formData.whatsapp) {
+                    setFormData({
+                      ...formData,
+                      whatsapp: PHONE_COUNTRY_CODE,
+                    });
+                  }
+                }}
                 onChange={(e) =>
-                  setFormData({ ...formData, whatsapp: e.target.value })
+                  setFormData({
+                    ...formData,
+                    whatsapp: normalizePhone(e.target.value),
+                  })
                 }
                 classNames={{
                   input: "text-base",
