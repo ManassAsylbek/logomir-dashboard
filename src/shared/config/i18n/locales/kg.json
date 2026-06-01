@@ -51,6 +51,76 @@
       "submit": "Кызматкер түзүү"
     }
   },
+  "achievements": {
+    "title": "Жетишкендиктер",
+    "tabs": {
+      "catalog": "Каталог",
+      "students": "Окуучулар боюнча"
+    },
+    "createBtn": "Жетишкендик түзүү",
+    "grantBtn": "Жетишкендик берүү",
+    "search": "Жетишкендиктерди издөө...",
+    "categoryAll": "Баары",
+    "categories": {
+      "study": "Окуу",
+      "behavior": "Жүрүм-турум",
+      "activity": "Активдүүлүк",
+      "progress": "Прогресс",
+      "other": "Башка"
+    },
+    "notFound": "Жетишкендиктер табылган жок",
+    "selectStudent": "— Окуучуну тандаңыз —",
+    "selectStudentHint": "Сыйлыктарын көрүү үчүн окуучуну тандаңыз",
+    "studentNoAwards": "Окуучуда азырынча жетишкендиктер жок",
+    "pointsShort": "упай",
+    "card": {
+      "grant": "Берүү",
+      "edit": "Өзгөртүү",
+      "delete": "Өчүрүү",
+      "revoke": "Алуу"
+    },
+    "deleteConfirm": {
+      "title": "Жетишкендикти өчүрүү",
+      "message": "«{{name}}» жетишкендигин өчүрөсүзбү? Бул аракетти жокко чыгаруу мүмкүн эмес.",
+      "confirm": "Өчүрүү"
+    },
+    "revokeConfirm": {
+      "title": "Жетишкендикти алуу",
+      "message": "Окуучудан «{{name}}» жетишкендигин аласызбы?",
+      "confirm": "Алуу"
+    },
+    "create": {
+      "titleNew": "Жетишкендик түзүү",
+      "titleEdit": "Жетишкендикти өзгөртүү",
+      "noIcon": "иконка жок",
+      "iconHint": "Негизги иконкалардын бирин тандаңыз же өзүңүздүкүн жүктөңүз.",
+      "basicIcons": "Негизги иконкалар",
+      "uploadOwn": "Өзүңүздүкүн жүктөө",
+      "nameLabel": "Аталышы",
+      "namePlaceholder": "Мисалы, «Р тыбышынын чемпиону»",
+      "descriptionLabel": "Сүрөттөмө",
+      "descriptionPlaceholder": "Эмне үчүн берилет",
+      "categoryLabel": "Категория",
+      "pointsLabel": "Упай",
+      "cancel": "Жокко чыгаруу",
+      "save": "Сактоо",
+      "submit": "Түзүү"
+    },
+    "grant": {
+      "title": "Окуучуга жетишкендик берүү",
+      "studentLabel": "Окуучу",
+      "achievementLabel": "Жетишкендик",
+      "hiddenGranted": "(буга чейин берилгендер катылган: {{count}})",
+      "allGranted": "Бул окуучуга бардык жетишкендиктер буга чейин берилген.",
+      "emptyCatalog": "Жетишкендиктер каталогу бош.",
+      "lessonLabel": "Сабак ID (милдеттүү эмес)",
+      "lessonPlaceholder": "Мисалы, 12",
+      "commentLabel": "Комментарий",
+      "commentPlaceholder": "Мисалы, «Жакшы аткарды!»",
+      "cancel": "Жокко чыгаруу",
+      "submit": "Берүү"
+    }
+  },
   "games": {
     "title": "Оюндар",
     "createNew": "Оюн түзүү",

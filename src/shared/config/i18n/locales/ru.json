@@ -51,6 +51,76 @@
       "submit": "Создать сотрудника"
     }
   },
+  "achievements": {
+    "title": "Достижения",
+    "tabs": {
+      "catalog": "Каталог",
+      "students": "По ученикам"
+    },
+    "createBtn": "Создать ачивку",
+    "grantBtn": "Выдать ачивку",
+    "search": "Поиск ачивок...",
+    "categoryAll": "Все",
+    "categories": {
+      "study": "Учёба",
+      "behavior": "Поведение",
+      "activity": "Активность",
+      "progress": "Прогресс",
+      "other": "Другое"
+    },
+    "notFound": "Ачивки не найдены",
+    "selectStudent": "— Выберите ученика —",
+    "selectStudentHint": "Выберите ученика, чтобы увидеть его награды",
+    "studentNoAwards": "У ученика пока нет ачивок",
+    "pointsShort": "б.",
+    "card": {
+      "grant": "Выдать",
+      "edit": "Редактировать",
+      "delete": "Удалить",
+      "revoke": "Снять"
+    },
+    "deleteConfirm": {
+      "title": "Удаление ачивки",
+      "message": "Удалить ачивку «{{name}}»? Это действие нельзя отменить.",
+      "confirm": "Удалить"
+    },
+    "revokeConfirm": {
+      "title": "Снять ачивку",
+      "message": "Снять у ученика ачивку «{{name}}»?",
+      "confirm": "Снять"
+    },
+    "create": {
+      "titleNew": "Создание ачивки",
+      "titleEdit": "Редактирование ачивки",
+      "noIcon": "нет иконки",
+      "iconHint": "Выберите одну из базовых иконок или загрузите свою.",
+      "basicIcons": "Базовые иконки",
+      "uploadOwn": "Загрузить свою",
+      "nameLabel": "Название",
+      "namePlaceholder": "Например, «Победитель звука Р»",
+      "descriptionLabel": "Описание",
+      "descriptionPlaceholder": "За что выдаётся ачивка",
+      "categoryLabel": "Категория",
+      "pointsLabel": "Баллы",
+      "cancel": "Отмена",
+      "save": "Сохранить",
+      "submit": "Создать"
+    },
+    "grant": {
+      "title": "Выдать ачивку ученику",
+      "studentLabel": "Ученик",
+      "achievementLabel": "Ачивка",
+      "hiddenGranted": "(скрыто уже выданных: {{count}})",
+      "allGranted": "Все ачивки уже выданы этому ученику.",
+      "emptyCatalog": "Каталог ачивок пуст.",
+      "lessonLabel": "ID занятия (опционально)",
+      "lessonPlaceholder": "Например, 12",
+      "commentLabel": "Комментарий",
+      "commentPlaceholder": "Например, «Молодец, отлично справился!»",
+      "cancel": "Отмена",
+      "submit": "Выдать"
+    }
+  },
   "games": {
     "title": "Игры",
     "createNew": "Создать игру",

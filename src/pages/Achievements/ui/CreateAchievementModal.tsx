@@ -8,12 +8,12 @@ import {
 import { Button } from "@heroui/button";
 import { Input, Textarea } from "@heroui/input";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Upload, X } from "lucide-react";
 
 import {
   Achievement,
   AchievementCategory,
-  ACHIEVEMENT_CATEGORY_LABELS,
   AchievementFormPayload,
 } from "@/shared/api/achievements/types";
 import { useCreateAchievement } from "@/shared/services/achievements/useCreateAchievement";
@@ -44,6 +44,7 @@ export default function CreateAchievementModal({
   onClose,
   achievement,
 }: Props) {
+  const { t } = useTranslation();
   const isEdit = Boolean(achievement);
 
   const [name, setName] = useState("");
@@ -155,7 +156,9 @@ export default function CreateAchievementModal({
         {() => (
           <>
             <ModalHeader className="px-6 py-5 border-b text-xl font-medium">
-              {isEdit ? "Редактирование ачивки" : "Создание ачивки"}
+              {isEdit
+                ? t("achievements.create.titleEdit")
+                : t("achievements.create.titleNew")}
             </ModalHeader>
 
             <ModalBody className="px-6 py-5 flex flex-col gap-5">
@@ -169,18 +172,20 @@ export default function CreateAchievementModal({
                       className="w-full h-full object-contain"
                     />
                   ) : (
-                    <span className="text-xs text-gray-400">нет иконки</span>
+                    <span className="text-xs text-gray-400">
+                      {t("achievements.create.noIcon")}
+                    </span>
                   )}
                 </div>
                 <div className="text-sm text-gray-500">
-                  Выберите одну из базовых иконок или загрузите свою.
+                  {t("achievements.create.iconHint")}
                 </div>
               </div>
 
               {/* Base icon gallery */}
               <div className="flex flex-col gap-2">
                 <h4 className="text-sm font-medium text-gray-700">
-                  Базовые иконки
+                  {t("achievements.create.basicIcons")}
                 </h4>
                 <div className="grid grid-cols-5 sm:grid-cols-8 gap-2">
                   {ICON_PRESETS.map((preset) => {
@@ -232,7 +237,7 @@ export default function CreateAchievementModal({
                     startContent={<Upload size={14} />}
                     onPress={() => fileInputRef.current?.click()}
                   >
-                    Загрузить свою
+                    {t("achievements.create.uploadOwn")}
                   </Button>
                   {customFile && (
                     <span className="text-xs text-gray-500 truncate flex items-center gap-1">
@@ -254,8 +259,8 @@ export default function CreateAchievementModal({
 
               {/* Form fields */}
               <Input
-                label="Название"
-                placeholder="Например, «Победитель звука Р»"
+                label={t("achievements.create.nameLabel")}
+                placeholder={t("achievements.create.namePlaceholder")}
                 value={name}
                 onValueChange={setName}
                 size="lg"
@@ -264,8 +269,8 @@ export default function CreateAchievementModal({
               />
 
               <Textarea
-                label="Описание"
-                placeholder="За что выдаётся ачивка"
+                label={t("achievements.create.descriptionLabel")}
+                placeholder={t("achievements.create.descriptionPlaceholder")}
                 value={description}
                 onValueChange={setDescription}
                 minRows={2}
@@ -276,7 +281,7 @@ export default function CreateAchievementModal({
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
                   <label className="text-sm font-medium text-gray-700">
-                    Категория
+                    {t("achievements.create.categoryLabel")}
                   </label>
                   <select
                     value={category}
@@ -287,13 +292,13 @@ export default function CreateAchievementModal({
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c} value={c}>
-                        {ACHIEVEMENT_CATEGORY_LABELS[c]}
+                        {t(`achievements.categories.${c}`)}
                       </option>
                     ))}
                   </select>
                 </div>
                 <Input
-                  label="Баллы"
+                  label={t("achievements.create.pointsLabel")}
                   type="number"
                   value={points}
                   onValueChange={setPoints}
@@ -310,7 +315,7 @@ export default function CreateAchievementModal({
                 onPress={onClose}
                 className="rounded-full text-gray-600 px-6"
               >
-                Отмена
+                {t("achievements.create.cancel")}
               </Button>
               <Button
                 className="bg-[#2d2d2d] text-white rounded-full px-6"
@@ -318,7 +323,9 @@ export default function CreateAchievementModal({
                 isLoading={isPending}
                 onPress={handleSubmit}
               >
-                {isEdit ? "Сохранить" : "Создать"}
+                {isEdit
+                  ? t("achievements.create.save")
+                  : t("achievements.create.submit")}
               </Button>
             </ModalFooter>
           </>

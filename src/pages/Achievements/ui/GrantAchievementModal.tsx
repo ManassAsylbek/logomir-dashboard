@@ -9,6 +9,7 @@ import { Button } from "@heroui/button";
 import { Input, Textarea } from "@heroui/input";
 import { Spinner } from "@heroui/spinner";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Achievement } from "@/shared/api/achievements/types";
 import { useAchievements } from "@/shared/services/achievements/useAchievements";
@@ -31,6 +32,7 @@ export default function GrantAchievementModal({
   initialStudentId,
   initialAchievement,
 }: Props) {
+  const { t } = useTranslation();
   const [studentId, setStudentId] = useState<number | null>(null);
   const [achievementId, setAchievementId] = useState<number | null>(null);
   const [lessonId, setLessonId] = useState<string>("");
@@ -83,13 +85,13 @@ export default function GrantAchievementModal({
         {() => (
           <>
             <ModalHeader className="px-6 py-5 border-b text-xl font-medium">
-              Выдать ачивку ученику
+              {t("achievements.grant.title")}
             </ModalHeader>
 
             <ModalBody className="px-6 py-5 flex flex-col gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium text-gray-700">
-                  Ученик
+                  {t("achievements.grant.studentLabel")}
                 </label>
                 <select
                   value={studentId ?? ""}
@@ -99,7 +101,7 @@ export default function GrantAchievementModal({
                   }}
                   className="w-full h-12 rounded-xl border border-gray-300 bg-white px-3 text-sm"
                 >
-                  <option value="">— Выберите ученика —</option>
+                  <option value="">{t("achievements.selectStudent")}</option>
                   {studentsData?.results?.map((s) => (
                     <option key={s.id} value={s.id}>
                       {s.full_name || s.username}
@@ -110,10 +112,14 @@ export default function GrantAchievementModal({
 
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-gray-700">
-                  Ачивка{" "}
-                  {studentId &&
-                    grantedIds.size > 0 &&
-                    `(скрыто уже выданных: ${grantedIds.size})`}
+                  {t("achievements.grant.achievementLabel")}{" "}
+                  {studentId && grantedIds.size > 0 && (
+                    <span className="text-xs text-gray-500">
+                      {t("achievements.grant.hiddenGranted", {
+                        count: grantedIds.size,
+                      })}
+                    </span>
+                  )}
                 </label>
                 {achievementsLoading ? (
                   <div className="flex justify-center py-6">
@@ -122,8 +128,8 @@ export default function GrantAchievementModal({
                 ) : availableAchievements.length === 0 ? (
                   <p className="text-sm text-gray-500">
                     {studentId
-                      ? "Все ачивки уже выданы этому ученику."
-                      : "Каталог ачивок пуст."}
+                      ? t("achievements.grant.allGranted")
+                      : t("achievements.grant.emptyCatalog")}
                   </p>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[280px] overflow-auto">
@@ -157,7 +163,7 @@ export default function GrantAchievementModal({
                               {a.name}
                             </div>
                             <div className="text-xs text-gray-500">
-                              {a.points} б.
+                              {a.points} {t("achievements.pointsShort")}
                             </div>
                           </div>
                         </button>
@@ -168,8 +174,8 @@ export default function GrantAchievementModal({
               </div>
 
               <Input
-                label="ID занятия (опционально)"
-                placeholder="Например, 12"
+                label={t("achievements.grant.lessonLabel")}
+                placeholder={t("achievements.grant.lessonPlaceholder")}
                 type="number"
                 value={lessonId}
                 onValueChange={setLessonId}
@@ -179,8 +185,8 @@ export default function GrantAchievementModal({
               />
 
               <Textarea
-                label="Комментарий"
-                placeholder="Например, «Молодец, отлично справился!»"
+                label={t("achievements.grant.commentLabel")}
+                placeholder={t("achievements.grant.commentPlaceholder")}
                 value={comment}
                 onValueChange={setComment}
                 minRows={2}
@@ -195,7 +201,7 @@ export default function GrantAchievementModal({
                 onPress={onClose}
                 className="rounded-full text-gray-600 px-6"
               >
-                Отмена
+                {t("achievements.grant.cancel")}
               </Button>
               <Button
                 className="bg-[#2d2d2d] text-white rounded-full px-6"
@@ -203,7 +209,7 @@ export default function GrantAchievementModal({
                 isLoading={grant.isPending}
                 onPress={handleSubmit}
               >
-                Выдать
+                {t("achievements.grant.submit")}
               </Button>
             </ModalFooter>
           </>

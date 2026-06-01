@@ -4,11 +4,11 @@ import { Input } from "@heroui/input";
 import { Spinner } from "@heroui/spinner";
 import { Plus, Search, Edit, Trash2, Award, X } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   Achievement,
   AchievementCategory,
-  ACHIEVEMENT_CATEGORY_LABELS,
   UserAchievement,
 } from "@/shared/api/achievements/types";
 import { useAchievements } from "@/shared/services/achievements/useAchievements";
@@ -32,9 +32,6 @@ const CATEGORIES: (AchievementCategory | "all")[] = [
   "other",
 ];
 
-const categoryLabel = (c: AchievementCategory | "all") =>
-  c === "all" ? "Все" : ACHIEVEMENT_CATEGORY_LABELS[c];
-
 function AchievementCard({
   achievement,
   onEdit,
@@ -46,6 +43,8 @@ function AchievementCard({
   onDelete: (a: Achievement) => void;
   onGrant: (a: Achievement) => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <Card className="bg-white shadow-sm">
       <CardBody className="p-5 flex flex-col gap-3">
@@ -68,10 +67,10 @@ function AchievementCard({
             <div className="flex items-center gap-2 mt-1 flex-wrap">
               <span className="text-xs px-2 py-0.5 rounded-full bg-[#e7f9f0] text-[#0e6b3f] font-medium">
                 {achievement.category_display ??
-                  ACHIEVEMENT_CATEGORY_LABELS[achievement.category]}
+                  t(`achievements.categories.${achievement.category}`)}
               </span>
               <span className="text-xs text-gray-500">
-                {achievement.points} б.
+                {achievement.points} {t("achievements.pointsShort")}
               </span>
             </div>
           </div>
@@ -89,14 +88,14 @@ function AchievementCard({
             startContent={<Award size={14} />}
             onPress={() => onGrant(achievement)}
           >
-            Выдать
+            {t("achievements.card.grant")}
           </Button>
           <Button
             size="sm"
             isIconOnly
             variant="light"
             onPress={() => onEdit(achievement)}
-            aria-label="Редактировать"
+            aria-label={t("achievements.card.edit")}
           >
             <Edit size={16} />
           </Button>
@@ -106,7 +105,7 @@ function AchievementCard({
             variant="light"
             color="danger"
             onPress={() => onDelete(achievement)}
-            aria-label="Удалить"
+            aria-label={t("achievements.card.delete")}
           >
             <Trash2 size={16} />
           </Button>
@@ -123,6 +122,7 @@ function GrantedCard({
   ua: UserAchievement;
   onRevoke: (ua: UserAchievement) => void;
 }) {
+  const { t } = useTranslation();
   const a = ua.achievement_detail;
 
   return (
@@ -141,10 +141,12 @@ function GrantedCard({
         </div>
         <div className="flex-1 min-w-0">
           <div className="font-medium text-gray-900 text-sm leading-snug">
-            {a?.name ?? `Ачивка #${ua.achievement}`}
+            {a?.name ?? `#${ua.achievement}`}
           </div>
           {a?.points != null && (
-            <div className="text-xs text-gray-500 mt-0.5">{a.points} б.</div>
+            <div className="text-xs text-gray-500 mt-0.5">
+              {a.points} {t("achievements.pointsShort")}
+            </div>
           )}
           {ua.comment && (
             <p className="text-xs text-gray-600 mt-1 italic line-clamp-2">
@@ -166,7 +168,7 @@ function GrantedCard({
           isIconOnly
           variant="light"
           onPress={() => onRevoke(ua)}
-          aria-label="Снять"
+          aria-label={t("achievements.card.revoke")}
         >
           <X size={16} />
         </Button>
@@ -176,6 +178,7 @@ function GrantedCard({
 }
 
 export default function AchievementsPage() {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>("catalog");
 
   // Catalog tab state
@@ -220,28 +223,33 @@ export default function AchievementsPage() {
     setGrantOpen(true);
   };
 
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "catalog", label: "Каталог" },
-    { key: "students", label: "По ученикам" },
+  const tabs: { key: Tab; labelKey: string }[] = [
+    { key: "catalog", labelKey: "achievements.tabs.catalog" },
+    { key: "students", labelKey: "achievements.tabs.students" },
   ];
+
+  const categoryLabel = (c: AchievementCategory | "all") =>
+    c === "all"
+      ? t("achievements.categoryAll")
+      : t(`achievements.categories.${c}`);
 
   return (
     <div className="flex flex-col gap-6">
       {/* Tabs */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex gap-2 border-b border-gray-200">
-          {tabs.map((t) => (
+          {tabs.map((tabItem) => (
             <button
-              key={t.key}
+              key={tabItem.key}
               type="button"
-              onClick={() => setTab(t.key)}
+              onClick={() => setTab(tabItem.key)}
               className={`px-3 pb-2 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                tab === t.key
+                tab === tabItem.key
                   ? "border-[#22bb79] text-[#0e6b3f]"
                   : "border-transparent text-gray-500 hover:text-gray-800"
               }`}
             >
-              {t.label}
+              {t(tabItem.labelKey)}
             </button>
           ))}
         </div>
@@ -252,7 +260,7 @@ export default function AchievementsPage() {
             startContent={<Plus size={16} />}
             onPress={() => setIsCreateOpen(true)}
           >
-            Создать ачивку
+            {t("achievements.createBtn")}
           </Button>
         )}
         {tab === "students" && (
@@ -263,7 +271,7 @@ export default function AchievementsPage() {
             isDisabled={!selectedStudent}
             onPress={() => openGrant(null, selectedStudent)}
           >
-            Выдать ачивку
+            {t("achievements.grantBtn")}
           </Button>
         )}
       </div>
@@ -273,7 +281,7 @@ export default function AchievementsPage() {
         <>
           <div className="flex items-center gap-3 flex-wrap">
             <Input
-              placeholder="Поиск ачивок..."
+              placeholder={t("achievements.search")}
               startContent={<Search size={18} className="text-default-400" />}
               className="max-w-md"
               classNames={{ inputWrapper: "bg-white" }}
@@ -307,7 +315,7 @@ export default function AchievementsPage() {
             </div>
           ) : achievements.length === 0 ? (
             <div className="py-16 text-center text-gray-500">
-              Ачивки не найдены
+              {t("achievements.notFound")}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -336,7 +344,7 @@ export default function AchievementsPage() {
               }
               className="h-11 rounded-full border border-gray-300 bg-white px-4 text-sm min-w-[260px]"
             >
-              <option value="">— Выберите ученика —</option>
+              <option value="">{t("achievements.selectStudent")}</option>
               {students?.results?.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.full_name || s.username}
@@ -347,7 +355,7 @@ export default function AchievementsPage() {
 
           {!selectedStudent ? (
             <div className="py-16 text-center text-gray-500">
-              Выберите ученика, чтобы увидеть его награды
+              {t("achievements.selectStudentHint")}
             </div>
           ) : awardsLoading ? (
             <div className="flex justify-center py-16">
@@ -355,7 +363,7 @@ export default function AchievementsPage() {
             </div>
           ) : studentAwards.length === 0 ? (
             <div className="py-16 text-center text-gray-500">
-              У ученика пока нет ачивок
+              {t("achievements.studentNoAwards")}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -384,9 +392,11 @@ export default function AchievementsPage() {
       <ConfirmModal
         isOpen={deleteTarget !== null}
         onClose={() => setDeleteTarget(null)}
-        title="Удаление ачивки"
-        message={`Удалить ачивку «${deleteTarget?.name ?? ""}»? Это действие нельзя отменить.`}
-        confirmText="Удалить"
+        title={t("achievements.deleteConfirm.title")}
+        message={t("achievements.deleteConfirm.message", {
+          name: deleteTarget?.name ?? "",
+        })}
+        confirmText={t("achievements.deleteConfirm.confirm")}
         isLoading={removeAchievement.isPending}
         onConfirm={() => {
           if (deleteTarget) {
@@ -401,11 +411,11 @@ export default function AchievementsPage() {
       <ConfirmModal
         isOpen={revokeTarget !== null}
         onClose={() => setRevokeTarget(null)}
-        title="Снять ачивку"
-        message={`Снять у ученика ачивку «${
-          revokeTarget?.achievement_detail?.name ?? ""
-        }»?`}
-        confirmText="Снять"
+        title={t("achievements.revokeConfirm.title")}
+        message={t("achievements.revokeConfirm.message", {
+          name: revokeTarget?.achievement_detail?.name ?? "",
+        })}
+        confirmText={t("achievements.revokeConfirm.confirm")}
         isLoading={revokeAward.isPending}
         onConfirm={() => {
           if (revokeTarget) {
