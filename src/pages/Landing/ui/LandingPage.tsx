@@ -27,15 +27,21 @@ export default function LandingPage() {
       <LandingNavbar onOpenModal={() => setIsModalOpen(true)} />
       <HeroSection onOpenModal={() => setIsModalOpen(true)} />
       <div className="bg-gradient-to-b from-[#CFF2E8] via-white via-55% to-[#FFFDF8]">
+        <div id="why">
+          <WhyUsSection />
+        </div>
         <HowItWorksSection onOpenModal={() => setIsBookingOpen(true)} />
 
-        <div id="why"><WhyUsSection /></div>
         <AboutSection />
         <HowLessonsGoSection />
         <WeAndChildrenSection />
-        <div id="app"><AppSection /></div>
+        <div id="app">
+          <AppSection />
+        </div>
         <NewsSection />
-        <div id="formats"><FormatsSection onOpenModal={() => setIsBookingOpen(true)} /></div>
+        <div id="formats">
+          <FormatsSection onOpenModal={() => setIsBookingOpen(true)} />
+        </div>
         <LandingFooter />
       </div>
     </div>

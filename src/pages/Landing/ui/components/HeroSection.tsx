@@ -42,12 +42,12 @@ export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
           {t("landing.hero.title")}
         </motion.h1>
 
-        <motion.p
+        {/* <motion.p
           {...fadeUp(0.25)}
           className="text-green-100 text-xl md:text-2xl leading-relaxed mb-8  mx-auto"
         >
           {t("landing.hero.subtitle")}
-        </motion.p>
+        </motion.p> */}
 
         {/* <motion.div
           {...fadeUp(0.4)}

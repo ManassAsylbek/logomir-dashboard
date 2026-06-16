@@ -26,12 +26,12 @@ export function WhyUsSection() {
     },
   ];
   return (
-    <section id="why" className="p-7 md:p-16 max-w-6xl mx-auto">
+    <section
+      id="why"
+      className="p-7 md:p-16 max-w-6xl mx-auto rounded-4xl md:rounded-[48px] bg-white grid  gap-10 relative z-10 -mt-8 "
+    >
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10">
-          <div className=" w-24 h-24 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-            <img src="/logo.png" alt="Logomir" className="h-20 w-auto" />
-          </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-2">
             {t("landing.whyUs.title")}
           </h2>
@@ -43,7 +43,7 @@ export function WhyUsSection() {
           {reasons.map((item) => (
             <div
               key={item.titleKey}
-              className="bg-white rounded-4xl p-6 shadow-sm"
+              className="bg-gray-100 rounded-4xl p-6 shadow-sm"
             >
               <div className="text-3xl mb-4">
                 <img

@@ -40,9 +40,13 @@ export function HowItWorksSection({
   return (
     <section
       id="how"
-      className="p-7 md:p-16 max-w-6xl mx-auto rounded-4xl md:rounded-[48px] bg-white grid  gap-10 relative z-10 -mt-8 "
+      className="p-7 md:p-16 max-w-6xl mx-auto"
+      // className="p-7 md:p-16 max-w-6xl mx-auto rounded-4xl md:rounded-[48px] bg-white grid  gap-10 relative z-10 -mt-8 "
     >
       <div>
+        <div className=" w-24 h-24 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+          <img src="/logo.png" alt="Logomir" className="h-20 w-auto" />
+        </div>
         <h2 className="text-4xl md:text-6xl font-bold text-center mb-10">
           {t("landing.howItWorks.title")}
         </h2>
