@@ -59,7 +59,7 @@ export function AboutSection() {
         </div>
 
         {/* Conditions */}
-        <div>
+        <div className="mt-2 p-7 md:p-16 max-w-6xl mx-auto rounded-4xl md:rounded-[48px] bg-white grid  gap-10 relative z-10 -mt-8 ">
           <div className="text-center mb-8">
             <h2 className="text-3xl md:text-5xl font-bold mb-2">
               {t("landing.about.conditionsTitle")}
@@ -72,11 +72,9 @@ export function AboutSection() {
               return (
                 <div
                   key={c}
-                  className="bg-white rounded-4xl shadow-sm flex flex-col h-full"
+                  className={`${bg} rounded-4xl shadow-sm flex flex-col h-full`}
                 >
-                  <div
-                    className={`${bg} rounded-2xl rounded-b-none overflow-hidden`}
-                  >
+                  <div className="rounded-2xl rounded-b-none overflow-hidden bg-white/40">
                     <img
                       src={`/whom_we_help/${i + 1}.png`}
                       alt={c}

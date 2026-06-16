@@ -30,14 +30,15 @@ export default function LandingPage() {
         <div id="why">
           <WhyUsSection />
         </div>
-        <HowItWorksSection onOpenModal={() => setIsBookingOpen(true)} />
 
         <AboutSection />
-        <HowLessonsGoSection />
-        <WeAndChildrenSection />
         <div id="app">
           <AppSection />
         </div>
+        <HowItWorksSection onOpenModal={() => setIsBookingOpen(true)} />
+        <HowLessonsGoSection />
+        <WeAndChildrenSection />
+
         <NewsSection />
         <div id="formats">
           <FormatsSection onOpenModal={() => setIsBookingOpen(true)} />
