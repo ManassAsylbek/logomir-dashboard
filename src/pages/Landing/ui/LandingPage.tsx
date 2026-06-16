@@ -6,6 +6,7 @@ import { HowItWorksSection } from "./components/HowItWorksSection";
 import { WhyUsSection } from "./components/WhyUsSection";
 import { AboutSection } from "./components/AboutSection";
 import { HowLessonsGoSection } from "./components/HowLessonsGoSection";
+import { WeAndChildrenSection } from "./components/WeAndChildrenSection";
 import { AppSection } from "./components/AppSection";
 import { NewsSection } from "./components/NewsSection";
 import { FormatsSection } from "./components/FormatsSection";
@@ -31,6 +32,7 @@ export default function LandingPage() {
         <div id="why"><WhyUsSection /></div>
         <AboutSection />
         <HowLessonsGoSection />
+        <WeAndChildrenSection />
         <div id="app"><AppSection /></div>
         <NewsSection />
         <div id="formats"><FormatsSection onOpenModal={() => setIsBookingOpen(true)} /></div>

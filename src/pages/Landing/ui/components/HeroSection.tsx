@@ -15,7 +15,7 @@ export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
   const { t } = useTranslation();
   return (
     <section
-      className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[90vh] xl:min-h-[110vh] "
+      className="relative overflow-hidden text-white min-h-[calc(71vw+5rem)] lg:min-h-[calc(66vw+1rem)]"
       style={{
         background: "#5BA16A",
       }}
@@ -34,10 +34,10 @@ export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
       />
 
       {/* Текст поверх фона */}
-      <div className="relative z-10 text-center px-6 pt-28 pb-6">
+      <div className="relative z-10 text-center px-6 pt-16 md:pt-24 pb-6">
         <motion.h1
           {...fadeUp(0.1)}
-          className="text-4xl md:text-7xl font-bold leading-tight mb-4"
+          className="text-3xl md:text-6xl font-bold leading-tight mb-4"
         >
           {t("landing.hero.title")}
         </motion.h1>
