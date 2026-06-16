@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { AppSection } from "./AppSection";
 
 const splitLines = (text: string) =>
   text
@@ -56,6 +57,10 @@ export function AboutSection() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div id="app">
+          <AppSection />
         </div>
 
         {/* Conditions */}
