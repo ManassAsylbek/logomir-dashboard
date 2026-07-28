@@ -1,3 +1,5 @@
+name: logomir-admin
+
 services:
   logomir-admin:
     build:

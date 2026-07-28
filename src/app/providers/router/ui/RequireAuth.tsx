@@ -1,21 +1,35 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { getRouteAuth } from "@/shared/const/router";
+import {
+  getRouteAuth,
+  getRouteLessons,
+  getRouteMain,
+} from "@/shared/const/router";
 import useUser from "@/shared/services/user/useUser";
 import { PageLoader } from "@/widgets/PageLoader";
 
-const RequireAuth: React.FC<{ children: React.ReactElement }> = ({
-  children,
-}) => {
-  // useUser will only run if access token exists (see useUser.enabled)
+const RequireAuth: React.FC<{
+  children: React.ReactElement;
+  allowedRoles?: string[];
+}> = ({ children, allowedRoles }) => {
   const { data, isLoading, isError } = useUser();
 
-  // If the query is loading, show loader while we validate session
   if (isLoading) return <PageLoader />;
 
-  // If user fetch failed (401 or no token), redirect to auth
   if (isError || !data) {
     return <Navigate to={getRouteAuth()} replace />;
+  }
+
+  if (allowedRoles) {
+    const role = localStorage.getItem("user_role") ?? "";
+    if (!allowedRoles.includes(role)) {
+      return (
+        <Navigate
+          to={role === "student" ? getRouteLessons() : getRouteMain()}
+          replace
+        />
+      );
+    }
   }
 
   return children;

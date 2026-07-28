@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface HeroSectionProps {
   onOpenModal: () => void;
@@ -11,19 +12,19 @@ const fadeUp = (delay = 0) => ({
 });
 
 export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
+  const { t } = useTranslation();
   return (
     <section
-      className="relative overflow-hidden text-white min-h-[70vh] xs:min-h-[60vh] sm:min-h-[50vh] md:min-h-[70vh] lg:min-h-[80vh] xl:min-h-[100vh] "
+      className="relative overflow-hidden text-white min-h-[calc(71vw+5rem)] lg:min-h-[calc(66vw+1rem)]"
       style={{
-        background:
-          "linear-gradient(180deg, #3cb96a 0%, #2eaa5a 60%, #28a052 100%)",
+        background: "#5BA16A",
       }}
     >
       {/* <div className="relative z-10 h-[300px] w-full bg-[#3BB96A]" /> */}
 
       {/* Иллюстрация как абсолютный фон — прибита к низу, на всю ширину */}
       <motion.img
-        src="/hero/hero.png"
+        src="/hero/hero.webp"
         alt=""
         aria-hidden="true"
         className="absolute bottom-0 left-0 w-full object-contain object-bottom pointer-events-none pt-14vh"
@@ -33,24 +34,20 @@ export function HeroSection({ onOpenModal: _onOpenModal }: HeroSectionProps) {
       />
 
       {/* Текст поверх фона */}
-      <div className="relative z-10 text-center px-6 pt-28 pb-6">
+      <div className="relative z-10 text-center px-6 pt-16 md:pt-24 pb-6">
         <motion.h1
           {...fadeUp(0.1)}
-          className="text-4xl md:text-7xl font-bold leading-tight mb-4"
+          className="text-3xl md:text-6xl font-bold leading-tight mb-4"
         >
-          Помогаем детям
-          <br />
-          говорить увереннее
+          {t("landing.hero.title")}
         </motion.h1>
 
-        <motion.p
+        {/* <motion.p
           {...fadeUp(0.25)}
           className="text-green-100 text-xl md:text-2xl leading-relaxed mb-8  mx-auto"
         >
-          Индивидуальные занятия с логопедом — онлайн или офлайн.
-          <br />
-          Без стресса, без лишней сложности.
-        </motion.p>
+          {t("landing.hero.subtitle")}
+        </motion.p> */}
 
         {/* <motion.div
           {...fadeUp(0.4)}

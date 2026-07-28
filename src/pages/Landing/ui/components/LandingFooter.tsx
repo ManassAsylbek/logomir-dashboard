@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 export function LandingFooter() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-[#3a7d44] text-white w-full  p-7 md:p-16 md:pb-7 max-w-6xl mx-auto rounded-t-4xl md:rounded-t-[48px]">
       <div className="max-w-6xl mx-auto">
@@ -8,8 +11,7 @@ export function LandingFooter() {
               <img src="/logo.png" alt="Logomir" className="h-15 w-auto" />
             </div>
             <p className="text-white text-md mb-4">
-              Центр развития речи для детей. Индивидуальные занятия с логопедом
-              онлайн и офлайн.
+              {t("landing.footer.desc")}
             </p>
             <div className="flex gap-3">
               <button className="cursor-pointer h-8 md:h-10 transition-transform hover:scale-105 active:scale-95">
@@ -31,17 +33,19 @@ export function LandingFooter() {
           <div className="flex gap-16 text-md">
             <div className="flex flex-col gap-2 text-green-200">
               <a href="#app" className="hover:text-white transition-colors">
-                Logomir Mobile
+                {t("landing.footer.appMobile")}
               </a>
               <a href="#formats" className="hover:text-white transition-colors">
-                Тарифы
+                {t("landing.footer.tariffs")}
               </a>
               <a href="#why" className="hover:text-white transition-colors">
-                Почему мы
+                {t("landing.footer.whyUs")}
               </a>
             </div>
             <div className="flex flex-col gap-2 text-green-200">
-              <span className="text-white font-semibold mb-1">Телефон</span>
+              <span className="text-white font-semibold mb-1">
+                {t("landing.footer.phone")}
+              </span>
               <span className="hover:text-white cursor-pointer transition-colors">
                 WhatsApp
               </span>
@@ -56,7 +60,7 @@ export function LandingFooter() {
         </div>
         <div className="border-t border-green-600 pt-6 flex flex-col md:flex-row justify-between items-start gap-4">
           <span className="text-green-100 text-xs">
-            Copyright © 2026 Logomir
+            {t("landing.footer.copyright")}
           </span>
           <span className="text-green-100 text-xs">
             Dubai Silicon Oasis, DDP,

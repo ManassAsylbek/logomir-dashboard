@@ -5,7 +5,7 @@ import { requester } from "../axios";
 import { UserRegisterRequest, UserRegisterResponse } from "./types";
 
 export const register = (
-  data: UserRegisterRequest
+  data: UserRegisterRequest,
 ): Promise<AxiosResponse<UserRegisterResponse>> => {
-  return requester.post("/accounts/register/", data);
+  return requester.post<UserRegisterResponse>("/accounts/register/", data);
 };

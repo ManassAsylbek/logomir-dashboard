@@ -15,9 +15,11 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/dropdown";
-import { Game } from "@/shared/api/games/types";
+import { Game, GAME_TYPE_LABELS, GameType } from "@/shared/api/games/types";
+import { useTranslation } from "react-i18next";
 
 export default function GamesPage() {
+  const { t } = useTranslation();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
@@ -47,7 +49,7 @@ export default function GamesPage() {
   };
 
   const filteredGames = gamesData?.results?.filter((game) =>
-    game.name.toLowerCase().includes(searchQuery.toLowerCase())
+    game.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -56,7 +58,7 @@ export default function GamesPage() {
         {/* Header with Search and Button */}
         <div className="flex items-center justify-between gap-4">
           <Input
-            placeholder="Поиск"
+            placeholder={t("games.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             startContent={<Search className="text-default-400" size={20} />}
@@ -77,14 +79,14 @@ export default function GamesPage() {
             }
             onPress={() => setIsCreateModalOpen(true)}
           >
-            Создать игру
+            {t("games.createNew")}
           </Button>
         </div>
 
         {/* Games Card */}
         <Card className="p-4" radius="lg">
           <CardHeader>
-            <h2 className="text-3xl font-medium">Игры</h2>
+            <h2 className="text-3xl font-medium">{t("games.title")}</h2>
           </CardHeader>
           <CardBody>
             {isLoading ? (
@@ -97,16 +99,16 @@ export default function GamesPage() {
                   <thead>
                     <tr className="border-y ">
                       <th className="text-left py-2 font-medium text-gray-600">
-                        Название
+                        {t("games.gameName")}
                       </th>
                       <th className="text-left py-2 font-medium text-gray-600">
-                        Тема
+                        {t("games.theme")}
                       </th>
                       <th className="text-left py-2 font-medium text-gray-600">
-                        Количество вопросов
+                        {t("games.questionsCount")}
                       </th>
                       <th className="text-left py-2 font-medium text-gray-600">
-                        Тип игры
+                        {t("games.gameType")}
                       </th>
                       <th className="text-left py-2 font-medium text-gray-600"></th>
                     </tr>
@@ -124,7 +126,8 @@ export default function GamesPage() {
                             {game.questions?.length || 0}
                           </td>
                           <td className="py-4 text-gray-600">
-                            {game.game_type}
+                            {GAME_TYPE_LABELS[game.game_type as GameType] ??
+                              game.game_type}
                           </td>
                           <td className="py-4 text-right">
                             <Dropdown>
@@ -137,13 +140,13 @@ export default function GamesPage() {
                                   ⋮
                                 </Button>
                               </DropdownTrigger>
-                              <DropdownMenu aria-label="Действия">
+                              <DropdownMenu aria-label="actions">
                                 <DropdownItem
                                   key="edit"
                                   startContent={<Edit size={16} />}
                                   onPress={() => handleEdit(game)}
                                 >
-                                  Редактировать
+                                  {t("games.edit")}
                                 </DropdownItem>
                                 <DropdownItem
                                   key="delete"
@@ -152,7 +155,7 @@ export default function GamesPage() {
                                   startContent={<Trash2 size={16} />}
                                   onPress={() => handleDeleteClick(game.id)}
                                 >
-                                  Удалить
+                                  {t("games.delete")}
                                 </DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
@@ -165,7 +168,7 @@ export default function GamesPage() {
                           colSpan={5}
                           className="py-8 text-center text-gray-500"
                         >
-                          Игры не найдены
+                          {t("games.notFound")}
                         </td>
                       </tr>
                     )}
@@ -197,10 +200,10 @@ export default function GamesPage() {
           setGameToDelete(null);
         }}
         onConfirm={handleConfirmDelete}
-        title="Удаление игры"
-        message="Вы уверены, что хотите удалить эту игру? Это действие нельзя отменить."
-        confirmText="Удалить"
-        cancelText="Отмена"
+        title={t("games.deleteTitle")}
+        message={t("games.deleteMessage")}
+        confirmText={t("games.deleteConfirm")}
+        cancelText={t("common.cancel")}
         isLoading={isDeleting}
         type="danger"
       />

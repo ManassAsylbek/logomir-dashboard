@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Работа над коммуникацией и социализацией">
+  <g transform="translate(4 4)">
+    <path d="M30 28 h60 a13 13 0 0 1 13 13 v22 a13 13 0 0 1-13 13 H52 l-15 12 3-12 H30 a13 13 0 0 1-13-13 V41 a13 13 0 0 1 13-13 z" fill="#5cc08f"></path>
+    <path d="M60 66 C49 57 44 49 50 44 C55 40 60 44 60 48 C60 44 65 40 70 44 C76 49 71 57 60 66 Z" fill="#fff"></path>
+    <path fill="#ffcb4d" transform="translate(93 13) scale(0.46)" d="M12 0c1 8 4 11 12 12-8 1-11 4-12 12-1-8-4-11-12-12 8-1 11-4 12-12z"></path>
+  </g>
+</svg>

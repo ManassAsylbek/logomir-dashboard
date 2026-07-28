@@ -1,5 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { useTranslation } from "react-i18next";
 
 const phones = [
   { img: "/app/1.png", label: "Логомир" },
@@ -11,6 +12,7 @@ const phones = [
 ];
 
 export function AppSection() {
+  const { t } = useTranslation();
   const [emblaRef] = useEmblaCarousel({ loop: true, align: "center" }, [
     Autoplay({ delay: 2000, stopOnInteraction: false }),
   ]);
@@ -18,17 +20,13 @@ export function AppSection() {
   return (
     <section id="app">
       <div className="max-w-5xl mx-auto grid gap-8">
-        <div className="p-7  max-w-6xl mx-auto">
+        <div className="p-7 max-w-6xl mx-auto">
           <div className="text-center">
-            <h2 className="text-3xl md:text-5xl font-bold mb-2">
-              Первое логопедическое
-              <br />
-              приложение в Кыргызстане
+            <h2 className="text-3xl md:text-5xl font-bold mb-5">
+              {t("landing.app.title")}
             </h2>
-            <p className="text-sm md:text-2xl font-medium">
-              Следите за прогрессом ребёнка и получайте
-              <br />
-              задания от специалистов прямо в телефоне
+            <p className="text-sm md:text-2xl font-medium mb-6">
+              {t("landing.app.subtitle")}
             </p>
           </div>
           <div className="flex justify-center gap-4 md:mb-10">

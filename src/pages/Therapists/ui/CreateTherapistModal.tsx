@@ -6,6 +6,11 @@ import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useCreateSpecialist } from "@/shared/services/specialists/useCreateSpecialist";
 import { useTranslation } from "react-i18next";
+import {
+  PHONE_COUNTRY_CODE,
+  isValidPhone,
+  normalizePhone,
+} from "@/shared/lib/phone";
 
 interface CreateTherapistModalProps {
   isOpen: boolean;
@@ -20,7 +25,7 @@ export default function CreateTherapistModal({
   const [formData, setFormData] = useState({
     name: "",
     last_name: "",
-    phone_number: "",
+    phone_number: PHONE_COUNTRY_CODE,
     description: "",
     raiting: 0,
   });
@@ -28,7 +33,7 @@ export default function CreateTherapistModal({
   const { mutate: createSpecialist, isPending } = useCreateSpecialist();
 
   const handleSubmit = () => {
-    if (!formData.name || !formData.phone_number) {
+    if (!formData.name || !isValidPhone(formData.phone_number)) {
       alert(t("therapists.createModal.title"));
       return;
     }
@@ -38,7 +43,7 @@ export default function CreateTherapistModal({
         setFormData({
           name: "",
           last_name: "",
-          phone_number: "",
+          phone_number: PHONE_COUNTRY_CODE,
           description: "",
           raiting: 0,
         });
@@ -103,12 +108,17 @@ export default function CreateTherapistModal({
                   {t("therapists.phone")}
                 </label>
                 <Input
+                  type="tel"
+                  inputMode="tel"
                   radius="full"
                   size="lg"
-                  placeholder="+ 996 (771) - 15 - 15 - 17"
+                  placeholder="+996 700 000 000"
                   value={formData.phone_number}
                   onChange={(e) =>
-                    setFormData({ ...formData, phone_number: e.target.value })
+                    setFormData({
+                      ...formData,
+                      phone_number: normalizePhone(e.target.value),
+                    })
                   }
                   classNames={{
                     inputWrapper: "bg-white border-1 border-gray-300",

@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+
 import { requester } from "../axios";
 
 export interface LoginRequest {
@@ -9,13 +10,12 @@ export interface LoginRequest {
 export interface LoginResponse {
   refresh: string;
   access: string;
+  id: number;
+  role: "student" | "therapist" | string;
 }
 
-// Login against the API. The project config should set
-// VITE_PUBLIC_API_BASE_URL to something like "http://31.3.216.168:8000/api"
-// so the final call will be POST {base}/accounts/login/
 export const auth = (
-  data: LoginRequest
+  data: LoginRequest,
 ): Promise<AxiosResponse<LoginResponse>> => {
   return requester.post<LoginResponse>(`/accounts/login/`, {
     username: data.username,

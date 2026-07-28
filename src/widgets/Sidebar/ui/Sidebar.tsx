@@ -1,18 +1,38 @@
-import { links } from "@/widgets/Sidebar/model/constants";
+import { useLinks } from "@/widgets/Sidebar/model/constants";
 import { Button } from "@heroui/button";
 import { LogOut, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { User } from "@heroui/user";
 import { getRouteAuth, getRouteSettings } from "@/shared/const/router";
 import { Popover, PopoverContent, PopoverTrigger } from "@heroui/popover";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
+  const { t, i18n } = useTranslation();
+  const links = useLinks();
 
   const isSettingActive = pathname === getRouteSettings();
   return (
     <div className="min-w-72 bg-[#272727] flex flex-col justify-start p-6">
-      <img src="logo2.png" width={70} className="ml-4 mb-12" />
+      <div className="flex items-center justify-between mb-12 ml-4">
+        <img src="logo.png" width={70} />
+        <div className="flex gap-1">
+          {["ru", "kg"].map((lang) => (
+            <button
+              key={lang}
+              onClick={() => i18n.changeLanguage(lang)}
+              className={`text-xs px-2.5 py-1 rounded-full font-medium transition-colors ${
+                i18n.language === lang
+                  ? "bg-white text-gray-900"
+                  : "text-gray-400 hover:text-white"
+              }`}
+            >
+              {lang.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="flex flex-col gap-1 mt-4">
         {links.map((link) => {
@@ -48,7 +68,7 @@ const Sidebar = () => {
           startContent={<Settings strokeWidth={1} />}
           radius="full"
         >
-          Настройки
+          {t("nav.settings")}
         </Button>
 
         <Popover placement="right">
@@ -69,7 +89,7 @@ const Sidebar = () => {
               startContent={<LogOut strokeWidth={1} />}
               radius="full"
             >
-              выйти
+              {t("nav.logout")}
             </Button>
           </PopoverContent>
         </Popover>
