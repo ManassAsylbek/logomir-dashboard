@@ -95,7 +95,6 @@ export function HowLessonsGoSection() {
               {t("landing.about.founderIntro")}
             </p>
 
-            {/* Bullets */}
             <ul className="relative mt-5 grid sm:grid-cols-2 gap-x-6 gap-y-3">
               {founderBullets.map((b) => (
                 <li

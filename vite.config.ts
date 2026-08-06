@@ -6,6 +6,10 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), tailwindcss()],
+  server: {
+    // Honour PORT when the dev server is launched by tooling; 5173 locally.
+    port: Number(process.env.PORT) || 5173,
+  },
   build: {
     rollupOptions: {
       output: {
