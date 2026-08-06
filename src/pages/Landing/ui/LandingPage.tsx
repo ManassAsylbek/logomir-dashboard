@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { HeroSection } from "./components/HeroSection";
 import { LandingNavbar } from "./components/LandingNavbar";
 import { LoginModal } from "./components/LoginModal";
@@ -11,17 +12,35 @@ import { NewsSection } from "./components/NewsSection";
 import { FormatsSection } from "./components/FormatsSection";
 import { LandingFooter } from "./components/LandingFooter";
 import { BookingModal } from "./components/BookingModal";
+import { BookingPreset, TariffModal } from "./components/TariffModal";
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [tariffNumber, setTariffNumber] = useState<number | null>(null);
+  const [bookingPreset, setBookingPreset] = useState<BookingPreset | null>(
+    null,
+  );
+
+  const openBooking = (preset: BookingPreset | null) => {
+    setTariffNumber(null);
+    setBookingPreset(preset);
+    setIsBookingOpen(true);
+  };
 
   return (
     <div className="min-h-screen font-sans text-gray-800 bg-white">
       <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       <BookingModal
         isOpen={isBookingOpen}
+        preset={bookingPreset}
         onClose={() => setIsBookingOpen(false)}
+      />
+      <TariffModal
+        isOpen={tariffNumber !== null}
+        tariffNumber={tariffNumber}
+        onBook={(preset) => openBooking(preset)}
+        onClose={() => setTariffNumber(null)}
       />
       <LandingNavbar onOpenModal={() => setIsModalOpen(true)} />
       <HeroSection onOpenModal={() => setIsModalOpen(true)} />
@@ -33,12 +52,15 @@ export default function LandingPage() {
         <AboutSection />
         <HowLessonsGoSection />
 
-        <HowItWorksSection onOpenModal={() => setIsBookingOpen(true)} />
+        <HowItWorksSection onOpenModal={() => openBooking(null)} />
         <WeAndChildrenSection />
 
         <NewsSection />
         <div id="formats">
-          <FormatsSection onOpenModal={() => setIsBookingOpen(true)} />
+          <FormatsSection
+            onOpenModal={() => openBooking(null)}
+            onOpenTariff={setTariffNumber}
+          />
         </div>
         <LandingFooter />
       </div>

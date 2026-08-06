@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { BookingPreset } from "./TariffModal";
+
 import { useBranches } from "@/shared/services/branches/useBranches";
 import { useCreateConsultation } from "@/shared/services/consultations/useCreateConsultation";
 import {
@@ -16,7 +18,13 @@ import {
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  /** Tariff + plan chosen in TariffModal; prepended to the request message */
+  preset?: BookingPreset | null;
 }
+
+/** "Тариф: Речевой шаг · Месячный — 6 400 сом" */
+const presetLine = (p: BookingPreset) =>
+  `Тариф: ${p.tariffLabel} · ${p.planLabel} — ${p.price}`;
 
 type Step = "format" | "branch" | "datetime" | "data" | "success";
 
@@ -55,7 +63,7 @@ const nowLocalInputValue = (): string => {
   );
 };
 
-export function BookingModal({ isOpen, onClose }: BookingModalProps) {
+export function BookingModal({ isOpen, onClose, preset }: BookingModalProps) {
   const [step, setStep] = useState<Step>("format");
   const [format, setFormat] = useState<ConsultationFormat | null>(null);
   const [branchId, setBranchId] = useState<number | null>(null);
@@ -140,16 +148,22 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
     if (!format) return;
 
+    const message = [preset ? presetLine(preset) : "", form.message.trim()]
+      .filter(Boolean)
+      .join("\n");
+
     const payload: CreateConsultationRequest = {
       format,
       full_name: form.parent_name.trim(),
       phone: form.phone.trim(),
       website: form.website,
       ...(branchId ? { branch: branchId } : {}),
-      ...(desiredLocal ? { desired_datetime: toIsoWithOffset(desiredLocal) } : {}),
+      ...(desiredLocal
+        ? { desired_datetime: toIsoWithOffset(desiredLocal) }
+        : {}),
       ...(form.child_name.trim() ? { child_name: form.child_name.trim() } : {}),
       ...(form.child_age ? { child_age: Number(form.child_age) } : {}),
-      ...(form.message.trim() ? { message: form.message.trim() } : {}),
+      ...(message ? { message } : {}),
     };
 
     create.mutate(payload, {
@@ -199,17 +213,17 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
       onClick={handleClose}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.2 }}
         className="bg-white rounded-3xl p-8 w-full max-w-lg relative shadow-2xl overflow-hidden"
+        exit={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200 transition-colors text-sm z-10"
           aria-label="Закрыть"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-gray-200 transition-colors text-sm z-10"
+          onClick={handleClose}
         >
           ✕
         </button>
@@ -219,35 +233,44 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === "format" && (
             <motion.div
               key="format"
-              variants={slideVariants}
-              initial="enter"
               animate="center"
               exit="exit"
+              initial="enter"
               transition={{ duration: 0.25 }}
+              variants={slideVariants}
             >
               <h2 className="text-xl font-bold mb-1">
                 Запишитесь на консультацию в Logomir
               </h2>
-              <p className="text-gray-400 text-sm mb-6">Выберите формат</p>
+              <p className="text-gray-400 text-sm mb-4">Выберите формат</p>
+
+              {preset && (
+                <div className="mb-4 rounded-2xl bg-[#f0fdf4] ring-1 ring-[#3cb96a]/20 px-4 py-3">
+                  <p className="text-sm font-semibold text-gray-900">
+                    {preset.tariffLabel} · {preset.planLabel}
+                  </p>
+                  <p className="text-sm font-bold text-[#3cb96a]">
+                    {preset.price}
+                  </p>
+                </div>
+              )}
 
               <div className="grid grid-cols-2 gap-3 mb-6">
-                {(
-                  [
-                    { v: "online" as const, label: "Онлайн", emoji: "💻" },
-                    { v: "offline" as const, label: "Оффлайн", emoji: "🏢" },
-                  ]
-                ).map((opt) => {
+                {[
+                  { v: "online" as const, label: "Онлайн", emoji: "💻" },
+                  { v: "offline" as const, label: "Оффлайн", emoji: "🏢" },
+                ].map((opt) => {
                   const selected = format === opt.v;
 
                   return (
                     <button
                       key={opt.v}
-                      onClick={() => setFormat(opt.v)}
                       className={`py-4 rounded-2xl text-base font-semibold border-2 transition-all flex flex-col items-center gap-1 ${
                         selected
                           ? "border-[#3cb96a] text-[#3cb96a] bg-[#f0fdf4]"
                           : "border-gray-200 text-gray-700 hover:border-gray-400 bg-white"
                       }`}
+                      onClick={() => setFormat(opt.v)}
                     >
                       <span className="text-2xl">{opt.emoji}</span>
                       {opt.label}
@@ -257,9 +280,9 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </div>
 
               <button
-                onClick={goNextFromFormat}
-                disabled={!format}
                 className="bg-[#3cb96a] text-white rounded-xl py-3 px-8 font-semibold text-sm hover:bg-[#2fa85e] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled={!format}
+                onClick={goNextFromFormat}
               >
                 Далее 🐻
               </button>
@@ -270,11 +293,11 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === "branch" && (
             <motion.div
               key="branch"
-              variants={slideVariants}
-              initial="enter"
               animate="center"
               exit="exit"
+              initial="enter"
               transition={{ duration: 0.25 }}
+              variants={slideVariants}
             >
               <h2 className="text-xl font-bold mb-1">
                 Запишитесь на консультацию в Logomir
@@ -293,12 +316,12 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     return (
                       <button
                         key={b.id}
-                        onClick={() => setBranchId(b.id)}
                         className={`text-left p-3 rounded-2xl border-2 transition-all ${
                           selected
                             ? "border-[#3cb96a] bg-[#f0fdf4]"
                             : "border-gray-200 hover:border-gray-400 bg-white"
                         }`}
+                        onClick={() => setBranchId(b.id)}
                       >
                         <div className="text-sm font-medium text-gray-900">
                           {b.name ?? `Филиал #${b.id}`}
@@ -319,15 +342,15 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               <div className="flex justify-between">
                 <button
-                  onClick={() => setStep("format")}
                   className="text-sm text-gray-500 hover:text-gray-800"
+                  onClick={() => setStep("format")}
                 >
                   ← Назад
                 </button>
                 <button
-                  onClick={goNextFromBranch}
-                  disabled={!branchId}
                   className="bg-[#3cb96a] text-white rounded-xl py-3 px-8 font-semibold text-sm hover:bg-[#2fa85e] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={!branchId}
+                  onClick={goNextFromBranch}
                 >
                   Далее 🐻
                 </button>
@@ -339,26 +362,24 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === "datetime" && (
             <motion.div
               key="datetime"
-              variants={slideVariants}
-              initial="enter"
               animate="center"
               exit="exit"
+              initial="enter"
               transition={{ duration: 0.25 }}
+              variants={slideVariants}
             >
-              <h2 className="text-xl font-bold mb-1">
-                Когда вам удобно?
-              </h2>
+              <h2 className="text-xl font-bold mb-1">Когда вам удобно?</h2>
               <p className="text-gray-400 text-sm mb-6">
                 Выберите желаемую дату и время. Точное время мы подтвердим
                 звонком.
               </p>
 
               <input
+                className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] mb-2"
+                min={nowLocalInputValue()}
                 type="datetime-local"
                 value={desiredLocal}
-                min={nowLocalInputValue()}
                 onChange={(e) => setDesiredLocal(e.target.value)}
-                className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] mb-2"
               />
               {fieldErrors.desired_datetime && (
                 <p className="text-xs text-red-500 mb-2">
@@ -368,17 +389,17 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               <div className="flex justify-between mt-4">
                 <button
+                  className="text-sm text-gray-500 hover:text-gray-800"
                   onClick={() =>
                     setStep(format === "offline" ? "branch" : "format")
                   }
-                  className="text-sm text-gray-500 hover:text-gray-800"
                 >
                   ← Назад
                 </button>
                 <button
-                  onClick={goNextFromDatetime}
-                  disabled={!desiredLocal}
                   className="bg-[#3cb96a] text-white rounded-xl py-3 px-8 font-semibold text-sm hover:bg-[#2fa85e] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={!desiredLocal}
+                  onClick={goNextFromDatetime}
                 >
                   Далее 🐻
                 </button>
@@ -390,34 +411,34 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === "data" && (
             <motion.div
               key="data"
-              variants={slideVariants}
-              initial="enter"
               animate="center"
               exit="exit"
+              initial="enter"
               transition={{ duration: 0.25 }}
+              variants={slideVariants}
             >
               <h2 className="text-xl font-bold mb-1">Расскажите о себе</h2>
               <p className="text-gray-400 text-sm mb-6">
                 Мы перезвоним и подтвердим запись
               </p>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs text-gray-500 mb-1 block">
                       Имя родителя *
                     </label>
                     <input
-                      type="text"
-                      placeholder="Имя родителя"
                       required
+                      className={`w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] ${
+                        fieldErrors.parent_name ? "ring-2 ring-red-300" : ""
+                      }`}
+                      placeholder="Имя родителя"
+                      type="text"
                       value={form.parent_name}
                       onChange={(e) =>
                         setForm({ ...form, parent_name: e.target.value })
                       }
-                      className={`w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] ${
-                        fieldErrors.parent_name ? "ring-2 ring-red-300" : ""
-                      }`}
                     />
                     {fieldErrors.parent_name && (
                       <p className="text-xs text-red-500 mt-1">
@@ -430,10 +451,13 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       Телефон *
                     </label>
                     <input
-                      type="tel"
+                      required
+                      className={`w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] ${
+                        fieldErrors.phone ? "ring-2 ring-red-300" : ""
+                      }`}
                       inputMode="tel"
                       placeholder="+996 700 000 000"
-                      required
+                      type="tel"
                       value={form.phone}
                       onChange={(e) =>
                         setForm({
@@ -447,11 +471,9 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                         }
                         // put cursor at end
                         const v = e.currentTarget.value;
+
                         e.currentTarget.setSelectionRange(v.length, v.length);
                       }}
-                      className={`w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] ${
-                        fieldErrors.phone ? "ring-2 ring-red-300" : ""
-                      }`}
                     />
                     {fieldErrors.phone && (
                       <p className="text-xs text-red-500 mt-1">
@@ -467,13 +489,13 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       Имя ребёнка
                     </label>
                     <input
-                      type="text"
+                      className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080]"
                       placeholder="Имя ребёнка"
+                      type="text"
                       value={form.child_name}
                       onChange={(e) =>
                         setForm({ ...form, child_name: e.target.value })
                       }
-                      className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080]"
                     />
                   </div>
                   <div>
@@ -481,14 +503,14 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                       Возраст
                     </label>
                     <input
-                      type="number"
+                      className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080]"
                       min={0}
                       placeholder="Возраст"
+                      type="number"
                       value={form.child_age}
                       onChange={(e) =>
                         setForm({ ...form, child_age: e.target.value })
                       }
-                      className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080]"
                     />
                   </div>
                 </div>
@@ -498,13 +520,13 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     Комментарий
                   </label>
                   <textarea
+                    className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] resize-none"
                     placeholder="Например, «Хотим по звуку Р»"
                     rows={2}
                     value={form.message}
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
-                    className="w-full bg-gray-100 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#4cd080] resize-none"
                   />
                 </div>
 
@@ -523,11 +545,11 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 >
                   <label htmlFor="website">Website</label>
                   <input
+                    autoComplete="off"
                     id="website"
                     name="website"
-                    type="text"
                     tabIndex={-1}
-                    autoComplete="off"
+                    type="text"
                     value={form.website}
                     onChange={(e) =>
                       setForm({ ...form, website: e.target.value })
@@ -543,16 +565,16 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
                 <div className="flex items-center justify-between mt-2">
                   <button
+                    className="text-sm text-gray-500 hover:text-gray-800"
                     type="button"
                     onClick={() => setStep("datetime")}
-                    className="text-sm text-gray-500 hover:text-gray-800"
                   >
                     ← Назад
                   </button>
                   <button
-                    type="submit"
-                    disabled={create.isPending}
                     className="bg-[#3cb96a] text-white rounded-xl py-3 px-8 font-semibold text-sm hover:bg-[#2fa85e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    disabled={create.isPending}
+                    type="submit"
                   >
                     {create.isPending ? "Отправляем…" : "Записаться 🐻"}
                   </button>
@@ -565,12 +587,12 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {step === "success" && (
             <motion.div
               key="success"
-              variants={slideVariants}
-              initial="enter"
               animate="center"
-              exit="exit"
-              transition={{ duration: 0.25 }}
               className="text-center"
+              exit="exit"
+              initial="enter"
+              transition={{ duration: 0.25 }}
+              variants={slideVariants}
             >
               <div className="bg-[#7bcf58] rounded-3xl p-8 mb-6">
                 <h2 className="text-2xl font-bold text-white leading-tight mb-3">
@@ -586,8 +608,8 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
               </div>
 
               <button
-                onClick={handleClose}
                 className="bg-[#3cb96a] text-white rounded-xl py-3 px-8 font-semibold text-sm hover:bg-[#2fa85e] transition-colors"
+                onClick={handleClose}
               >
                 Закрыть
               </button>
